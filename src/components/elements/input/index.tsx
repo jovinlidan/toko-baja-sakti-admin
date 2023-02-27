@@ -1,0 +1,70 @@
+import invariant from "invariant";
+import * as React from "react";
+import { useFormContext, useWatch } from "react-hook-form";
+import TextField, { TextFieldProps } from "./text-field";
+
+type InputType = "text" | "submit";
+
+export interface BaseElementInputProps {
+  type: InputType;
+  name: string;
+  readOnly?: boolean;
+}
+
+function RawInput(props: TextFieldProps, ref: any) {
+  switch (props.type) {
+    case "text":
+      return <TextField {...props} />;
+    // case "submit":
+    //   return <SubmitField {...props} />;
+  }
+}
+export default React.forwardRef(RawInput);
+
+interface FormValueState {
+  keys: string[];
+  children: React.ReactNode | ((values: any) => React.ReactNode);
+}
+
+interface FormValueContextState {
+  values: { [key in string]: string };
+}
+
+export const FormContext = React.createContext<FormValueContextState>({
+  values: {},
+});
+
+export function FormValueState(props: FormValueState) {
+  const { keys, children } = props;
+  const { control } = useFormContext();
+  const values = useWatch({ name: keys, control });
+
+  const transformedValues = values.reduce((prev, next, idx) => {
+    return {
+      ...prev,
+      [keys[idx]]: next,
+    };
+  }, {});
+
+  const value = React.useMemo<FormValueContextState>(
+    () => ({
+      values: transformedValues,
+    }),
+    [transformedValues]
+  );
+
+  return (
+    <FormContext.Provider value={value}>
+      {typeof children === "function" ? children(transformedValues) : children}
+    </FormContext.Provider>
+  );
+}
+
+export function useFormValueState(): FormValueContextState {
+  const context = React.useContext(FormContext);
+  invariant(
+    context !== undefined,
+    "useFormValueState must be used inside Form Container"
+  );
+  return context;
+}
