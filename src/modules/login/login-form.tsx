@@ -7,6 +7,7 @@ import router from "next/router";
 import { LoginCard, LoginContainer, styles, TitleContainer } from "./styles";
 import { Input, Text } from "@/components/elements";
 import Form from "@/components/elements/form";
+import { toast } from "react-hot-toast";
 // import { useKY } from "hooks/use-ky";
 interface FormType {
   username?: string;
@@ -42,8 +43,10 @@ export default function LoginForm() {
     async (values) => {
       try {
         methods.reset();
-        await router.push("/");
+        toast.success("berhasil");
+        // await router.push("/");
       } catch (e: any) {
+        toast.error("error");
       } finally {
       }
     },

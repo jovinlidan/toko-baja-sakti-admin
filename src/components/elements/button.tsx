@@ -25,6 +25,7 @@ export default function Button(props: ButtonProps) {
     endEnhancer,
     variant = "primary",
     size = "medium",
+    loading,
     ...restProps
   } = props;
 

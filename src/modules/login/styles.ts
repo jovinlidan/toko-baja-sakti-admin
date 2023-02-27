@@ -21,6 +21,7 @@ export const LoginCard = styled("div", {
 export const TitleContainer = styled("div", {
   width: 180,
   mx: "auto",
+  mb: 25,
 });
 
 export const styles = {

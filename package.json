@@ -22,7 +22,7 @@
     "react-hot-toast": "^2.4.0",
     "react-particles": "^2.9.3",
     "ts-deepmerge": "^6.0.2",
-    "tsparticles-preset-fire": "^2.9.3",
+    "tsparticles": "^2.9.3",
     "yup": "^0.32.11"
   },
   "devDependencies": {

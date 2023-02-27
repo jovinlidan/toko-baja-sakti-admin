@@ -9,12 +9,6 @@ import {
 } from "./styles";
 import Text from "./text";
 
-export enum TextLabelPlacementEnum {
-  Default = "default",
-  Left = "left",
-  TopLeft = "top-left",
-}
-
 export interface CustomFormControlProps {
   label?: string;
   hideLabel?: boolean;
@@ -22,7 +16,6 @@ export interface CustomFormControlProps {
   noMargin?: boolean;
   error?: string;
   children: React.ReactNode;
-  labelRightEnhancer?: React.ReactNode;
 }
 
 export function CustomLabel(props: any) {
@@ -34,17 +27,12 @@ export function CustomLabel(props: any) {
           display: "block",
           opacity: hideLabel ? 0 : 1,
         }}
-        textVariant="body3Semibold"
+        variant="body1"
         {...restProps}
       >
         {label}
       </Text>
       {props.required && !hideLabel && <RequiredText>*</RequiredText>}
-      {props.$labelRightEnhancer && (
-        <RightEnhancerContainer>
-          {props.$labelRightEnhancer}
-        </RightEnhancerContainer>
-      )}
     </LabelContainer>
   );
 }
@@ -57,7 +45,6 @@ export default function CustomFormControl(props: CustomFormControlProps) {
     children,
     label,
     error,
-    labelRightEnhancer,
     ...restProps
   } = props;
 
@@ -75,7 +62,6 @@ export default function CustomFormControl(props: CustomFormControlProps) {
               required={required}
               {...restProps}
               label={label}
-              $labelRightEnhancer={labelRightEnhancer}
               hideLabel={hideLabel}
             />
           </CustomLabelContainer>
