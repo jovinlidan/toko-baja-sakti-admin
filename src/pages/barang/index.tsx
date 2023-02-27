@@ -1,5 +1,5 @@
-import { BxLeftArrowAltSVG } from "@/components/common/assets";
-import BxSearchSVG from "@/components/common/assets/bx-search-svg";
+import { BxLeftArrowAltSVG } from "@/common/assets";
+import BxSearchSVG from "@/common/assets/bx-search-svg";
 import { Button, Input } from "@/components/elements";
 import Form from "@/components/elements/form";
 import { theme } from "@/config/stitches/theme.stitches";

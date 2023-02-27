@@ -65,6 +65,11 @@ const Text = React.forwardRef((props, forwardedRef) => {
   const cssOverrides = merge(
     {
       color,
+      ...(capitalize
+        ? {
+            textTransform: "capitalize",
+          }
+        : {}),
     },
     { ...props.css }
   );

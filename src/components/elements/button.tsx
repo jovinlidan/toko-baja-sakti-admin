@@ -3,7 +3,6 @@ import TypographyConstant from "@/config/stitches/typography.stitches";
 import { VariantProps } from "@stitches/react";
 import classNames from "classnames";
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
-import Separator from "../common/separator";
 
 type ButtonVariants = VariantProps<typeof StyledButton>;
 
@@ -11,9 +10,10 @@ type BaseButtonType = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 >;
-interface ButtonProps extends Omit<BaseButtonType, "ref"> {
+export interface ButtonProps extends Omit<BaseButtonType, "ref"> {
   size?: ButtonVariants["size"];
   variant?: ButtonVariants["variant"];
+  loading?: boolean;
 
   startEnhancer?: (size: number) => React.ReactNode;
   endEnhancer?: (size: number) => React.ReactNode;
@@ -45,7 +45,7 @@ export default function Button(props: ButtonProps) {
       {...restProps}
       variant={variant}
       size={size}
-      className={classNames(restProps.disabled && styles.disabled())}
+      className={classNames(restProps.disabled ? styles.disabled() : undefined)}
     >
       {!!startEnhancer && (
         <StartEnhancerContainer>

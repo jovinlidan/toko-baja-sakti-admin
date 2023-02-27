@@ -109,7 +109,7 @@ export const CustomFormControlWrapper = styled("div", {
         marginBottom: 0,
       },
       false: {
-        marginBottom: 0,
+        marginBottom: 24,
       },
     },
   },

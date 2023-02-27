@@ -20,7 +20,7 @@ export interface TextFieldProps
   extends BaseElementInputProps,
     Omit<CustomFormControlProps, "name" | "error" | "children">,
     Omit<BaseInputType, "name" | "ref" | "size"> {
-  type: "text";
+  type: "text" | "password";
   startEnhancer?: React.ReactNode;
   endEnhancer?: React.ReactNode;
   size?: VariantProps<typeof InputContainer>["size"];
@@ -74,6 +74,7 @@ export default function TextField(props: TextFieldProps) {
         <StyledInput
           {...field}
           {...restProps}
+          type={type}
           value={field.value || ""}
           disabled={_disabled}
           onChange={_onChange}

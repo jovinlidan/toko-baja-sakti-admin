@@ -18,6 +18,18 @@ export const stitches = createStitches({
         "0px 1px 6px 2px rgba(50, 71, 92, 0.06), 0px 2px 6px 1px rgba(50, 71, 92, 0.04), 0px 1px 4px 2px rgba(50, 71, 92, 0.02)",
     },
   },
+  media: {
+    xs: "(min-width: 414px)",
+    maxxs: "(max-width: 413px)",
+    sm: "(min-width: 576px)",
+    maxsm: "(max-width: 575px)",
+    md: "(min-width: 768px)",
+    maxmd: "(max-width: 768px)",
+    lg: "(min-width: 992px)",
+    maxlg: "(max-width: 991px)",
+    xl: "(min-width: 1280px)",
+    sl: "(min-width: 1380px)",
+  },
   utils: {
     p: (value: any) => {
       if (!value) return {};

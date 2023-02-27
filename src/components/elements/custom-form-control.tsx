@@ -56,6 +56,7 @@ export default function CustomFormControl(props: CustomFormControlProps) {
     required = false,
     children,
     label,
+    error,
     labelRightEnhancer,
     ...restProps
   } = props;
@@ -80,12 +81,21 @@ export default function CustomFormControl(props: CustomFormControlProps) {
           </CustomLabelContainer>
         )}
         <ContentContainer>{children}</ContentContainer>
+        {!!error && (
+          <ErrorContainer>
+            <Text variant="body2" capitalize>
+              {error}
+            </Text>
+          </ErrorContainer>
+        )}
       </FormContainer>
     </CustomFormControlWrapper>
   );
 }
 
-const CustomLabelContainer = styled("div", {});
+const CustomLabelContainer = styled("div", {
+  mb: 10,
+});
 
 const ContentContainer = styled("div", {
   width: "100%",
@@ -93,9 +103,17 @@ const ContentContainer = styled("div", {
 
 const FormContainer = styled("div", {
   display: "flex",
-  alignItems: "center",
+  flexDirection: "column",
 });
 
-const ErrorDivider = styled("div", {
+const ErrorContainer = styled("div", {
+  border: "1px solid",
+  borderColor: "$errorDark",
+  background: "$errorLight",
+  padding: "4px 8px",
+  borderRadius: 4,
   marginTop: 4,
+  "& span": {
+    color: "#FFFFFF",
+  },
 });
