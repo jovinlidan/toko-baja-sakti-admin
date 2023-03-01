@@ -12,6 +12,7 @@ export const stitches = createStitches({
       bold: 700,
     },
     shadows: {
+      inputElevation: "0px 1px 5px rgba(0, 0, 0, 0.25)",
       elevation2:
         "0px 1px 3px 2px rgba(50, 71, 92, 0.06), 0px 2px 5px 1px rgba(50, 71, 92, 0.04), 0px 1px 3px 2px rgba(50, 71, 92, 0.02)",
       elevation3:

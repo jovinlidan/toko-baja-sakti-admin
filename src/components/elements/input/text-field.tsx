@@ -64,7 +64,7 @@ export default function TextField(props: TextFieldProps) {
       error={_error}
       required={required}
     >
-      <InputContainer size={size}>
+      <InputContainer size={size} disabled={restProps.disabled}>
         {!!startEnhancer && (
           <StartEnhancerContainer>
             {startEnhancer}
@@ -98,6 +98,10 @@ const StyledInput = styled("input", {
   "&::placeholder": {
     color: "$textDisabled",
   },
+  "&:disabled": {
+    background: "$disabledInput",
+    cursor: "not-allowed",
+  },
 });
 
 const InputContainer = styled("div", {
@@ -114,6 +118,12 @@ const InputContainer = styled("div", {
       },
       small: {
         padding: "8px 15px",
+      },
+    },
+    disabled: {
+      true: {
+        boxShadow: "$inputElevation",
+        background: "$disabledInput",
       },
     },
   },

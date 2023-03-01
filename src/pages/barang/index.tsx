@@ -27,14 +27,29 @@ export default function BarangPage() {
           type="text"
           name="search"
           size="large"
+          disabled
           placeholder="Cari Barang"
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}
+        />
+
+        <Input
+          type="text"
+          label="oke"
+          name="searchs"
+          size="small"
+          disabled
+          placeholder="Cari Barang"
         />
         <Input
           name="tester"
           type="select"
           label="Pilih kota"
-          onSelect={() => {}}
+          options={[
+            { label: "1", value: "oke" },
+            { label: "2", value: "oke" },
+            { label: "3", value: "oke" },
+            { label: "4", value: "oke" },
+          ]}
         />
         <Button
           size="large"
