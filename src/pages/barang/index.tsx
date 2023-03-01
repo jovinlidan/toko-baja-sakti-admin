@@ -1,5 +1,6 @@
 import { BxLeftArrowAltSVG } from "@/common/assets";
 import BxSearchSVG from "@/common/assets/bx-search-svg";
+import TableComponent from "@/components/common/table";
 import { Button, Input } from "@/components/elements";
 import Form from "@/components/elements/form";
 import { theme } from "@/config/stitches/theme.stitches";
@@ -28,6 +29,12 @@ export default function BarangPage() {
           size="large"
           placeholder="Cari Barang"
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}
+        />
+        <Input
+          name="tester"
+          type="select"
+          label="Pilih kota"
+          onSelect={() => {}}
         />
         <Button
           size="large"
@@ -58,7 +65,7 @@ export default function BarangPage() {
           Halo
         </Button>
       </Form>
-
+      <TableComponent />
       <h1>ini Page Barnag</h1>
     </div>
   );

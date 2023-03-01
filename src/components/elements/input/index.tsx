@@ -1,10 +1,11 @@
 import invariant from "invariant";
 import * as React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
+import SelectField, { SelectFieldProps } from "./select-field";
 import SubmitField, { SubmitProps } from "./submit-field";
 import TextField, { TextFieldProps } from "./text-field";
 
-type InputType = "text" | "password" | "submit";
+type InputType = "text" | "password" | "select" | "submit";
 
 export interface BaseElementInputProps {
   type: InputType;
@@ -12,11 +13,16 @@ export interface BaseElementInputProps {
   readOnly?: boolean;
 }
 
-function RawInput(props: TextFieldProps | SubmitProps, ref: any) {
+function RawInput(
+  props: TextFieldProps | SelectFieldProps | SubmitProps,
+  ref: any
+) {
   switch (props.type) {
     case "text":
     case "password":
       return <TextField {...props} />;
+    case "select":
+      return <SelectField {...props} />;
     case "submit":
       return <SubmitField {...props} />;
   }

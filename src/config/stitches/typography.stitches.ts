@@ -76,6 +76,12 @@ const TypographyConstant = {
     lineHeight: "26px",
     fontWeight: 500,
   },
+  tableHeader: {
+    fontSize: 12,
+    lineHeight: "24px",
+    fontWeight: 500,
+    letterSpacing: "0.17px",
+  },
 };
 
 export default TypographyConstant;

@@ -7,6 +7,7 @@ export const LoginContainer = styled("div", {
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
+  userSelect: "none",
 });
 
 export const LoginCard = styled("div", {
@@ -16,6 +17,7 @@ export const LoginCard = styled("div", {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+  userSelect: "text",
 });
 
 export const TitleContainer = styled("div", {

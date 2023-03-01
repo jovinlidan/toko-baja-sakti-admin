@@ -95,11 +95,13 @@ const FormContainer = styled("div", {
 const ErrorContainer = styled("div", {
   border: "1px solid",
   borderColor: "$errorDark",
-  background: "$errorLight",
+  background: "rgba(255, 91, 63, 0.5)",
   padding: "4px 8px",
   borderRadius: 4,
   marginTop: 4,
+  position: "relative",
   "& span": {
     color: "#FFFFFF",
+    zIndex: 2,
   },
 });
