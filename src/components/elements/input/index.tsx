@@ -1,11 +1,12 @@
 import invariant from "invariant";
 import * as React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
+import { SingleFilePicker, SingleFilePickerProps } from "./file-picker";
 import SelectField, { SelectFieldProps } from "./select-field";
 import SubmitField, { SubmitProps } from "./submit-field";
 import TextField, { TextFieldProps } from "./text-field";
 
-type InputType = "text" | "password" | "select" | "submit";
+type InputType = "text" | "password" | "select" | "submit" | "file";
 
 export interface BaseElementInputProps {
   type: InputType;
@@ -14,7 +15,11 @@ export interface BaseElementInputProps {
 }
 
 function RawInput(
-  props: TextFieldProps | SelectFieldProps | SubmitProps,
+  props:
+    | TextFieldProps
+    | SelectFieldProps
+    | SingleFilePickerProps
+    | SubmitProps,
   ref: any
 ) {
   switch (props.type) {
@@ -23,6 +28,8 @@ function RawInput(
       return <TextField {...props} />;
     case "select":
       return <SelectField {...props} />;
+    case "file":
+      return <SingleFilePicker {...props} />;
     case "submit":
       return <SubmitField {...props} />;
   }

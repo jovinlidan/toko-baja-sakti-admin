@@ -51,6 +51,14 @@ export default function BarangPage() {
             { label: "4", value: "oke" },
           ]}
         />
+
+        <Input
+          name="files"
+          type="file"
+          label="File"
+          previewName="prev"
+          disabled
+        />
         <Button
           size="large"
           variant="primary"

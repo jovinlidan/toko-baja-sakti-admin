@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import AdminLayout from "@/layouts/admin-layout";
 import "@/styles/globals.css";
 import { NextPage } from "next";

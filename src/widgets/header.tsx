@@ -42,6 +42,7 @@ const StyledHeader = styled("header", {
   background: "#FFFFFF",
   height: sizeConstant.headerHeight,
   width: "100%",
+  zIndex: "$header",
 });
 
 const Container = styled("div", {
