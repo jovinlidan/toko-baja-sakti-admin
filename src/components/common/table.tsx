@@ -1,42 +1,34 @@
 import { Column, useTable } from "react-table";
 import * as React from "react";
-import { styled } from "@/config/stitches/theme.stitches";
+import { styled, theme } from "@/config/stitches/theme.stitches";
 import TypographyConstant from "@/config/stitches/typography.stitches";
-export default function TableComponent() {
-  const data = React.useMemo(
-    () => [
-      {
-        col1: "Hello",
-        col2: "World",
-      },
-      {
-        col1: "react-table",
-        col2: "rocks",
-      },
-      {
-        col1: "whatever",
-        col2: "you want",
-      },
-    ],
-    []
-  );
 
-  const columns: readonly Column<{}>[] = React.useMemo(
-    () => [
-      {
-        Header: "Column 1",
-        accessor: "col1", // accessor is the "key" in the data
-      },
-      {
-        Header: "Column 2",
-        accessor: "col2",
-      },
-    ],
-    []
-  );
+export interface IColumn {
+  Header: any;
+  sortName?: string;
+  onSort?: (column: any) => void;
+  accessor?: string;
+  maxWidth?: number;
+  minWidth?: number;
+  hide?: boolean;
+  stickyRight?: boolean;
+  prefix?: React.ReactNode;
+  renderColumn?: (value: string) => any;
+  columns?: IColumn[];
+  isSorted?: boolean;
+  isSortedDesc?: boolean;
+  id?: string;
+  Cell?: (value: any) => JSX.Element | null | string;
+}
+interface Props<T> {
+  data: T;
+  columns: IColumn[];
+}
+export default function TableComponent<T>(props: Props<T>) {
+  const { columns, data } = props;
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+    useTable({ columns, data } as any);
 
   return (
     <StyledTable {...getTableProps()}>
@@ -44,7 +36,12 @@ export default function TableComponent() {
         {headerGroups.map((headerGroup) => (
           <Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
             {headerGroup.headers.map((column) => (
-              <Th {...column.getHeaderProps()} key={column.id}>
+              <Th
+                {...column.getHeaderProps()}
+                key={column.id}
+                //@ts-ignore
+                stickyRight={column.stickyRight}
+              >
                 {column.render("Header")}
               </Th>
             ))}
@@ -58,7 +55,12 @@ export default function TableComponent() {
             <Tr {...row.getRowProps()} key={row.id}>
               {row.cells.map((cell) => {
                 return (
-                  <Td {...cell.getCellProps()} key={cell.value}>
+                  <Td
+                    {...cell.getCellProps()}
+                    //@ts-ignore
+                    stickyRight={cell.column.stickyRight}
+                    key={cell.value}
+                  >
                     {cell.render("Cell")}
                   </Td>
                 );
@@ -75,12 +77,13 @@ const StyledTable = styled("table", {
   background: "#FFFF",
   borderCollapse: "collapse",
   width: "100%",
+  marginTop: 33,
+  display: "block",
+  overflowX: "auto",
 });
 
 const Tr = styled("tr", {
-  // background: "red",
   borderBottom: "1px solid rgba(50, 71, 92, 0.22)",
-  // borderBottomColor: "red",
 });
 const Th = styled("th", {
   paddingTop: 24,
@@ -92,15 +95,55 @@ const Th = styled("th", {
   color: "$textPrimary",
   textAlign: "start",
   ...TypographyConstant.tableHeader,
+
+  variants: {
+    stickyRight: {
+      true: {
+        "&:before": {
+          content: `''`,
+          position: "absolute",
+          width: 0.5,
+          left: 0,
+          top: 0,
+          bottom: 0,
+          background: theme.colors.textPrimary.value,
+        },
+        right: 0,
+        position: "sticky",
+        textAlign: "center",
+        background: "$primaryContrast",
+      },
+    },
+  },
 });
 const Td = styled("td", {
   paddingTop: 16,
   paddingBottom: 12,
   paddingLeft: 16,
   paddingRight: 16,
-
+  whiteSpace: "nowrap",
   color: "$textPrimary",
+
   ...TypographyConstant.body2,
+
+  variants: {
+    stickyRight: {
+      true: {
+        "&:before": {
+          content: `''`,
+          position: "absolute",
+          width: 0.5,
+          left: 0,
+          top: 0,
+          bottom: 0,
+          background: theme.colors.textPrimary.value,
+        },
+        right: 0,
+        position: "sticky",
+        background: "$primaryContrast",
+      },
+    },
+  },
 });
 
 const Thead = styled("thead", {});

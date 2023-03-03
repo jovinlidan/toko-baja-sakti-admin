@@ -4,6 +4,7 @@ const ColorConstant = {
   primaryMain: "#696CFF",
   primaryLight: "#8082FF",
   primaryDark: "#6062E8",
+  primaryContrast: "#FFFFFF",
 
   secondaryMain: "#8592A3",
   secondaryLight: "#97A2B1",

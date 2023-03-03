@@ -153,6 +153,7 @@ const StyledButton = styled("button", {
   transition: "200ms all",
   boxShadow: "$elevation3",
   borderRadius: 4,
+  letterSpacing: "0.46px",
 
   variants: {
     variant: {
