@@ -2,6 +2,12 @@ import { Column, useTable } from "react-table";
 import * as React from "react";
 import { styled, theme } from "@/config/stitches/theme.stitches";
 import TypographyConstant from "@/config/stitches/typography.stitches";
+import FetchWrapperComponent from "./fetch-wrapper-component";
+import { ApiError, PaginationMeta } from "@/common/repositories/common.model";
+import { Oval } from "react-loader-spinner";
+import { Button, Text } from "../elements";
+import Separator from "./separator";
+import PaginationComponent from "./pagination-component";
 
 export interface IColumn {
   Header: any;
@@ -23,55 +29,117 @@ export interface IColumn {
 interface Props<T> {
   data: T;
   columns: IColumn[];
+  loading?: boolean;
+  error?: ApiError | null;
+  onRetry?: () => void;
 }
 export default function TableComponent<T>(props: Props<T>) {
-  const { columns, data } = props;
+  const { columns, data, error, loading, onRetry } = props;
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data } as any);
 
   return (
-    <StyledTable {...getTableProps()}>
-      <Thead>
-        {headerGroups.map((headerGroup) => (
-          <Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-            {headerGroup.headers.map((column) => (
-              <Th
-                {...column.getHeaderProps()}
-                key={column.id}
-                //@ts-ignore
-                stickyRight={column.stickyRight}
-              >
-                {column.render("Header")}
-              </Th>
-            ))}
-          </Tr>
-        ))}
-      </Thead>
-      <Tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <Tr {...row.getRowProps()} key={row.id}>
-              {row.cells.map((cell) => {
-                return (
-                  <Td
-                    {...cell.getCellProps()}
-                    //@ts-ignore
-                    stickyRight={cell.column.stickyRight}
-                    key={cell.value}
-                  >
-                    {cell.render("Cell")}
-                  </Td>
-                );
-              })}
+    <TableContainer>
+      <StyledTable {...getTableProps()}>
+        <Thead>
+          {headerGroups.map((headerGroup) => (
+            <Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+              {headerGroup.headers.map((column) => (
+                <Th
+                  {...column.getHeaderProps()}
+                  key={column.id}
+                  //@ts-ignore
+                  stickyRight={column.stickyRight && !loading}
+                >
+                  {column.render("Header")}
+                </Th>
+              ))}
             </Tr>
-          );
-        })}
-      </Tbody>
-    </StyledTable>
+          ))}
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
+          <FetchWrapperComponent
+            onRetry={onRetry}
+            loadingComponent={
+              <Tr>
+                <Td colSpan={columns.length} style={{ padding: 0 }}>
+                  <LoadingContainer>
+                    <Oval height={48} width={48} strokeWidth={2} />
+                  </LoadingContainer>
+                </Td>
+              </Tr>
+            }
+            isLoading={loading}
+            error={error}
+            errorComponent={
+              <Tr>
+                <Td colSpan={columns.length} style={{ padding: 0 }}>
+                  <LoadingContainer>
+                    <Text variant="body1" color={theme.colors.errorMain.value}>
+                      Gagal Memuat
+                    </Text>
+                    <Separator mr={24} />
+                    <Button
+                      variant="error"
+                      onClick={() => {
+                        onRetry && onRetry();
+                      }}
+                    >
+                      Coba Ulang
+                    </Button>
+                  </LoadingContainer>
+                </Td>
+              </Tr>
+            }
+            component={
+              <>
+                {rows.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <Tr {...row.getRowProps()} key={row.id}>
+                      {row.cells.map((cell) => {
+                        return (
+                          <Td
+                            {...cell.getCellProps()}
+                            //@ts-ignore
+                            stickyRight={cell.column.stickyRight}
+                            key={cell.value}
+                          >
+                            {cell.render("Cell")}
+                          </Td>
+                        );
+                      })}
+                    </Tr>
+                  );
+                })}
+              </>
+            }
+          />
+        </Tbody>
+      </StyledTable>
+      <PaginationComponent
+        onPageChange={() => {}}
+        meta={
+          {
+            currentPage: 1,
+            from: 1,
+            lastPage: 3,
+            path: "/",
+            perPage: 15,
+            to: 15,
+            total: 35,
+          } as PaginationMeta
+        }
+        page={1}
+      />
+    </TableContainer>
   );
 }
+
+const TableContainer = styled("div", {
+  background: "#FFFF",
+});
 
 const StyledTable = styled("table", {
   background: "#FFFF",
@@ -148,3 +216,12 @@ const Td = styled("td", {
 
 const Thead = styled("thead", {});
 const Tbody = styled("tbody", {});
+
+const LoadingContainer = styled("div", {
+  background: "$actionDisabledBackground",
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: 100,
+});

@@ -5,6 +5,7 @@ import { Button } from "@/components/elements";
 import { styled, theme } from "@/config/stitches/theme.stitches";
 import BarangListFilterForm from "./components/barang-list-filter-form";
 import * as React from "react";
+import { ApiError } from "@/common/repositories/common.model";
 
 const fakeData = [
   {
@@ -155,6 +156,7 @@ export default function BarangList() {
           TAMBAH KATEGORI
         </Button>
       </TopContainer>
+
       <TableComponent columns={columns} data={fakeData} />
     </Container>
   );
