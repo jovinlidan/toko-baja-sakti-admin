@@ -2,6 +2,7 @@ import { css, styled } from "@/config/stitches/theme.stitches";
 import TypographyConstant from "@/config/stitches/typography.stitches";
 import { VariantProps } from "@stitches/react";
 import classNames from "classnames";
+import Link from "next/link";
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 
 type ButtonVariants = VariantProps<typeof StyledButton>;
@@ -14,6 +15,7 @@ export interface ButtonProps extends Omit<BaseButtonType, "ref"> {
   size?: ButtonVariants["size"];
   variant?: ButtonVariants["variant"];
   loading?: boolean;
+  href?: string;
 
   startEnhancer?: (size: number) => React.ReactNode;
   endEnhancer?: (size: number) => React.ReactNode;
@@ -23,6 +25,7 @@ export default function Button(props: ButtonProps) {
   const {
     startEnhancer,
     endEnhancer,
+    href,
     variant = "primary",
     size = "medium",
     loading,
@@ -41,28 +44,47 @@ export default function Button(props: ButtonProps) {
     return 0;
   }, [size]);
 
-  return (
-    <StyledButton
-      {...restProps}
-      variant={variant}
-      size={size}
-      className={classNames(restProps.disabled ? styles.disabled() : undefined)}
-    >
-      {!!startEnhancer && (
-        <StartEnhancerContainer>
-          {startEnhancer(iconSize)}
-          <EnhancerDivider state="start" size={size} />
-        </StartEnhancerContainer>
-      )}
-      {props.children}
-      {!!endEnhancer && (
-        <EndEnhancerContainer>
-          <EnhancerDivider state="end" size={size} />
-          {endEnhancer(iconSize)}
-        </EndEnhancerContainer>
-      )}
-    </StyledButton>
-  );
+  const baseComponent = React.useMemo(() => {
+    return (
+      <StyledButton
+        {...restProps}
+        variant={variant}
+        size={size}
+        className={classNames(
+          restProps.disabled ? styles.disabled() : undefined
+        )}
+      >
+        {!!startEnhancer && (
+          <StartEnhancerContainer>
+            {startEnhancer(iconSize)}
+            <EnhancerDivider state="start" size={size} />
+          </StartEnhancerContainer>
+        )}
+        {props.children}
+        {!!endEnhancer && (
+          <EndEnhancerContainer>
+            <EnhancerDivider state="end" size={size} />
+            {endEnhancer(iconSize)}
+          </EndEnhancerContainer>
+        )}
+      </StyledButton>
+    );
+  }, [
+    endEnhancer,
+    iconSize,
+    props.children,
+    restProps,
+    size,
+    startEnhancer,
+    variant,
+  ]);
+  if (href)
+    return (
+      <Link href={href} passHref>
+        {baseComponent}
+      </Link>
+    );
+  return baseComponent;
 }
 const styles = {
   disabled: css({

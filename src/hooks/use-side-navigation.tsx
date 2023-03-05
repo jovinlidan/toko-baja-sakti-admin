@@ -1,3 +1,4 @@
+import routeConstant from "@/constants/route.constant";
 import { useRouter } from "next/router";
 import * as React from "react";
 
@@ -20,7 +21,7 @@ interface SideNavigationProviderProps {
 
 const navigations: NavigationInterface[] = [
   {
-    href: "/barang",
+    href: routeConstant.BarangList,
     label: "Barang",
   },
   {

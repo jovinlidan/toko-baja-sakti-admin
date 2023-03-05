@@ -1,4 +1,4 @@
-import { Column, useTable } from "react-table";
+import { useExpanded, useTable } from "react-table";
 import * as React from "react";
 import { styled, theme } from "@/config/stitches/theme.stitches";
 import TypographyConstant from "@/config/stitches/typography.stitches";
@@ -40,84 +40,99 @@ export default function TableComponent<T>(props: Props<T>) {
     useTable({ columns, data } as any);
 
   return (
-    <TableContainer>
-      <StyledTable {...getTableProps()}>
-        <Thead>
-          {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
-              {headerGroup.headers.map((column) => (
-                <Th
-                  {...column.getHeaderProps()}
-                  key={column.id}
-                  //@ts-ignore
-                  stickyRight={column.stickyRight && !loading}
-                >
-                  {column.render("Header")}
-                </Th>
-              ))}
-            </Tr>
-          ))}
-        </Thead>
-        <Tbody {...getTableBodyProps()}>
-          <FetchWrapperComponent
-            onRetry={onRetry}
-            loadingComponent={
-              <Tr>
-                <Td colSpan={columns.length} style={{ padding: 0 }}>
-                  <LoadingContainer>
-                    <Oval height={48} width={48} strokeWidth={2} />
-                  </LoadingContainer>
-                </Td>
+    <Container>
+      <TableContainer>
+        <StyledTable {...getTableProps()}>
+          <Thead>
+            {headerGroups.map((headerGroup) => (
+              <Tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
+                {headerGroup.headers.map((column) => (
+                  <Th
+                    {...column.getHeaderProps()}
+                    key={column.id}
+                    //@ts-ignore
+                    stickyRight={column.stickyRight && !loading}
+                    // css={{
+                    //   maxWidth: column.maxWidth,
+                    //   minWidth: column.minWidth,
+                    // }}
+                  >
+                    {column.render("Header")}
+                  </Th>
+                ))}
               </Tr>
-            }
-            isLoading={loading}
-            error={error}
-            errorComponent={
-              <Tr>
-                <Td colSpan={columns.length} style={{ padding: 0 }}>
-                  <LoadingContainer>
-                    <Text variant="body1" color={theme.colors.errorMain.value}>
-                      Gagal Memuat
-                    </Text>
-                    <Separator mr={24} />
-                    <Button
-                      variant="error"
-                      onClick={() => {
-                        onRetry && onRetry();
-                      }}
-                    >
-                      Coba Ulang
-                    </Button>
-                  </LoadingContainer>
-                </Td>
-              </Tr>
-            }
-            component={
-              <>
-                {rows.map((row) => {
-                  prepareRow(row);
-                  return (
-                    <Tr {...row.getRowProps()} key={row.id}>
-                      {row.cells.map((cell) => {
-                        return (
-                          <Td
-                            {...cell.getCellProps()}
-                            //@ts-ignore
-                            stickyRight={cell.column.stickyRight}
-                            key={cell.value}
-                          >
-                            {cell.render("Cell")}
-                          </Td>
-                        );
-                      })}
-                    </Tr>
-                  );
-                })}
-              </>
-            }
-          />
-        </Tbody>
-      </StyledTable>
+            ))}
+          </Thead>
+          <Tbody {...getTableBodyProps()}>
+            <FetchWrapperComponent
+              onRetry={onRetry}
+              loadingComponent={
+                <Tr>
+                  <Td colSpan={columns.length} style={{ padding: 0 }}>
+                    <LoadingContainer>
+                      <Oval height={48} width={48} strokeWidth={2} />
+                    </LoadingContainer>
+                  </Td>
+                </Tr>
+              }
+              isLoading={loading}
+              error={error}
+              errorComponent={
+                <Tr>
+                  <Td colSpan={columns.length} style={{ padding: 0 }}>
+                    <LoadingContainer>
+                      <Text
+                        variant="body1"
+                        color={theme.colors.errorMain.value}
+                      >
+                        Gagal Memuat
+                      </Text>
+                      <Separator mr={24} />
+                      <Button
+                        variant="error"
+                        onClick={() => {
+                          onRetry && onRetry();
+                        }}
+                      >
+                        Coba Ulang
+                      </Button>
+                    </LoadingContainer>
+                  </Td>
+                </Tr>
+              }
+              component={
+                <>
+                  {rows.map((row) => {
+                    prepareRow(row);
+                    return (
+                      <Tr {...row.getRowProps()} key={row.id}>
+                        {row.cells.map((cell) => {
+                          console.log(cell.column);
+                          return (
+                            <Td
+                              {...cell.getCellProps()}
+                              //@ts-ignore
+                              stickyRight={cell.column.stickyRight}
+                              key={cell.value}
+                              // css={{
+                              //   maxWidth: cell.column.maxWidth,
+                              //   minWidth: cell.column.minWidth,
+                              // }}
+                            >
+                              {cell.render("Cell")}
+                            </Td>
+                          );
+                        })}
+                      </Tr>
+                    );
+                  })}
+                </>
+              }
+            />
+          </Tbody>
+        </StyledTable>
+      </TableContainer>
+
       <PaginationComponent
         onPageChange={() => {}}
         meta={
@@ -133,12 +148,15 @@ export default function TableComponent<T>(props: Props<T>) {
         }
         page={1}
       />
-    </TableContainer>
+    </Container>
   );
 }
 
-const TableContainer = styled("div", {
+const Container = styled("div", {
   background: "#FFFF",
+});
+const TableContainer = styled("div", {
+  overflowX: "auto",
 });
 
 const StyledTable = styled("table", {
@@ -146,11 +164,12 @@ const StyledTable = styled("table", {
   borderCollapse: "collapse",
   width: "100%",
   marginTop: 33,
-  display: "block",
-  overflowX: "auto",
+  position: "sticky",
+  top: 0,
 });
 
 const Tr = styled("tr", {
+  width: "100%",
   borderBottom: "1px solid rgba(50, 71, 92, 0.22)",
 });
 const Th = styled("th", {
@@ -214,8 +233,12 @@ const Td = styled("td", {
   },
 });
 
-const Thead = styled("thead", {});
-const Tbody = styled("tbody", {});
+const Thead = styled("thead", {
+  width: "100%",
+});
+const Tbody = styled("tbody", {
+  width: "100%",
+});
 
 const LoadingContainer = styled("div", {
   background: "$actionDisabledBackground",

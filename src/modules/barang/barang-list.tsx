@@ -6,6 +6,7 @@ import { styled, theme } from "@/config/stitches/theme.stitches";
 import BarangListFilterForm from "./components/barang-list-filter-form";
 import * as React from "react";
 import { ApiError } from "@/common/repositories/common.model";
+import routeConstant from "@/constants/route.constant";
 
 const fakeData = [
   {
@@ -132,6 +133,7 @@ export default function BarangList() {
       <TopContainer>
         <Button
           size="large"
+          href={routeConstant.BarangCategoryCreate}
           startEnhancer={(size) => (
             <PlusSVG
               width={size}
@@ -153,7 +155,7 @@ export default function BarangList() {
             />
           )}
         >
-          TAMBAH KATEGORI
+          TAMBAH BARANG
         </Button>
       </TopContainer>
 

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Text } from "@/components/elements";
 import * as React from "react";
 import { styled } from "@/config/stitches/theme.stitches";
+import routeConstant from "@/constants/route.constant";
 
 export default function Header() {
   const { navigations } = useSideNavigation();
@@ -13,8 +14,12 @@ export default function Header() {
     return [
       ...navigations,
       {
-        label: "/",
-        href: "Beranda",
+        href: "/",
+        label: "Beranda",
+      },
+      {
+        href: routeConstant.BarangCategoryCreate,
+        label: "Tambah Kategori Barang",
       },
     ];
   }, [navigations]);

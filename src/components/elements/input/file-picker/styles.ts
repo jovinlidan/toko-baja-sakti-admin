@@ -15,7 +15,7 @@ export const MainPreviewContainer = styled("div", {
   marginBottom: "12px",
 });
 export const MainDropzoneContainer = styled("div", {
-  border: `2px dashed ${theme.colors.primaryDark.value}`,
+  border: `1px dashed ${theme.colors.textPrimary.value}`,
   cursor: "pointer",
   justifyContent: "center",
   alignItems: "center",
