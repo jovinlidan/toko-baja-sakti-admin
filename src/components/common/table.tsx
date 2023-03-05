@@ -107,7 +107,6 @@ export default function TableComponent<T>(props: Props<T>) {
                     return (
                       <Tr {...row.getRowProps()} key={row.id}>
                         {row.cells.map((cell) => {
-                          console.log(cell.column);
                           return (
                             <Td
                               {...cell.getCellProps()}

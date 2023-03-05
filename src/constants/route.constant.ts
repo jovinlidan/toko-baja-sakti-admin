@@ -2,4 +2,5 @@
 export default {
   BarangList: "/barang",
   BarangCategoryCreate: "/barang/create/category",
+  BarangBarangCreate: "/barang/create/barang",
 };

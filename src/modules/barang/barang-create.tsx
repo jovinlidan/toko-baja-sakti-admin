@@ -3,10 +3,9 @@ import Separator from "@/components/common/separator";
 import LinkText from "@/components/elements/link-text";
 import { styled } from "@/config/stitches/theme.stitches";
 import routeConstant from "@/constants/route.constant";
-import CategoryCreateForm from "./components/category-create-form";
-import CategoryCreateTable from "./components/category-create-table";
+import BarangCreateForm from "./components/barang-create-form";
 
-export default function CategoryCreate() {
+export default function BarangCreate() {
   return (
     <Container>
       <LinkText
@@ -15,9 +14,7 @@ export default function CategoryCreate() {
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />
-      <CategoryCreateForm />
-      <Separator mb={24} />
-      <CategoryCreateTable />
+      <BarangCreateForm />
     </Container>
   );
 }

@@ -5,7 +5,6 @@ import { Button } from "@/components/elements";
 import { styled, theme } from "@/config/stitches/theme.stitches";
 import BarangListFilterForm from "./components/barang-list-filter-form";
 import * as React from "react";
-import { ApiError } from "@/common/repositories/common.model";
 import routeConstant from "@/constants/route.constant";
 
 const fakeData = [
@@ -147,6 +146,7 @@ export default function BarangList() {
         <Separator mr={24} />
         <Button
           size="large"
+          href={routeConstant.BarangBarangCreate}
           startEnhancer={(size) => (
             <PlusSVG
               width={size}
@@ -158,7 +158,6 @@ export default function BarangList() {
           TAMBAH BARANG
         </Button>
       </TopContainer>
-
       <TableComponent columns={columns} data={fakeData} />
     </Container>
   );
@@ -169,4 +168,5 @@ const Container = styled("div", {});
 const TopContainer = styled("div", {
   display: "flex",
   alignItems: "center",
+  mb: 24,
 });
