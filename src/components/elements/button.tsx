@@ -4,7 +4,7 @@ import { VariantProps } from "@stitches/react";
 import classNames from "classnames";
 import Link from "next/link";
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
-
+import { ClipLoader } from "react-spinners";
 type ButtonVariants = VariantProps<typeof StyledButton>;
 
 type BaseButtonType = DetailedHTMLProps<
@@ -61,17 +61,25 @@ export default function Button(props: ButtonProps) {
           </StartEnhancerContainer>
         )}
         {props.children}
-        {!!endEnhancer && (
+        {loading ? (
           <EndEnhancerContainer>
             <EnhancerDivider state="end" size={size} />
-            {endEnhancer(iconSize)}
+            <ClipLoader color="white" size={iconSize / 1.2} />
           </EndEnhancerContainer>
+        ) : (
+          !!endEnhancer && (
+            <EndEnhancerContainer>
+              <EnhancerDivider state="end" size={size} />
+              {endEnhancer(iconSize)}
+            </EndEnhancerContainer>
+          )
         )}
       </StyledButton>
     );
   }, [
     endEnhancer,
     iconSize,
+    loading,
     props.children,
     restProps,
     size,

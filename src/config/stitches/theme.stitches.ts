@@ -20,6 +20,7 @@ export const stitches = createStitches({
     },
     zIndices: {
       header: 10000,
+      toast: 10001,
     },
   },
   media: {

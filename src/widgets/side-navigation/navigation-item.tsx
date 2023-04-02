@@ -12,7 +12,7 @@ interface Props extends NavigationInterface {
 export default function NavigationItem(props: Props) {
   return (
     <Link href={props.href} className={styles.link()}>
-      <Content $active={props.active}>
+      <Content active={props.active}>
         <Image
           src={
             props.active
@@ -26,7 +26,11 @@ export default function NavigationItem(props: Props) {
         <Separator mr={8} />
         <Text
           variant="body1"
-          color={!props.active ? theme.colors.otherMenuLink.value : undefined}
+          color={
+            !props.active
+              ? theme.colors.otherMenuLink.value
+              : theme.colors.primaryMain.value
+          }
         >
           {props.label}
         </Text>
@@ -42,7 +46,7 @@ const Content = styled("div", {
   marginBottom: 5,
   marginTop: 5,
   variants: {
-    $active: {
+    active: {
       true: {
         borderRight: "4px solid",
         borderRightColor: "$primaryMain",

@@ -32,9 +32,25 @@ interface Props<T> {
   loading?: boolean;
   error?: ApiError | null;
   onRetry?: () => void;
+  meta?: PaginationMeta;
+  queryKeyFn?: (input: any) => string[];
+
+  page: number;
+  setPage: (page: number) => void;
+  setLimit: (imit: number) => void;
 }
 export default function TableComponent<T>(props: Props<T>) {
-  const { columns, data, error, loading, onRetry } = props;
+  const {
+    columns,
+    data,
+    error,
+    loading,
+    onRetry,
+    meta,
+    page,
+    setLimit,
+    setPage,
+  } = props;
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data } as any);
@@ -101,51 +117,56 @@ export default function TableComponent<T>(props: Props<T>) {
                 </Tr>
               }
               component={
-                <>
-                  {rows.map((row) => {
-                    prepareRow(row);
-                    return (
-                      <Tr {...row.getRowProps()} key={row.id}>
-                        {row.cells.map((cell) => {
-                          return (
-                            <Td
-                              {...cell.getCellProps()}
-                              //@ts-ignore
-                              stickyRight={cell.column.stickyRight}
-                              key={cell.value}
-                              // css={{
-                              //   maxWidth: cell.column.maxWidth,
-                              //   minWidth: cell.column.minWidth,
-                              // }}
-                            >
-                              {cell.render("Cell")}
-                            </Td>
-                          );
-                        })}
-                      </Tr>
-                    );
-                  })}
-                </>
+                !!rows.length ? (
+                  <>
+                    {rows.map((row) => {
+                      prepareRow(row);
+                      return (
+                        <Tr {...row.getRowProps()} key={row.id}>
+                          {row.cells.map((cell) => {
+                            return (
+                              <Td
+                                {...cell.getCellProps()}
+                                //@ts-ignore
+                                stickyRight={cell.column.stickyRight}
+                                key={cell.value}
+                                // css={{
+                                //   maxWidth: cell.column.maxWidth,
+                                //   minWidth: cell.column.minWidth,
+                                // }}
+                              >
+                                {cell.render("Cell")}
+                              </Td>
+                            );
+                          })}
+                        </Tr>
+                      );
+                    })}
+                  </>
+                ) : (
+                  <Tr>
+                    <Td colSpan={columns.length} style={{ padding: 0 }}>
+                      <EmptyDataContainer>
+                        <Text
+                          variant="body1"
+                          color={theme.colors.primaryDark.value}
+                        >
+                          Tidak ada data
+                        </Text>
+                      </EmptyDataContainer>
+                    </Td>
+                  </Tr>
+                )
               }
             />
           </Tbody>
         </StyledTable>
       </TableContainer>
-
       <PaginationComponent
-        onPageChange={() => {}}
-        meta={
-          {
-            currentPage: 1,
-            from: 1,
-            lastPage: 3,
-            path: "/",
-            perPage: 15,
-            to: 15,
-            total: 35,
-          } as PaginationMeta
-        }
-        page={1}
+        onPageChange={(page) => setPage(page)}
+        meta={meta}
+        page={page}
+        onLimitChange={(limit) => setLimit(limit)}
       />
     </Container>
   );
@@ -162,7 +183,7 @@ const StyledTable = styled("table", {
   background: "#FFFF",
   borderCollapse: "collapse",
   width: "100%",
-  marginTop: 33,
+  // marginTop: 33,
   position: "sticky",
   top: 0,
 });
@@ -241,6 +262,15 @@ const Tbody = styled("tbody", {
 
 const LoadingContainer = styled("div", {
   background: "$actionDisabledBackground",
+  width: "100%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: 100,
+});
+
+const EmptyDataContainer = styled("div", {
+  background: "$backgroundPaper",
   width: "100%",
   display: "flex",
   alignItems: "center",

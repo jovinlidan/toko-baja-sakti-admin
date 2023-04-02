@@ -31,7 +31,7 @@ function SelectField<
   Group extends GroupBase<Option> = GroupBase<Option>
 >(props: SelectFieldProps<Option, IsMulti, Group>, ref?: any) {
   const { control } = useFormContext();
-  const { field, fieldState, formState } = useController({
+  const { field, fieldState } = useController({
     name: props.name,
     control,
   });
@@ -40,11 +40,11 @@ function SelectField<
   const context = React.useContext(FormContext);
 
   const _onChange = React.useCallback(
-    (value) => {
+    (selected) => {
       if (onSelect) {
-        onSelect(value);
+        onSelect(selected.value);
       } else {
-        field.onChange(value);
+        field.onChange(selected.value);
       }
     },
     [onSelect, field]
@@ -108,6 +108,13 @@ function SelectField<
     }),
     []
   );
+  const value = React.useMemo(() => {
+    return (
+      (restProps.options?.find(
+        (item: any) => item?.value === field.value
+      ) as any) || null
+    );
+  }, [field.value, restProps.options]);
 
   return (
     <CustomFormControl
@@ -120,10 +127,11 @@ function SelectField<
         {...field}
         {...restProps}
         isDisabled={_disabled}
-        value={field.value || ""}
+        value={value}
         ref={ref}
         onChange={_onChange}
         styles={styles as any}
+        noOptionsMessage={() => "Tidak ada Data"}
       />
     </CustomFormControl>
   );

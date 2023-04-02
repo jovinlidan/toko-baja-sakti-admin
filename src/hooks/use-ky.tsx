@@ -1,8 +1,10 @@
+import configEnv from "@/common/config";
+import { getCookies } from "@/common/helpers/common";
 import { queryClient } from "@/common/repositories/query-client";
 // import logout from "@/common/utils/auth";
 import invariant from "invariant";
 import ky from "ky";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import * as React from "react";
 
 export interface KYStateProps {
@@ -24,7 +26,7 @@ interface Props {
 }
 
 const config = {
-  prefixUrl: "/api/employee",
+  prefixUrl: configEnv.apiEndpoint + "/api/employee",
   timeout: 60000,
   headers: {
     Accept: "application/json",
@@ -79,7 +81,10 @@ export async function setupBeforeHooks() {
     hooks: {
       beforeRequest: [
         (request) => {
-          request.headers.set("Accept-Language", "en");
+          request.headers.set("Accept-Language", "id");
+          request.headers.set("Content-Type", "application/json");
+          request.headers.set("Authorization", `Bearer ${getCookies("token")}`);
+          request.headers.set("ngrok-skip-browser-warning", "true");
         },
       ],
     },

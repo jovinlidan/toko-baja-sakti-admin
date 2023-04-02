@@ -1,60 +1,38 @@
+import { useGetCategoryItems } from "@/api-hooks/category-item/category-item.query";
 import TableComponent, { IColumn } from "@/components/common/table";
 import { Button } from "@/components/elements";
+import useApplyQuerySort from "@/hooks/use-apply-query-sort";
+import useComposedQuery from "@/hooks/use-composed-query";
 import * as React from "react";
 
-const fakeData = [
-  {
-    kode: "I-0001",
-    nama: "Kawat",
-    merk: "Enka",
-    satuanKecil: "Kg",
-    satuanBesar: "Kotak",
-    konversiSatuan: 3,
-  },
-  {
-    kode: "I-0002",
-    nama: "Kawat",
-    merk: "Enka",
-    satuanKecil: "Kg",
-    satuanBesar: "Kotak",
-    konversiSatuan: 3,
-  },
-  {
-    kode: "I-0003",
-    nama: "Kawat",
-    merk: "Enka",
-    satuanKecil: "Kg",
-    satuanBesar: "Kotak",
-    konversiSatuan: 3,
-  },
-];
-
 export default function CategoryCreateTable() {
-  const columns = React.useMemo<IColumn[]>(
+  const [page, setPage] = React.useState<number>(1);
+  const [limit, setLimit] = React.useState<number>();
+  const _columns = React.useMemo<IColumn[]>(
     () => [
       {
         Header: "Kode",
-        accessor: "kode",
+        accessor: "code",
       },
       {
         Header: "Nama",
-        accessor: "nama",
+        accessor: "name",
       },
       {
         Header: "Merk",
-        accessor: "merk",
+        accessor: "brand",
       },
       {
         Header: "Satuan Kecil",
-        accessor: "satuanKecil",
+        accessor: "smallUnit",
       },
       {
         Header: "Satuan Besar",
-        accessor: "satuanBesar",
+        accessor: "bigUnit",
       },
       {
         Header: "Konversi Satuan",
-        accessor: "konversiSatuan",
+        accessor: "conversionUnit",
       },
       {
         Header: "",
@@ -65,5 +43,45 @@ export default function CategoryCreateTable() {
     ],
     []
   );
-  return <TableComponent columns={columns} data={fakeData} />;
+
+  const {
+    data,
+    isLoading,
+    isFetching,
+    error,
+    refetch,
+    extras: [
+      // { filters, setFilters },
+      { columns },
+    ],
+  } = useComposedQuery(
+    useGetCategoryItems,
+    {
+      params: {
+        page,
+        limit,
+      },
+    },
+    {},
+    // useApplyQueryFilter((data) => {
+    //   return data.filters;
+    // }),
+    useApplyQuerySort((data: any) => {
+      return data.sorts;
+    }, _columns)
+  );
+
+  return (
+    <TableComponent
+      columns={columns}
+      data={data?.data || []}
+      loading={isLoading || isFetching}
+      meta={data?.meta}
+      error={error}
+      onRetry={refetch}
+      page={page}
+      setLimit={setLimit}
+      setPage={setPage}
+    />
+  );
 }

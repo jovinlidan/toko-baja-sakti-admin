@@ -5,8 +5,9 @@ import { SingleFilePicker, SingleFilePickerProps } from "./file-picker";
 import SelectField, { SelectFieldProps } from "./select-field";
 import SubmitField, { SubmitProps } from "./submit-field";
 import TextField, { TextFieldProps } from "./text-field";
+import TextNumberField, { TextNumberFieldProps } from "./text-number-field";
 
-type InputType = "text" | "password" | "select" | "submit" | "file";
+type InputType = "text" | "password" | "number" | "select" | "submit" | "file";
 
 export interface BaseElementInputProps {
   type: InputType;
@@ -17,6 +18,7 @@ export interface BaseElementInputProps {
 function RawInput(
   props:
     | TextFieldProps
+    | TextNumberFieldProps
     | SelectFieldProps
     | SingleFilePickerProps
     | SubmitProps,
@@ -26,6 +28,8 @@ function RawInput(
     case "text":
     case "password":
       return <TextField {...props} />;
+    case "number":
+      return <TextNumberField {...props} />;
     case "select":
       return <SelectField {...props} />;
     case "file":

@@ -97,7 +97,7 @@
       "push": {
         "default": true,
         "groups": [],
-        "quantity": 4
+        "quantity": 1
       },
       "remove": {
         "quantity": 2
@@ -333,7 +333,7 @@
         "factor": 1000
       },
       "limit": 0,
-      "value": 80
+      "value": 8
     },
     "opacity": {
       "random": {

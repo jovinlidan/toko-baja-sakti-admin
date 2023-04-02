@@ -1,8 +1,4 @@
-import {
-  BxChevronLeftSVG,
-  BxChevronRightSVG,
-  BxLeftArrowAltSVG,
-} from "@/common/assets";
+import { BxChevronLeftSVG, BxChevronRightSVG } from "@/common/assets";
 import { PaginationMeta } from "@/common/repositories/common.model";
 import { css, styled, theme } from "@/config/stitches/theme.stitches";
 import * as React from "react";
@@ -14,10 +10,18 @@ interface Props {
   page: number;
   onPageChange: (page: number) => void;
   meta: PaginationMeta | undefined;
+  onLimitChange: (limit: number) => void;
 }
 
 export default function PaginationComponent(props: Props) {
-  const { page, onPageChange, meta } = props;
+  const { page, onPageChange, meta, onLimitChange } = props;
+
+  const onChangeLimit = React.useCallback(
+    (e) => {
+      onLimitChange(e?.nativeEvent?.target?.value);
+    },
+    [onLimitChange]
+  );
 
   if (!meta) {
     return null;
@@ -35,10 +39,10 @@ export default function PaginationComponent(props: Props) {
         <RowPerPage>
           <Text variant="body2">Baris per halaman: </Text>
           <Separator mr={4} />
-          <StyledSelect>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
+          <StyledSelect value={meta.perPage} onChange={onChangeLimit}>
+            <option>{meta.perPage}</option>
+            <option>{meta.perPage * 2}</option>
+            <option>{meta.perPage * 3}</option>
           </StyledSelect>
         </RowPerPage>
         <Text variant="body2" color={theme.colors.textPrimary.value}>{`${

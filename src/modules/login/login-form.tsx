@@ -1,27 +1,28 @@
 import * as React from "react";
 import * as Yup from "yup";
 import useYupValidationResolver from "@/hooks/use-yup-validation-resolver";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { LoginCard, LoginContainer, styles, TitleContainer } from "./styles";
 import { Input, Text } from "@/components/elements";
 import Form from "@/components/elements/form";
 import { toast } from "react-hot-toast";
-// import { useKY } from "hooks/use-ky";
+import { useLogin } from "@/api-hooks/auth/auth.mutation";
+import { setCookie } from "@/common/helpers/common";
+
 interface FormType {
   username?: string;
   password?: string;
-  step?: number;
 }
 
 export default function LoginForm() {
-  //   const { refreshContainer } = useKY();
+  const { mutateAsync } = useLogin();
+  const router = useRouter();
 
   const YupSchema = React.useMemo(
     () =>
       Yup.object().shape({
-        username: Yup.string().required(),
+        username: Yup.string().required().email(),
         password: Yup.string().required(),
       }),
     []
@@ -30,7 +31,10 @@ export default function LoginForm() {
   const resolver = useYupValidationResolver(YupSchema);
 
   const defaultValues = React.useMemo(() => {
-    return {};
+    return {
+      username: "admin@gmail.com",
+      password: "secret",
+    };
   }, []);
 
   const methods = useForm<FormType>({
@@ -42,15 +46,17 @@ export default function LoginForm() {
   const onSubmit = React.useCallback(
     async (values) => {
       try {
+        const res = await mutateAsync({ body: values });
+        setCookie("token", res.data.accessToken, 1);
+        setCookie("refresh", res.data.refreshToken, 1);
+        res?.message && toast.success(res?.message);
+        router.push("/");
         methods.reset();
-        toast.success("berhasil");
-        // await router.push("/");
       } catch (e: any) {
-        toast.error("error");
-      } finally {
+        toast.error(e?.message);
       }
     },
-    [methods]
+    [methods, mutateAsync, router]
   );
 
   return (

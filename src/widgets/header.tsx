@@ -48,6 +48,13 @@ const StyledHeader = styled("header", {
   height: sizeConstant.headerHeight,
   width: "100%",
   zIndex: "$header",
+  "&::after": {
+    position: "absolute",
+    content: "",
+    width: "100%",
+    height: 0.1,
+    boxShadow: "$inputElevation",
+  },
 });
 
 const Container = styled("div", {

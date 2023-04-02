@@ -20,6 +20,7 @@ export default function ParticlesContainer() {
     },
     []
   );
+  return null;
   return (
     <Particles
       id="tsparticles"

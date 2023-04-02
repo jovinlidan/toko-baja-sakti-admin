@@ -1,5 +1,4 @@
 import routeConstant from "@/constants/route.constant";
-import { useRouter } from "next/router";
 import * as React from "react";
 
 export interface NavigationInterface {
@@ -8,8 +7,6 @@ export interface NavigationInterface {
 }
 
 const context = React.createContext({
-  // activeKey: "/",
-  // setActiveKey: (_: string) => {},
   navigations: [] as NavigationInterface[],
 });
 
@@ -67,13 +64,9 @@ const navigations: NavigationInterface[] = [
 ];
 
 export function SideNavigationProvider(props: SideNavigationProviderProps) {
-  // const [activeKey, setActiveKey] = React.useState<string>("/");
-
   return (
     <Provider
       value={{
-        // activeKey,
-        // setActiveKey,
         navigations,
       }}
     >

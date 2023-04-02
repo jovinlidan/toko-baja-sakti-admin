@@ -158,7 +158,7 @@ export default function BarangList() {
           TAMBAH BARANG
         </Button>
       </TopContainer>
-      <TableComponent columns={columns} data={fakeData} />
+      {/* <TableComponent columns={columns} data={fakeData} /> */}
     </Container>
   );
 }
