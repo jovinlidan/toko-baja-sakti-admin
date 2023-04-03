@@ -16,6 +16,13 @@ interface Props {
 export default function PaginationComponent(props: Props) {
   const { page, onPageChange, meta, onLimitChange } = props;
 
+  const [baseLimit, setBaseLimit] = React.useState<number>();
+
+  React.useEffect(() => {
+    if (!baseLimit && meta?.perPage) setBaseLimit(meta.perPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meta?.perPage]);
+
   const onChangeLimit = React.useCallback(
     (e) => {
       onLimitChange(e?.nativeEvent?.target?.value);
@@ -36,15 +43,17 @@ export default function PaginationComponent(props: Props) {
   return (
     <PaginationContainer>
       <PaginationSectionContainer>
-        <RowPerPage>
-          <Text variant="body2">Baris per halaman: </Text>
-          <Separator mr={4} />
-          <StyledSelect value={meta.perPage} onChange={onChangeLimit}>
-            <option>{meta.perPage}</option>
-            <option>{meta.perPage * 2}</option>
-            <option>{meta.perPage * 3}</option>
-          </StyledSelect>
-        </RowPerPage>
+        {baseLimit && (
+          <RowPerPage>
+            <Text variant="body2">Baris per halaman: </Text>
+            <Separator mr={4} />
+            <StyledSelect value={meta.perPage} onChange={onChangeLimit}>
+              <option>{baseLimit}</option>
+              <option>{baseLimit * 2}</option>
+              <option>{baseLimit * 3}</option>
+            </StyledSelect>
+          </RowPerPage>
+        )}
         <Text variant="body2" color={theme.colors.textPrimary.value}>{`${
           meta?.from || 0
         }-${meta?.to || 0} of ${meta.total}`}</Text>
