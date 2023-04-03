@@ -100,7 +100,12 @@ function SelectField<
         paddingRight: 15,
         ...TypographyConstant.body1,
       }),
-
+      singleValue: (styles, { isDisabled }) => ({
+        ...styles,
+        color: isDisabled
+          ? theme.colors.disabledInputTextColor.value
+          : theme.colors.textPrimary.value,
+      }),
       placeholder: (styles) => ({
         ...styles,
         ...TypographyConstant.body1,
@@ -127,6 +132,7 @@ function SelectField<
         {...field}
         {...restProps}
         isDisabled={_disabled}
+        placeholder=""
         value={value}
         ref={ref}
         onChange={_onChange}

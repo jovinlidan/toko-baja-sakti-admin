@@ -64,7 +64,7 @@ export default function TextField(props: TextFieldProps) {
       error={_error}
       required={required}
     >
-      <InputContainer size={size} disabled={restProps.disabled}>
+      <InputContainer size={size} disabled={_disabled}>
         {!!startEnhancer && (
           <StartEnhancerContainer>
             {startEnhancer}
@@ -100,7 +100,7 @@ const StyledInput = styled("input", {
   },
   "&:disabled": {
     background: "$disabledInput",
-    cursor: "not-allowed",
+    color: "$disabledInputTextColor",
   },
 });
 

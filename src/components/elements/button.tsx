@@ -5,6 +5,7 @@ import classNames from "classnames";
 import Link from "next/link";
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
 import { ClipLoader } from "react-spinners";
+import { UrlObject } from "url";
 type ButtonVariants = VariantProps<typeof StyledButton>;
 
 type BaseButtonType = DetailedHTMLProps<
@@ -15,7 +16,7 @@ export interface ButtonProps extends Omit<BaseButtonType, "ref"> {
   size?: ButtonVariants["size"];
   variant?: ButtonVariants["variant"];
   loading?: boolean;
-  href?: string;
+  href?: string | UrlObject;
 
   startEnhancer?: (size: number) => React.ReactNode;
   endEnhancer?: (size: number) => React.ReactNode;

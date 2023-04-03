@@ -1,9 +1,14 @@
 import { MutationFetchFunction } from "@/common/helpers/common";
-import { ApiError, ApiResult } from "@/common/repositories/common.model";
+import {
+  ApiError,
+  ApiResult,
+  MessageResult,
+} from "@/common/repositories/common.model";
 import { useMutation, UseMutationOptions } from "react-query";
 import {
   CategoryItemLite,
   CreateCategoryItemInput,
+  DeleteCategoryItemInput,
 } from "./category-item.model";
 
 export function useCreateCategoryItem(
@@ -25,4 +30,18 @@ export function useCreateCategoryItem(
       body,
     });
   }, options);
+}
+
+export function useDeleteCategoryItem(
+  options?: UseMutationOptions<MessageResult, ApiError, DeleteCategoryItemInput>
+) {
+  return useMutation<MessageResult, ApiError, DeleteCategoryItemInput>(
+    async function ({ categoryId }) {
+      return await MutationFetchFunction({
+        url: `category-items/${categoryId}`,
+        method: "DELETE",
+      });
+    },
+    options
+  );
 }

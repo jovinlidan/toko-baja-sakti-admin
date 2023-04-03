@@ -21,6 +21,10 @@ export default function Header() {
         href: routeConstant.BarangCategoryCreate,
         label: "Tambah Kategori Barang",
       },
+      {
+        href: routeConstant.BarangCategoryView,
+        label: "Detail Kategori Barang",
+      },
     ];
   }, [navigations]);
 

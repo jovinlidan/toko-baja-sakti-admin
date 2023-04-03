@@ -114,3 +114,25 @@ export const CustomFormControlWrapper = styled("div", {
     },
   },
 });
+
+export const FullContainer = styled("div", {
+  background: "#FFFFFF",
+  padding: "40px 44px",
+  borderRadius: 4,
+  mb: 24,
+
+  display: "flex",
+  justifyContent: "space-between",
+  flexDirection: "column",
+
+  "@md": {
+    flexDirection: "row",
+  },
+});
+
+export const HalfContainer = styled("div", {
+  width: "100%",
+  "@md": {
+    width: "48%",
+  },
+});

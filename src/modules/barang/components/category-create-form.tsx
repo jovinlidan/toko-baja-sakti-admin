@@ -9,6 +9,7 @@ import { useCreateCategoryItem } from "@/api-hooks/category-item/category.item.m
 import { queryClient } from "@/common/repositories/query-client";
 import { getCategoryItemsKey } from "@/api-hooks/category-item/category-item.query";
 import { toast } from "react-hot-toast";
+import { FullContainer, HalfContainer } from "@/components/elements/styles";
 
 type FormType = {
   name: string;
@@ -31,12 +32,6 @@ export default function CategoryCreateForm() {
     []
   );
   const resolver = useYupValidationResolver(YupSchema);
-
-  const { data: bigUnitTypeData, isLoading: bigUnitTypeLoading } = useGetEnums({
-    class: "big-unit-type",
-  });
-  const { data: smallUnitTypeData, isLoading: smallUnitTypeLoading } =
-    useGetEnums({ class: "small-unit-type" });
 
   const { mutateAsync: createCategoryItem } = useCreateCategoryItem();
 
@@ -72,18 +67,15 @@ export default function CategoryCreateForm() {
         <HalfContainer>
           <Input
             name="smallUnit"
-            type="select"
+            type="enum"
             label="Satuan Kecil (Ecer)"
-            options={smallUnitTypeData || []}
-            isLoading={smallUnitTypeLoading}
-            // onMenuOpen={}
+            enumClass="small-unit-type"
           />
           <Input
             name="bigUnit"
-            type="select"
+            type="enum"
             label="Satuan Besar (Grosir)"
-            options={bigUnitTypeData || []}
-            isLoading={bigUnitTypeLoading}
+            enumClass="big-unit-type"
           />
         </HalfContainer>
       </FullContainer>
@@ -91,16 +83,3 @@ export default function CategoryCreateForm() {
     </Form>
   );
 }
-const FullContainer = styled("div", {
-  background: "#FFFFFF",
-  padding: "40px 44px",
-  borderRadius: 4,
-  mb: 24,
-
-  display: "flex",
-  justifyContent: "space-between",
-});
-
-const HalfContainer = styled("div", {
-  width: "48%",
-});

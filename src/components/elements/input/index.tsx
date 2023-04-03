@@ -2,12 +2,20 @@ import invariant from "invariant";
 import * as React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { SingleFilePicker, SingleFilePickerProps } from "./file-picker";
+import SelectEnumField, { SelectEnumFieldProps } from "./select-enum-field";
 import SelectField, { SelectFieldProps } from "./select-field";
 import SubmitField, { SubmitProps } from "./submit-field";
 import TextField, { TextFieldProps } from "./text-field";
 import TextNumberField, { TextNumberFieldProps } from "./text-number-field";
 
-type InputType = "text" | "password" | "number" | "select" | "submit" | "file";
+type InputType =
+  | "text"
+  | "password"
+  | "number"
+  | "select"
+  | "submit"
+  | "file"
+  | "enum";
 
 export interface BaseElementInputProps {
   type: InputType;
@@ -20,6 +28,7 @@ function RawInput(
     | TextFieldProps
     | TextNumberFieldProps
     | SelectFieldProps
+    | SelectEnumFieldProps
     | SingleFilePickerProps
     | SubmitProps,
   ref: any
@@ -32,6 +41,8 @@ function RawInput(
       return <TextNumberField {...props} />;
     case "select":
       return <SelectField {...props} />;
+    case "enum":
+      return <SelectEnumField {...props} />;
     case "file":
       return <SingleFilePicker {...props} />;
     case "submit":

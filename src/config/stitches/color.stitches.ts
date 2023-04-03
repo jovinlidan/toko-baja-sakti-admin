@@ -38,6 +38,7 @@ const ColorConstant = {
   actionDisabledBackground: "rgba(50, 71, 92, 0.12)",
 
   disabledInput: "#DEDEDE",
+  disabledInputTextColor: "rgba(50, 71, 92, 0.87)",
 };
 
 export default ColorConstant;

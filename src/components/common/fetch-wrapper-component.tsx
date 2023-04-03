@@ -2,6 +2,7 @@ import { ApiError } from "@/common/repositories/common.model";
 import React from "react";
 
 import ErrorView from "./error-view-component";
+import LoadingViewComponent from "./loading-view-component";
 
 interface WrapperProps {
   isLoading?: boolean;
@@ -27,7 +28,10 @@ export default function FetchWrapperComponent(props: WrapperProps) {
   } = props;
 
   if (isLoading) {
-    return <>{loadingComponent}</> || null;
+    if (loadingComponent) {
+      return <>{loadingComponent}</>;
+    }
+    return <LoadingViewComponent />;
   } else if (error) {
     if (errorComponent) {
       return <>{errorComponent}</>;

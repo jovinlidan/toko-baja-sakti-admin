@@ -60,7 +60,7 @@ export default function TextNumberField(props: TextNumberFieldProps) {
       error={_error}
       required={required}
     >
-      <InputContainer size={size} disabled={restProps.disabled}>
+      <InputContainer size={size} disabled={_disabled}>
         {!!startEnhancer && (
           <StartEnhancerContainer>
             {startEnhancer}
@@ -98,7 +98,7 @@ const StyledInput = styled(NumericFormat, {
   },
   "&:disabled": {
     background: "$disabledInput",
-    cursor: "not-allowed",
+    color: "$disabledInputTextColor",
   },
 });
 

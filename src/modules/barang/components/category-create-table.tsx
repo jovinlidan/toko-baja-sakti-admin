@@ -1,6 +1,7 @@
 import { useGetCategoryItems } from "@/api-hooks/category-item/category-item.query";
 import TableComponent, { IColumn } from "@/components/common/table";
 import { Button } from "@/components/elements";
+import routeConstant from "@/constants/route.constant";
 import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import useComposedQuery from "@/hooks/use-composed-query";
 import * as React from "react";
@@ -37,7 +38,19 @@ export default function CategoryCreateTable() {
       {
         Header: "",
         accessor: "detail",
-        Cell: () => <Button size="small">Detail</Button>,
+        Cell: ({ row }) => {
+          return (
+            <Button
+              href={{
+                pathname: routeConstant.BarangCategoryView,
+                query: { id: row?.original?.id },
+              }}
+              size="small"
+            >
+              Detail
+            </Button>
+          );
+        },
         stickyRight: true,
       },
     ],

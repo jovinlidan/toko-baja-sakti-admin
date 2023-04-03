@@ -1,10 +1,16 @@
 import { QueryFetchFunction, QueryTransformer } from "@/common/helpers/common";
 import {
   ApiError,
+  ApiResult,
   ExtendedApiResult,
 } from "@/common/repositories/common.model";
 import { useQuery, UseQueryOptions, UseQueryResult } from "react-query";
-import { CategoryItemLite, getCategoryItemsInput } from "./category-item.model";
+import {
+  CategoryItem,
+  CategoryItemLite,
+  getCategoryItemInput,
+  getCategoryItemsInput,
+} from "./category-item.model";
 
 export function useGetCategoryItems(
   input?: getCategoryItemsInput,
@@ -29,5 +35,27 @@ export function getCategoryItemsKey(input?: getCategoryItemsInput) {
   if (input) {
     keys.push(input?.params);
   }
+  return keys;
+}
+
+export function useGetCategoryItem(
+  input?: getCategoryItemInput,
+  options?: UseQueryOptions<ApiResult<CategoryItem>, ApiError>
+): UseQueryResult<ApiResult<CategoryItem>, ApiError> {
+  return QueryTransformer(
+    useQuery<ApiResult<CategoryItem>, ApiError>(
+      getCategoryItemKey(input),
+      () =>
+        QueryFetchFunction({
+          url: `category-items/${input?.categoryId}`,
+        }),
+      options
+    ),
+    CategoryItem
+  );
+}
+
+export function getCategoryItemKey(input?: getCategoryItemInput) {
+  const keys: any[] = ["getCategoryItems", input?.categoryId];
   return keys;
 }

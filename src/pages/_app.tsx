@@ -12,6 +12,7 @@ import { QueryClientProvider } from "react-query";
 import { queryClient } from "@/common/repositories/query-client";
 import KYContainer from "@/hooks/use-ky";
 import { theme } from "@/config/stitches/theme.stitches";
+import { DialogProvider } from "@/hooks/use-dialog";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -28,11 +29,13 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <QueryClientProvider client={queryClient}>
       <KYContainer>
-        <Head>
-          <title>Toko Baja Sakti</title>
-        </Head>
-        <Toaster containerStyle={{ zIndex: theme.zIndices.toast.value }} />
-        {getLayout(<Component {...pageProps} />)}
+        <DialogProvider>
+          <Head>
+            <title>Toko Baja Sakti</title>
+          </Head>
+          <Toaster containerStyle={{ zIndex: theme.zIndices.toast.value }} />
+          {getLayout(<Component {...pageProps} />)}
+        </DialogProvider>
       </KYContainer>
     </QueryClientProvider>
   );
