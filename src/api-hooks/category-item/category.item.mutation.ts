@@ -6,27 +6,29 @@ import {
 } from "@/common/repositories/common.model";
 import { useMutation, UseMutationOptions } from "react-query";
 import {
+  CategoryItem,
   CategoryItemLite,
   CreateCategoryItemInput,
   DeleteCategoryItemInput,
+  UpdateCategoryItemInput,
 } from "./category-item.model";
 
 export function useCreateCategoryItem(
   options?: UseMutationOptions<
-    ApiResult<CategoryItemLite>,
+    ApiResult<CategoryItem>,
     ApiError,
     CreateCategoryItemInput
   >
 ) {
   return useMutation<
-    ApiResult<CategoryItemLite>,
+    ApiResult<CategoryItem>,
     ApiError,
     CreateCategoryItemInput
   >(async function ({ body }) {
     return await MutationFetchFunction({
       url: "category-items",
       method: "POST",
-      classType: CategoryItemLite,
+      classType: CategoryItem,
       body,
     });
   }, options);
@@ -44,4 +46,25 @@ export function useDeleteCategoryItem(
     },
     options
   );
+}
+
+export function useUpdateCategoryItem(
+  options?: UseMutationOptions<
+    ApiResult<CategoryItem>,
+    ApiError,
+    UpdateCategoryItemInput
+  >
+) {
+  return useMutation<
+    ApiResult<CategoryItem>,
+    ApiError,
+    UpdateCategoryItemInput
+  >(async function ({ body, categoryId }) {
+    return await MutationFetchFunction({
+      url: `category-items/${categoryId}`,
+      method: "PUT",
+      classType: CategoryItem,
+      body,
+    });
+  }, options);
 }

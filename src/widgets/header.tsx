@@ -25,6 +25,10 @@ export default function Header() {
         href: routeConstant.BarangCategoryView,
         label: "Detail Kategori Barang",
       },
+      {
+        href: routeConstant.BarangCategoryEdit,
+        label: "Ubah Kategori Barang",
+      },
     ];
   }, [navigations]);
 

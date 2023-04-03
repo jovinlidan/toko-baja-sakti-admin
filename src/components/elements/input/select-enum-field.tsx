@@ -18,9 +18,12 @@ export interface SelectEnumFieldProps
 
 function SelectEnumField(props: SelectEnumFieldProps, ref?: any) {
   const { type, enumClass, ...restProps } = props;
-  const { data, isLoading, error, refetch } = useGetEnums({
-    class: enumClass,
-  });
+  const { data, isLoading, error, refetch } = useGetEnums(
+    {
+      class: enumClass,
+    },
+    { cacheTime: 3600 * 24 * 1000 }
+  );
 
   const onMenuOpen = React.useCallback(() => {
     if (error) refetch();

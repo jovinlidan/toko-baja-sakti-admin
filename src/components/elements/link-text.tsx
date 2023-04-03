@@ -1,13 +1,14 @@
 import { css, styled, theme } from "@/config/stitches/theme.stitches";
 import { default as NextLink, LinkProps } from "next/link";
 import * as React from "react";
+import { UrlObject } from "url";
 import Separator from "../common/separator";
 
 import Text, { TextVariants } from "./text";
 
 interface Props extends LinkProps {
   label: string;
-  href: string;
+  href: string | UrlObject;
   variant?:
     | "normal"
     | "medium"

@@ -61,15 +61,27 @@ export class getCategoryItemsInput {
 export class getCategoryItemInput {
   categoryId: string;
 }
-export class CreateCategoryItemInput {
-  body: CreateCategoryItemInputForm;
-}
 
 export class DeleteCategoryItemInput {
   categoryId: string;
 }
 
+export class CreateCategoryItemInput {
+  body: CreateCategoryItemInputForm;
+}
 export class CreateCategoryItemInputForm {
+  name: string;
+  brand: string;
+  conversionUnit: number;
+  bigUnit: string;
+  smallUnit: string;
+}
+
+export class UpdateCategoryItemInput {
+  categoryId: string;
+  body: UpdateCategoryItemInputForm;
+}
+export class UpdateCategoryItemInputForm {
   name: string;
   brand: string;
   conversionUnit: number;
