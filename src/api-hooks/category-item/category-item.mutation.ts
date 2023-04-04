@@ -38,9 +38,9 @@ export function useDeleteCategoryItem(
   options?: UseMutationOptions<MessageResult, ApiError, DeleteCategoryItemInput>
 ) {
   return useMutation<MessageResult, ApiError, DeleteCategoryItemInput>(
-    async function ({ categoryId }) {
+    async function ({ id }) {
       return await MutationFetchFunction({
-        url: `category-items/${categoryId}`,
+        url: `category-items/${id}`,
         method: "DELETE",
       });
     },
@@ -59,9 +59,9 @@ export function useUpdateCategoryItem(
     ApiResult<CategoryItem>,
     ApiError,
     UpdateCategoryItemInput
-  >(async function ({ body, categoryId }) {
+  >(async function ({ body, id }) {
     return await MutationFetchFunction({
-      url: `category-items/${categoryId}`,
+      url: `category-items/${id}`,
       method: "PUT",
       classType: CategoryItem,
       body,

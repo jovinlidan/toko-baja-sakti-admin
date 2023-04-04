@@ -40,7 +40,7 @@ function RawInput(
     case "number":
       return <TextNumberField {...props} />;
     case "select":
-      return <SelectField {...props} />;
+      return <SelectField {...props} ref={ref} />;
     case "enum":
       return <SelectEnumField {...props} />;
     case "file":

@@ -33,10 +33,10 @@ export function useDeleteItem(
   options?: UseMutationOptions<MessageResult, ApiError, DeleteItemInput>
 ) {
   return useMutation<MessageResult, ApiError, DeleteItemInput>(async function ({
-    itemId,
+    id,
   }) {
     return await MutationFetchFunction({
-      url: `items/${itemId}`,
+      url: `items/${id}`,
       method: "DELETE",
     });
   },
@@ -47,9 +47,9 @@ export function useUpdateItem(
   options?: UseMutationOptions<ApiResult<Item>, ApiError, UpdateItemInput>
 ) {
   return useMutation<ApiResult<Item>, ApiError, UpdateItemInput>(
-    async function ({ body, itemId }) {
+    async function ({ body, id }) {
       return await MutationFetchFunction({
-        url: `items/${itemId}`,
+        url: `items/${id}`,
         method: "PUT",
         classType: Item,
         body,

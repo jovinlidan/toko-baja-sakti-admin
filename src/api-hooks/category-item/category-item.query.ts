@@ -47,7 +47,7 @@ export function useGetCategoryItem(
       getCategoryItemKey(input),
       () =>
         QueryFetchFunction({
-          url: `category-items/${input?.categoryId}`,
+          url: `category-items/${input?.id}`,
         }),
       options
     ),
@@ -56,6 +56,6 @@ export function useGetCategoryItem(
 }
 
 export function getCategoryItemKey(input?: getCategoryItemInput) {
-  const keys: any[] = ["getCategoryItem", input?.categoryId];
+  const keys: any[] = ["getCategoryItem", input?.id];
   return keys;
 }

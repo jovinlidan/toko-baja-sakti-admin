@@ -101,3 +101,12 @@ export class ImageClass {
   name: string;
   url: string;
 }
+
+export class BaseOption {
+  label?: string;
+  value?: string;
+}
+
+export class BaseOptionPaginate extends BaseOption {
+  id: string;
+}

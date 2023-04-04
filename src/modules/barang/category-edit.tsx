@@ -18,16 +18,19 @@ import CategoryForm from "./components/category-form";
 
 export default function CategoryEdit() {
   const router = useRouter();
-  const { data, isLoading, isFetching, error, refetch } = useGetCategoryItem({
-    categoryId: router?.query?.id as string,
-  });
+  const { data, isLoading, isFetching, error, refetch } = useGetCategoryItem(
+    {
+      id: router?.query?.id as string,
+    },
+    { enabled: !!router?.query?.id }
+  );
   const { mutateAsync } = useUpdateCategoryItem();
 
   const onSubmit = useCallback(
     async (methods, values) => {
       try {
         const res = await mutateAsync({
-          categoryId: router?.query?.id as string,
+          id: router?.query?.id as string,
           body: values,
         });
         res.message && toast.success(res.message);

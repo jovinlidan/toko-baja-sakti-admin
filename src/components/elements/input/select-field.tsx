@@ -7,11 +7,8 @@ import CustomFormControl from "../custom-form-control";
 import { FormContext } from "../form";
 import { theme } from "@/config/stitches/theme.stitches";
 import TypographyConstant from "@/config/stitches/typography.stitches";
+import { BaseOption } from "@/common/repositories/common.model";
 
-interface CustomOption {
-  label: string;
-  value: string;
-}
 export type SelectFieldProps<
   Option = unknown,
   IsMulti extends boolean = false,
@@ -22,7 +19,7 @@ export type SelectFieldProps<
     label?: string;
     required?: boolean;
     onSelect?: (data: any | null) => void;
-    options: CustomOption[];
+    options: BaseOption[];
   };
 
 function SelectField<
@@ -36,13 +33,20 @@ function SelectField<
     control,
   });
 
-  const { label, readOnly, onSelect, required, ...restProps } = props;
+  const {
+    label,
+    readOnly,
+    onSelect,
+    required,
+    placeholder = "",
+    ...restProps
+  } = props;
   const context = React.useContext(FormContext);
 
   const _onChange = React.useCallback(
     (selected) => {
       if (onSelect) {
-        onSelect(selected.value);
+        onSelect(selected || null);
       } else {
         field.onChange(selected.value);
       }
@@ -54,7 +58,7 @@ function SelectField<
 
   const _error = fieldState?.error?.message;
 
-  const styles = React.useMemo<StylesConfig<CustomOption>>(
+  const styles = React.useMemo<StylesConfig<BaseOption>>(
     () => ({
       control: (styles, { isDisabled }) => ({
         ...styles,
@@ -72,15 +76,13 @@ function SelectField<
         ...styles,
         color: theme.colors.textPrimary.value,
       }),
-      option: (styles) => ({
+      option: (styles, { isSelected }) => ({
         ...styles,
-        background: "white",
+        background: isSelected ? theme.colors.textPrimary.value : "white",
         cursor: "pointer",
-        color: theme.colors.textPrimary.value,
-        "&:active": {
-          background: "white",
-        },
-        "&:hover": {
+        color: isSelected ? "white" : theme.colors.textPrimary.value,
+
+        "&:active, &:hover": {
           background: theme.colors.textPrimary.value,
           color: "white",
         },
@@ -110,6 +112,9 @@ function SelectField<
         ...styles,
         ...TypographyConstant.body1,
       }),
+      clearIndicator: (styles) => ({
+        ...styles,
+      }),
     }),
     []
   );
@@ -120,7 +125,6 @@ function SelectField<
       ) as any) || null
     );
   }, [field.value, restProps.options]);
-
   return (
     <CustomFormControl
       label={label}
@@ -132,7 +136,7 @@ function SelectField<
         {...field}
         {...restProps}
         isDisabled={_disabled}
-        placeholder=""
+        placeholder={placeholder}
         value={value}
         ref={ref}
         onChange={_onChange}

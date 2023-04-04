@@ -81,7 +81,19 @@ export default function BarangList() {
       {
         Header: "",
         accessor: "detail",
-        Cell: () => <Button size="small">Detail</Button>,
+        Cell: ({ row }) => {
+          return (
+            <Button
+              href={{
+                pathname: routeConstant.BarangBarangView,
+                query: { id: row?.original?.id },
+              }}
+              size="small"
+            >
+              Detail
+            </Button>
+          );
+        },
         stickyRight: true,
       },
     ],

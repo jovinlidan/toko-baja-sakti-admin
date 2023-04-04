@@ -42,7 +42,10 @@ export class Item {
   id: string;
   code: string;
   size: string;
-  thick: string;
+
+  @Type(() => Number)
+  thick: number;
+
   color: string;
 
   @Expose({ name: "minimum_stock" })
@@ -80,11 +83,11 @@ export class getItemsInput {
 }
 
 export class getItemInput {
-  itemId: string;
+  id: string;
 }
 
 export class DeleteItemInput {
-  itemId: string;
+  id: string;
 }
 
 export class CreateItemInput {
@@ -104,13 +107,13 @@ export class CreateItemInputForm {
 }
 
 export class UpdateItemInput {
-  itemId: string;
+  id: string;
   body: UpdateItemInputForm;
 }
 export class UpdateItemInputForm {
   categoryItemId: string;
   size: string;
-  thick: string;
+  thick: number;
   color: string;
   minimumStock: number;
   stock: number;
@@ -119,3 +122,8 @@ export class UpdateItemInputForm {
   status: string;
   isAvailable: boolean;
 }
+
+export const ItemAvailableOptions = [
+  { label: "Tersedia", value: "true" },
+  { label: "Tidak Tersedia", value: "false" },
+];

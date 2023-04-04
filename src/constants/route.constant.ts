@@ -7,4 +7,6 @@ export default {
   BarangCategoryEdit: "/barang/edit/category/[id]",
 
   BarangBarangCreate: "/barang/create/barang",
+  BarangBarangView: "/barang/view/barang/[id]",
+  BarangBarangEdit: "/barang/edit/barang/[id]",
 };

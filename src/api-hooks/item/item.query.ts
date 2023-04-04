@@ -42,7 +42,7 @@ export function useGetItem(
       getItemKey(input),
       () =>
         QueryFetchFunction({
-          url: `items/${input?.itemId}`,
+          url: `items/${input?.id}`,
         }),
       options
     ),
@@ -51,6 +51,6 @@ export function useGetItem(
 }
 
 export function getItemKey(input?: getItemInput) {
-  const keys: any[] = ["getItem", input?.itemId];
+  const keys: any[] = ["getItem", input?.id];
   return keys;
 }

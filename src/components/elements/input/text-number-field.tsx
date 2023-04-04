@@ -44,7 +44,7 @@ export default function TextNumberField(props: TextNumberFieldProps) {
 
   const _onChange = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      field.onChange(e.target.value || "0");
+      field.onChange(e.target.value || undefined);
     },
     [field]
   );
@@ -71,7 +71,7 @@ export default function TextNumberField(props: TextNumberFieldProps) {
           {...field}
           {...restProps}
           customInput={undefined}
-          value={field.value || "0"}
+          value={field.value}
           disabled={_disabled}
           onChange={_onChange}
         />

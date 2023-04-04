@@ -1,5 +1,3 @@
-import { useGetCategoryItem } from "@/api-hooks/category-item/category-item.query";
-import { useDeleteCategoryItem } from "@/api-hooks/category-item/category-item.mutation";
 import { BxChevronLeftSVG } from "@/common/assets";
 import FetchWrapperComponent from "@/components/common/fetch-wrapper-component";
 import Separator from "@/components/common/separator";
@@ -11,13 +9,15 @@ import useDialog from "@/hooks/use-dialog";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import CategoryForm from "./components/category-form";
+import { useDeleteItem } from "@/api-hooks/item/item.mutation";
+import { useGetItem } from "@/api-hooks/item/item.query";
+import BarangForm from "./components/barang-form";
 
-export default function CategoryView() {
+export default function BarangView() {
   const router = useRouter();
   const dialog = useDialog();
-  const { mutateAsync } = useDeleteCategoryItem();
-  const { data, isLoading, isFetching, error, refetch } = useGetCategoryItem(
+  const { mutateAsync } = useDeleteItem();
+  const { data, isLoading, isFetching, error, refetch } = useGetItem(
     {
       id: router?.query?.id as string,
     },
@@ -26,7 +26,7 @@ export default function CategoryView() {
 
   const handleDelete = useCallback(() => {
     dialog.showConfirmation({
-      title: "Hapus Kategori Barang",
+      title: "Hapus Barang",
       message: "Apakah anda yakin? Aksi tidak dapat dibatalkan",
       onPositiveAction: async (close) => {
         try {
@@ -34,7 +34,7 @@ export default function CategoryView() {
             id: router?.query?.id as string,
           });
           message && toast.success(message);
-          router.replace(routeConstant.BarangCategoryCreate);
+          router.replace(routeConstant.BarangList);
           close();
         } catch (e: any) {
           e?.messsage && toast.error(e?.message);
@@ -47,7 +47,7 @@ export default function CategoryView() {
     <Container>
       <LinkText
         label="Kembali"
-        href={routeConstant.BarangCategoryCreate}
+        href={routeConstant.BarangList}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />
@@ -58,7 +58,7 @@ export default function CategoryView() {
         component={
           <>
             {data?.data && (
-              <CategoryForm
+              <BarangForm
                 data={data?.data}
                 onSubmit={() => {}}
                 defaultEditable={false}
@@ -67,7 +67,7 @@ export default function CategoryView() {
             <Row>
               <Button
                 href={{
-                  pathname: routeConstant.BarangCategoryEdit,
+                  pathname: routeConstant.BarangBarangEdit,
                   query: { id: router?.query?.id },
                 }}
               >

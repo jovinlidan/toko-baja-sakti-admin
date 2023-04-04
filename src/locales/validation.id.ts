@@ -6,7 +6,7 @@ import { LocaleObject } from "yup/lib/locale";
 // Based on https://github.com/jquense/yup/blob/2973d0a/src/locale.js
 const mixed: LocaleObject["mixed"] = {
   default: "${path} tidak valid.",
-  required: "${path} wajib diisi",
+  required: "Kolom ini wajib diisi",
   oneOf: "${path} tidak valid",
   notOneOf: "${path} tidak valid",
   notType: ({ path, type, value, originalValue }: any) => {
