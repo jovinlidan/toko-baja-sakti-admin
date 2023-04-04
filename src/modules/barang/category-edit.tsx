@@ -3,7 +3,7 @@ import {
   getCategoryItemsKey,
   useGetCategoryItem,
 } from "@/api-hooks/category-item/category-item.query";
-import { useUpdateCategoryItem } from "@/api-hooks/category-item/category.item.mutation";
+import { useUpdateCategoryItem } from "@/api-hooks/category-item/category-item.mutation";
 import { BxChevronLeftSVG } from "@/common/assets";
 import { queryClient } from "@/common/repositories/query-client";
 import FetchWrapperComponent from "@/components/common/fetch-wrapper-component";

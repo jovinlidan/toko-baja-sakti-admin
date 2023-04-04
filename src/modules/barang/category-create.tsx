@@ -1,5 +1,5 @@
 import { getCategoryItemsKey } from "@/api-hooks/category-item/category-item.query";
-import { useCreateCategoryItem } from "@/api-hooks/category-item/category.item.mutation";
+import { useCreateCategoryItem } from "@/api-hooks/category-item/category-item.mutation";
 import { BxChevronLeftSVG } from "@/common/assets";
 import { queryClient } from "@/common/repositories/query-client";
 import Separator from "@/components/common/separator";

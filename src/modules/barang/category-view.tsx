@@ -1,5 +1,5 @@
 import { useGetCategoryItem } from "@/api-hooks/category-item/category-item.query";
-import { useDeleteCategoryItem } from "@/api-hooks/category-item/category.item.mutation";
+import { useDeleteCategoryItem } from "@/api-hooks/category-item/category-item.mutation";
 import { BxChevronLeftSVG } from "@/common/assets";
 import FetchWrapperComponent from "@/components/common/fetch-wrapper-component";
 import Separator from "@/components/common/separator";

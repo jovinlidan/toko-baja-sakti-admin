@@ -20,6 +20,7 @@ export default function SubmitField(props: SubmitProps) {
     text = "SIMPAN",
     hideIcon,
     rightIcon,
+    loading,
     ...restProps
   } = props;
 
@@ -32,7 +33,7 @@ export default function SubmitField(props: SubmitProps) {
     <Button
       {...restProps}
       disabled={disabled || !isValid}
-      loading={formState.isSubmitting}
+      loading={formState.isSubmitting || loading}
       type="submit"
     >
       {text}

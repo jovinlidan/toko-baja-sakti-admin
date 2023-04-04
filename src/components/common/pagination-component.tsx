@@ -59,7 +59,9 @@ export default function PaginationComponent(props: Props) {
         }-${meta?.to || 0} of ${meta.total}`}</Text>
         <Separator mr={56} />
         <Pagination
-          onPageChange={({ selected }) => onPageChange(selected)}
+          onPageChange={({ selected }) =>
+            onPageChange(Math.min(Math.max(selected, 1), meta.lastPage))
+          }
           pageCount={pageCount}
           forcePage={page}
           pageRangeDisplayed={-1}

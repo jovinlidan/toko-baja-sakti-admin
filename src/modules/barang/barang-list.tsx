@@ -1,121 +1,82 @@
 import { PlusSVG } from "@/common/assets";
 import Separator from "@/components/common/separator";
 import TableComponent, { IColumn } from "@/components/common/table";
-import { Button } from "@/components/elements";
+import { Button, Text } from "@/components/elements";
 import { styled, theme } from "@/config/stitches/theme.stitches";
 import BarangListFilterForm from "./components/barang-list-filter-form";
 import * as React from "react";
 import routeConstant from "@/constants/route.constant";
-
-const fakeData = [
-  {
-    kode: "I-0001",
-    nama: "Kawat",
-    merk: "Enka",
-    ukuran: "nk2.6",
-    tebal: "1.8 mm",
-    warna: "Putih",
-    stok: 5,
-    stokMinimum: 3,
-    hargaEcer: "Rp 10.000",
-    hargaGrosir: "Rp 11.000",
-    satuanKecil: "Kg",
-    satuanBesar: "Kotak",
-    ketersediaan: "Tersedia",
-    status: "Aktif",
-  },
-  {
-    kode: "I-0002",
-    nama: "Kawat",
-    merk: "Enka",
-    ukuran: "nk2.6",
-    tebal: "1.8 mm",
-    warna: "Putih",
-    stok: 5,
-    stokMinimum: 3,
-    hargaEcer: "Rp 10.000",
-    hargaGrosir: "Rp 11.000",
-    satuanKecil: "Kg",
-    satuanBesar: "Kotak",
-    ketersediaan: "Tersedia",
-    status: "Aktif",
-  },
-  {
-    kode: "I-0003",
-    nama: "Kawat",
-    merk: "Enka",
-    ukuran: "nk2.6",
-    tebal: "1.8 mm",
-    warna: "Putih",
-    stok: 5,
-    stokMinimum: 3,
-    hargaEcer: "Rp 10.000",
-    hargaGrosir: "Rp 11.000",
-    satuanKecil: "Kg",
-    satuanBesar: "Kotak",
-    ketersediaan: "Tersedia",
-    status: "Aktif",
-  },
-];
+import useComposedQuery from "@/hooks/use-composed-query";
+import { useGetItems } from "@/api-hooks/item/item.query";
+import useApplyQuerySort from "@/hooks/use-apply-query-sort";
+import { string2money } from "@/utils/string";
+import { useApplyQueryFilter } from "@/hooks/use-apply-query-filter";
 
 export default function BarangList() {
-  const columns = React.useMemo<IColumn[]>(
+  const [page, setPage] = React.useState<number>(1);
+  const [limit, setLimit] = React.useState<number>();
+
+  const _columns = React.useMemo<IColumn[]>(
     () => [
       {
         Header: "Kode",
-        accessor: "kode",
+        accessor: "code",
       },
       {
         Header: "Nama",
-        accessor: "nama",
+        accessor: "categoryItem.name",
       },
       {
         Header: "Merk",
-        accessor: "merk",
+        accessor: "categoryItem.brand",
       },
       {
         Header: "Ukuran",
-        accessor: "ukuran",
+        accessor: "size",
       },
       {
         Header: "Tebal",
-        accessor: "tebal",
+        accessor: "thick",
       },
       {
         Header: "Warna",
-        accessor: "warna",
+        accessor: "color",
       },
       {
         Header: "Stok",
-        accessor: "stok",
+        accessor: "stock",
       },
       {
         Header: "Stok Minimum",
-        accessor: "stokMinimum",
+        accessor: "minimumStock",
       },
       {
         Header: "Harga Ecer",
-        accessor: "hargaEcer",
+        accessor: "retailPrice",
+        Cell: ({ value }) => <>{value ? "Rp " + string2money(value) : ""}</>,
       },
       {
         Header: "Harga Grosir",
-        accessor: "hargaGrosir",
+        accessor: "wholesalePrice",
+        Cell: ({ value }) => <>{value ? "Rp " + string2money(value) : ""}</>,
       },
       {
         Header: "Satuan Kecil",
-        accessor: "satuanKecil",
+        accessor: "categoryItem.smallUnit",
       },
       {
         Header: "Satuan Besar",
-        accessor: "satuanBesar",
+        accessor: "categoryItem.bigUnit",
       },
       {
         Header: "Ketersediaan",
-        accessor: "ketersediaan",
+        accessor: "isAvailable",
+        Cell: ({ value }) => <>{value ? "Tersedia" : "Tidak Tersedia"}</>,
       },
       {
         Header: "Status",
         accessor: "status",
+        Cell: ({ value }) => <Text capitalize>{value}</Text>,
       },
       {
         Header: "",
@@ -126,9 +87,38 @@ export default function BarangList() {
     ],
     []
   );
+
+  const {
+    data,
+    isLoading,
+    isFetching,
+    error,
+    refetch,
+    extras: [{ filters, setFilters }, { columns }],
+  } = useComposedQuery(
+    useGetItems,
+    {
+      params: {
+        page,
+        limit,
+      },
+    },
+    {},
+    useApplyQueryFilter((data: any) => {
+      return data.filters;
+    }),
+    useApplyQuerySort((data: any) => {
+      return data.sorts;
+    }, _columns)
+  );
+
   return (
     <Container>
-      <BarangListFilterForm />
+      <BarangListFilterForm
+        filters={filters}
+        loading={isLoading || isFetching}
+        setFilters={setFilters}
+      />
       <TopContainer>
         <Button
           size="large"
@@ -158,7 +148,17 @@ export default function BarangList() {
           TAMBAH BARANG
         </Button>
       </TopContainer>
-      {/* <TableComponent columns={columns} data={fakeData} /> */}
+      <TableComponent
+        columns={columns}
+        data={data?.data || []}
+        loading={isLoading || isFetching}
+        meta={data?.meta}
+        error={error}
+        onRetry={refetch}
+        page={page}
+        setLimit={setLimit}
+        setPage={setPage}
+      />
     </Container>
   );
 }

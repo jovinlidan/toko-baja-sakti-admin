@@ -26,9 +26,9 @@ export interface TextFieldProps
   size?: VariantProps<typeof InputContainer>["size"];
 }
 
-export default function TextField(props: TextFieldProps) {
+function TextField(props: TextFieldProps, ref: any) {
   const { control } = useFormContext();
-  const { field, fieldState, formState } = useController({
+  const { field, fieldState } = useController({
     name: props.name,
     control,
   });
@@ -74,6 +74,7 @@ export default function TextField(props: TextFieldProps) {
         <StyledInput
           {...field}
           {...restProps}
+          ref={ref}
           type={type}
           value={field.value || ""}
           disabled={_disabled}
@@ -89,6 +90,7 @@ export default function TextField(props: TextFieldProps) {
     </CustomFormControl>
   );
 }
+export default React.forwardRef(TextField);
 
 const StyledInput = styled("input", {
   border: "none",

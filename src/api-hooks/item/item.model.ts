@@ -1,0 +1,121 @@
+import { Expose, Type } from "class-transformer";
+import {
+  CategoryItemLite,
+  CategoryItem,
+} from "@/api-hooks/category-item/category-item.model";
+import { number } from "yup";
+
+export class ItemLite {
+  id: string;
+  code: string;
+  size: string;
+  thick: string;
+  color: string;
+
+  @Expose({ name: "minimum_stock" })
+  @Type(() => Number)
+  minimumStock: number;
+
+  @Type(() => Number)
+  stock: number;
+
+  @Expose({ name: "wholesale_price" })
+  @Type(() => Number)
+  wholesalePrice: number;
+
+  @Expose({ name: "retail_price" })
+  @Type(() => Number)
+  retailPrice: number;
+
+  status: string;
+
+  @Expose({ name: "is_available" })
+  @Type(() => Boolean)
+  isAvailable: boolean;
+
+  @Expose({ name: "category_item" })
+  @Type(() => CategoryItemLite)
+  categoryItem: CategoryItemLite;
+}
+
+export class Item {
+  id: string;
+  code: string;
+  size: string;
+  thick: string;
+  color: string;
+
+  @Expose({ name: "minimum_stock" })
+  @Type(() => Number)
+  minimumStock: number;
+
+  @Type(() => Number)
+  stock: number;
+
+  @Expose({ name: "wholesale_price" })
+  @Type(() => Number)
+  wholesalePrice: number;
+
+  @Expose({ name: "retail_price" })
+  @Type(() => Number)
+  retailPrice: number;
+
+  status: string;
+
+  @Expose({ name: "is_available" })
+  @Type(() => Boolean)
+  isAvailable: boolean;
+
+  @Expose({ name: "category_item" })
+  @Type(() => CategoryItem)
+  categoryItem: CategoryItem;
+}
+
+export class getItemsInput {
+  params: {
+    page?: number;
+    limit?: number;
+    filter?: string;
+  };
+}
+
+export class getItemInput {
+  itemId: string;
+}
+
+export class DeleteItemInput {
+  itemId: string;
+}
+
+export class CreateItemInput {
+  body: CreateItemInputForm;
+}
+export class CreateItemInputForm {
+  categoryItemId: string;
+  size: string;
+  thick: string;
+  color: string;
+  minimumStock: number;
+  stock: number;
+  wholesalePrice: number;
+  retailPrice: number;
+  status: string;
+  isAvailable: boolean;
+}
+
+export class UpdateItemInput {
+  itemId: string;
+  body: UpdateItemInputForm;
+}
+export class UpdateItemInputForm {
+  categoryItemId: string;
+  size: string;
+  thick: string;
+  color: string;
+  minimumStock: number;
+  stock: number;
+  wholesalePrice: number;
+  retailPrice: number;
+  status: string;
+  isAvailable: boolean;
+}

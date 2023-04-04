@@ -56,6 +56,6 @@ export function useGetCategoryItem(
 }
 
 export function getCategoryItemKey(input?: getCategoryItemInput) {
-  const keys: any[] = ["getCategoryItems", input?.categoryId];
+  const keys: any[] = ["getCategoryItem", input?.categoryId];
   return keys;
 }

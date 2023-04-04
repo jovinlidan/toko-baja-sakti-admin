@@ -36,7 +36,7 @@ function RawInput(
   switch (props.type) {
     case "text":
     case "password":
-      return <TextField {...props} />;
+      return <TextField {...props} ref={ref} />;
     case "number":
       return <TextNumberField {...props} />;
     case "select":
