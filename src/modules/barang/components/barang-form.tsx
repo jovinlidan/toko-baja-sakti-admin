@@ -49,10 +49,14 @@ export default function BarangForm(props: Props) {
   );
   const resolver = useYupValidationResolver(YupSchema);
 
-  const methods = useForm<FormType>({
+  const methods = useForm<any>({
     resolver,
     mode: "all",
-    defaultValues: { ...data, categoryItemId: data?.categoryItem?.id },
+    defaultValues: {
+      ...data,
+      categoryItemId: data?.categoryItem?.id,
+      isAvailable: data?.isAvailable?.toString(),
+    },
   });
 
   const onSubmit = React.useCallback(
@@ -75,7 +79,9 @@ export default function BarangForm(props: Props) {
     >
       <FullContainer>
         <HalfContainer>
-          {data?.code && <Input name="code" type="text" label="Kode" />}
+          {data?.code && (
+            <Input name="code" type="text" label="Kode" disabled />
+          )}
           <CategoryItemSelectOption
             name="categoryItemId"
             label="Kategori Barang"
