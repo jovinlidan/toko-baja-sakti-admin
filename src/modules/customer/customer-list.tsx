@@ -84,7 +84,7 @@ export default function CustomerList() {
           return (
             <Button
               href={{
-                pathname: routeConstant.BarangBarangView,
+                pathname: routeConstant.ItemView,
                 query: { id: row?.original?.id },
               }}
               size="small"
@@ -122,56 +122,56 @@ export default function CustomerList() {
       return data.sorts;
     }, _columns)
   );
-
-  return (
-    <Container>
-      <BarangListFilterForm
-        filters={filters}
-        loading={isLoading || isFetching}
-        setFilters={setFilters}
-      />
-      <TopContainer>
-        <Button
-          size="large"
-          href={routeConstant.BarangCategoryCreate}
-          startEnhancer={(size) => (
-            <PlusSVG
-              width={size}
-              height={size}
-              color={theme.colors.primaryContrast.value}
-            />
-          )}
-        >
-          TAMBAH KATEGORI
-        </Button>
-        <Separator mr={24} />
-        <Button
-          size="large"
-          href={routeConstant.BarangBarangCreate}
-          startEnhancer={(size) => (
-            <PlusSVG
-              width={size}
-              height={size}
-              color={theme.colors.primaryContrast.value}
-            />
-          )}
-        >
-          TAMBAH BARANG
-        </Button>
-      </TopContainer>
-      <TableComponent
-        columns={columns}
-        data={data?.data || []}
-        loading={isLoading || isFetching}
-        meta={data?.meta}
-        error={error}
-        onRetry={refetch}
-        page={page}
-        setLimit={setLimit}
-        setPage={setPage}
-      />
-    </Container>
-  );
+  return null;
+  // return (
+  //   <Container>
+  //     <BarangListFilterForm
+  //       filters={filters}
+  //       loading={isLoading || isFetching}
+  //       setFilters={setFilters}
+  //     />
+  //     <TopContainer>
+  //       <Button
+  //         size="large"
+  //         href={routeConstant.BarangCategoryCreate}
+  //         startEnhancer={(size) => (
+  //           <PlusSVG
+  //             width={size}
+  //             height={size}
+  //             color={theme.colors.primaryContrast.value}
+  //           />
+  //         )}
+  //       >
+  //         TAMBAH KATEGORI
+  //       </Button>
+  //       <Separator mr={24} />
+  //       <Button
+  //         size="large"
+  //         href={routeConstant.BarangBarangCreate}
+  //         startEnhancer={(size) => (
+  //           <PlusSVG
+  //             width={size}
+  //             height={size}
+  //             color={theme.colors.primaryContrast.value}
+  //           />
+  //         )}
+  //       >
+  //         TAMBAH BARANG
+  //       </Button>
+  //     </TopContainer>
+  //     <TableComponent
+  //       columns={columns}
+  //       data={data?.data || []}
+  //       loading={isLoading || isFetching}
+  //       meta={data?.meta}
+  //       error={error}
+  //       onRetry={refetch}
+  //       page={page}
+  //       setLimit={setLimit}
+  //       setPage={setPage}
+  //     />
+  //   </Container>
+  // );
 }
 
 const Container = styled("div", {});

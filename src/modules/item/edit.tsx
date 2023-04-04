@@ -23,22 +23,17 @@ export default function EditItem() {
   const { mutateAsync } = useUpdateItem();
 
   const onSubmit = useCallback(
-    async (methods, values) => {
-      try {
-        const res = await mutateAsync({
-          id: router?.query?.id as string,
-          body: values,
-        });
-        res.message && toast.success(res.message);
-        methods.reset();
-        await router.replace({
-          pathname: routeConstant.ItemView,
-          query: { id: router?.query?.id },
-        });
-        await queryClient.invalidateQueries(getItemsKey());
-      } catch (e: any) {
-        e?.message && toast.error(e?.message);
-      }
+    async (values) => {
+      const res = await mutateAsync({
+        id: router?.query?.id as string,
+        body: values,
+      });
+      res.message && toast.success(res.message);
+      await router.replace({
+        pathname: routeConstant.ItemView,
+        query: { id: router?.query?.id },
+      });
+      await queryClient.invalidateQueries(getItemsKey());
     },
     [mutateAsync, router]
   );

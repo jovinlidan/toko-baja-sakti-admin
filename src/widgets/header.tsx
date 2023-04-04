@@ -41,6 +41,10 @@ export default function Header() {
         href: routeConstant.ItemEdit,
         label: "Ubah Barang",
       },
+      {
+        href: routeConstant.CustomerList,
+        label: "Pelanggan",
+      },
     ];
   }, [navigations]);
 

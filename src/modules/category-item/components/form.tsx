@@ -6,6 +6,7 @@ import { Input, Form } from "@/components/elements";
 import { toast } from "react-hot-toast";
 import { FullContainer, HalfContainer } from "@/components/elements/styles";
 import { CategoryItem } from "@/api-hooks/category-item/category-item.model";
+import { formSetErrors } from "@/common/helpers/form";
 
 type FormType = {
   code?: string;
@@ -18,7 +19,7 @@ type FormType = {
 
 interface Props {
   data?: CategoryItem;
-  onSubmit: (methods: UseFormReturn<FormType, any>, values: FormType) => void;
+  onSubmit: (values: FormType) => Promise<void> | void;
   defaultEditable?: boolean;
 }
 
@@ -29,7 +30,7 @@ export default function FormCategoryItem(props: Props) {
       Yup.object().shape({
         code: Yup.string().nullable().strip(true),
         name: Yup.string().required(),
-        brand: Yup.string().nullable(),
+        brand: Yup.string(),
         conversionUnit: Yup.number(),
         bigUnit: Yup.string().required(),
         smallUnit: Yup.string().required(),
@@ -48,9 +49,13 @@ export default function FormCategoryItem(props: Props) {
     async (values) => {
       try {
         const input = YupSchema.cast(values) as FormType;
-        await props.onSubmit(methods, input);
+        await props.onSubmit(input);
+        methods.reset();
       } catch (e: any) {
-        toast.error(e?.message);
+        if (e?.errors) {
+          formSetErrors(e?.errors, methods.setError);
+        }
+        e?.message && toast.error(e?.message);
       }
     },
     [YupSchema, methods, props]

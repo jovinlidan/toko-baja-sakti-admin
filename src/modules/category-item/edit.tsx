@@ -14,7 +14,7 @@ import routeConstant from "@/constants/route.constant";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import CategoryForm from "./components/form";
+import FormCategoryItem from "@/modules/category-item/components/form";
 
 export default function EditCategoryItem() {
   const router = useRouter();
@@ -27,22 +27,17 @@ export default function EditCategoryItem() {
   const { mutateAsync } = useUpdateCategoryItem();
 
   const onSubmit = useCallback(
-    async (methods, values) => {
-      try {
-        const res = await mutateAsync({
-          id: router?.query?.id as string,
-          body: values,
-        });
-        res.message && toast.success(res.message);
-        methods.reset();
-        await router.replace({
-          pathname: routeConstant.CategoryItemView,
-          query: { id: router?.query?.id },
-        });
-        await queryClient.invalidateQueries(getCategoryItemsKey());
-      } catch (e: any) {
-        e?.message && toast.error(e?.message);
-      }
+    async (values) => {
+      const res = await mutateAsync({
+        id: router?.query?.id as string,
+        body: values,
+      });
+      res.message && toast.success(res.message);
+      await router.replace({
+        pathname: routeConstant.CategoryItemView,
+        query: { id: router?.query?.id },
+      });
+      await queryClient.invalidateQueries(getCategoryItemsKey());
     },
     [mutateAsync, router]
   );
@@ -62,7 +57,9 @@ export default function EditCategoryItem() {
         error={error}
         onRetry={refetch}
         component={
-          data?.data && <CategoryForm data={data?.data} onSubmit={onSubmit} />
+          data?.data && (
+            <FormCategoryItem data={data?.data} onSubmit={onSubmit} />
+          )
         }
       />
     </Container>

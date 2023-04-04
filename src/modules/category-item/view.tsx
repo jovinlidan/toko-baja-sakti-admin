@@ -11,7 +11,7 @@ import useDialog from "@/hooks/use-dialog";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import CategoryForm from "./components/form";
+import FormCategoryItem from "@/modules/category-item/components/form";
 
 export default function ViewCategoryItem() {
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function ViewCategoryItem() {
         component={
           <>
             {data?.data && (
-              <CategoryForm
+              <FormCategoryItem
                 data={data?.data}
                 onSubmit={() => {}}
                 defaultEditable={false}

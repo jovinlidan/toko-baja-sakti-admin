@@ -8,4 +8,6 @@ export default {
   ItemCreate: "/item/create",
   ItemView: "/item/[id]/view",
   ItemEdit: "/item/[id]/edit",
+
+  CustomerList: "/customer/list",
 };

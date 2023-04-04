@@ -8,22 +8,17 @@ import { styled } from "@/config/stitches/theme.stitches";
 import routeConstant from "@/constants/route.constant";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import CategoryCreateTable from "@/modules/category-item/components/table";
-import CategoryForm from "@/modules/category-item/components/form";
+import TableCategoryItem from "@/modules/category-item/components/table";
+import FormCategoryItem from "@/modules/category-item/components/form";
 
 export default function CreateCategoryItem() {
   const { mutateAsync: createCategoryItem } = useCreateCategoryItem();
 
   const onSubmit = useCallback(
-    async (methods, values) => {
-      try {
-        const res = await createCategoryItem({ body: values });
-        res.message && toast.success(res.message);
-        methods.reset();
-        await queryClient.invalidateQueries(getCategoryItemsKey());
-      } catch (e: any) {
-        toast.error(e?.message);
-      }
+    async (values) => {
+      const res = await createCategoryItem({ body: values });
+      res.message && toast.success(res.message);
+      await queryClient.invalidateQueries(getCategoryItemsKey());
     },
     [createCategoryItem]
   );
@@ -36,9 +31,9 @@ export default function CreateCategoryItem() {
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />
-      <CategoryForm onSubmit={onSubmit} />
+      <FormCategoryItem onSubmit={onSubmit} />
       <Separator mb={24} />
-      <CategoryCreateTable />
+      <TableCategoryItem />
     </Container>
   );
 }

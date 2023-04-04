@@ -14,15 +14,10 @@ export default function CreateItem() {
   const { mutateAsync } = useCreateItem();
 
   const onSubmit = useCallback(
-    async (methods, values) => {
-      try {
-        const res = await mutateAsync({ body: values });
-        res.message && toast.success(res.message);
-        methods.reset();
-        await queryClient.invalidateQueries(getItemsKey());
-      } catch (e: any) {
-        toast.error(e?.message);
-      }
+    async (values) => {
+      const res = await mutateAsync({ body: values });
+      res.message && toast.success(res.message);
+      await queryClient.invalidateQueries(getItemsKey());
     },
     [mutateAsync]
   );

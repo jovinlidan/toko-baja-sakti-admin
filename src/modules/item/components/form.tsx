@@ -8,6 +8,7 @@ import { Input } from "@/components/elements";
 import CategoryItemSelectOption from "@/components/elements/select-input-helper/category-item-select-input";
 import { Item, ItemAvailableOptions } from "@/api-hooks/item/item.model";
 import { toast } from "react-hot-toast";
+import { formSetErrors } from "@/common/helpers/form";
 
 type FormType = {
   code?: string;
@@ -25,7 +26,7 @@ type FormType = {
 
 interface Props {
   data?: Item;
-  onSubmit: (methods: UseFormReturn<FormType, any>, values: FormType) => void;
+  onSubmit: (values: FormType) => void;
   defaultEditable?: boolean;
 }
 export default function ItemForm(props: Props) {
@@ -63,8 +64,11 @@ export default function ItemForm(props: Props) {
     async (values) => {
       try {
         const input = YupSchema.cast(values) as FormType;
-        await props.onSubmit(methods, input);
+        await props.onSubmit(input);
       } catch (e: any) {
+        if (e?.errors) {
+          formSetErrors(e?.errors, methods.setError);
+        }
         e?.message && toast.error(e?.message);
       }
     },
