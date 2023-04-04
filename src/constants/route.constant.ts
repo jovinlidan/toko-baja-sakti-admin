@@ -1,12 +1,11 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  BarangList: "/barang",
+  CategoryItemCreate: "/category-item/create",
+  CategoryItemView: "/category-item/[id]/view",
+  CategoryItemEdit: "/category-item/[id]/edit",
 
-  BarangCategoryCreate: "/barang/create/category",
-  BarangCategoryView: "/barang/view/category/[id]",
-  BarangCategoryEdit: "/barang/edit/category/[id]",
-
-  BarangBarangCreate: "/barang/create/barang",
-  BarangBarangView: "/barang/view/barang/[id]",
-  BarangBarangEdit: "/barang/edit/barang/[id]",
+  ItemList: "/item/list",
+  ItemCreate: "/item/create",
+  ItemView: "/item/[id]/view",
+  ItemEdit: "/item/[id]/edit",
 };

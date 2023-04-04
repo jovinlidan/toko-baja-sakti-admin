@@ -14,9 +14,9 @@ import routeConstant from "@/constants/route.constant";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import CategoryForm from "./components/category-form";
+import CategoryForm from "./components/form";
 
-export default function CategoryEdit() {
+export default function EditCategoryItem() {
   const router = useRouter();
   const { data, isLoading, isFetching, error, refetch } = useGetCategoryItem(
     {
@@ -36,7 +36,7 @@ export default function CategoryEdit() {
         res.message && toast.success(res.message);
         methods.reset();
         await router.replace({
-          pathname: routeConstant.BarangCategoryView,
+          pathname: routeConstant.CategoryItemView,
           query: { id: router?.query?.id },
         });
         await queryClient.invalidateQueries(getCategoryItemsKey());
@@ -51,8 +51,8 @@ export default function CategoryEdit() {
       <LinkText
         label="Kembali"
         href={{
-          pathname: routeConstant.BarangCategoryView,
-          query: router?.query?.id as string,
+          pathname: routeConstant.CategoryItemView,
+          query: { id: router?.query?.id as string },
         }}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />

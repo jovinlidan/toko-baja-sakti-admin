@@ -9,23 +9,26 @@ export class ItemLite {
   id: string;
   code: string;
   size: string;
-  thick: string;
-  color: string;
+
+  @Type(() => Number)
+  thick?: number;
+
+  color?: string;
 
   @Expose({ name: "minimum_stock" })
   @Type(() => Number)
-  minimumStock: number;
+  minimumStock?: number;
 
   @Type(() => Number)
   stock: number;
 
   @Expose({ name: "wholesale_price" })
   @Type(() => Number)
-  wholesalePrice: number;
+  wholesalePrice?: number;
 
   @Expose({ name: "retail_price" })
   @Type(() => Number)
-  retailPrice: number;
+  retailPrice?: number;
 
   status: string;
 
@@ -34,8 +37,8 @@ export class ItemLite {
   isAvailable: boolean;
 
   @Expose({ name: "category_item" })
-  @Type(() => CategoryItemLite)
-  categoryItem: CategoryItemLite;
+  @Type(() => CategoryItem)
+  categoryItem: CategoryItem;
 }
 
 export class Item {
@@ -44,24 +47,24 @@ export class Item {
   size: string;
 
   @Type(() => Number)
-  thick: number;
+  thick?: number;
 
-  color: string;
+  color?: string;
 
   @Expose({ name: "minimum_stock" })
   @Type(() => Number)
-  minimumStock: number;
+  minimumStock?: number;
 
   @Type(() => Number)
   stock: number;
 
   @Expose({ name: "wholesale_price" })
   @Type(() => Number)
-  wholesalePrice: number;
+  wholesalePrice?: number;
 
   @Expose({ name: "retail_price" })
   @Type(() => Number)
-  retailPrice: number;
+  retailPrice?: number;
 
   status: string;
 

@@ -18,20 +18,28 @@ export default function Header() {
         label: "Beranda",
       },
       {
-        href: routeConstant.BarangCategoryCreate,
+        href: routeConstant.CategoryItemCreate,
         label: "Tambah Kategori Barang",
       },
       {
-        href: routeConstant.BarangCategoryView,
+        href: routeConstant.CategoryItemView,
         label: "Detail Kategori Barang",
       },
       {
-        href: routeConstant.BarangCategoryEdit,
+        href: routeConstant.CategoryItemEdit,
         label: "Ubah Kategori Barang",
       },
       {
-        href: routeConstant.BarangBarangCreate,
+        href: routeConstant.ItemCreate,
         label: "Tambah Barang",
+      },
+      {
+        href: routeConstant.ItemView,
+        label: "Detail Barang",
+      },
+      {
+        href: routeConstant.ItemEdit,
+        label: "Ubah Barang",
       },
     ];
   }, [navigations]);

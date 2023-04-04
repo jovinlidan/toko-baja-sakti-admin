@@ -8,11 +8,11 @@ import routeConstant from "@/constants/route.constant";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import BarangForm from "./components/barang-form";
+import BarangForm from "./components/form";
 import { getItemsKey, useGetItem } from "@/api-hooks/item/item.query";
 import { useUpdateItem } from "@/api-hooks/item/item.mutation";
 
-export default function BarangEdit() {
+export default function EditItem() {
   const router = useRouter();
   const { data, isLoading, isFetching, error, refetch } = useGetItem(
     {
@@ -32,7 +32,7 @@ export default function BarangEdit() {
         res.message && toast.success(res.message);
         methods.reset();
         await router.replace({
-          pathname: routeConstant.BarangBarangView,
+          pathname: routeConstant.ItemView,
           query: { id: router?.query?.id },
         });
         await queryClient.invalidateQueries(getItemsKey());
@@ -48,8 +48,8 @@ export default function BarangEdit() {
       <LinkText
         label="Kembali"
         href={{
-          pathname: routeConstant.BarangBarangView,
-          query: router?.query?.id as string,
+          pathname: routeConstant.ItemView,
+          query: { id: router?.query?.id as string },
         }}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />

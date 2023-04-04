@@ -18,7 +18,7 @@ interface SideNavigationProviderProps {
 
 const navigations: NavigationInterface[] = [
   {
-    href: routeConstant.BarangList,
+    href: routeConstant.ItemList,
     label: "Barang",
   },
   {

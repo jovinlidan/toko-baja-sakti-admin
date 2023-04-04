@@ -28,7 +28,7 @@ interface Props {
   onSubmit: (methods: UseFormReturn<FormType, any>, values: FormType) => void;
   defaultEditable?: boolean;
 }
-export default function BarangForm(props: Props) {
+export default function ItemForm(props: Props) {
   const { defaultEditable = true, data } = props;
   const YupSchema = React.useMemo(
     () =>

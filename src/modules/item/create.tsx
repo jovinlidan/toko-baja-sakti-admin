@@ -8,9 +8,9 @@ import { styled } from "@/config/stitches/theme.stitches";
 import routeConstant from "@/constants/route.constant";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import BarangForm from "./components/barang-form";
+import BarangForm from "./components/form";
 
-export default function BarangCreate() {
+export default function CreateItem() {
   const { mutateAsync } = useCreateItem();
 
   const onSubmit = useCallback(
@@ -30,7 +30,7 @@ export default function BarangCreate() {
     <Container>
       <LinkText
         label="Kembali"
-        href={routeConstant.BarangList}
+        href={routeConstant.ItemList}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />

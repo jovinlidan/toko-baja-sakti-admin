@@ -18,7 +18,7 @@ interface Props {
 
 const FILTER_NAME = "category_item_name";
 
-export default function BarangListFilterForm(props: Props) {
+export default function ItemListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;
   const inputRef = React.useRef<any>();
   const YupSchema = React.useMemo(() => Yup.object().shape({}), []);

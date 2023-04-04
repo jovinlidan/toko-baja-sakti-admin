@@ -8,10 +8,10 @@ import { styled } from "@/config/stitches/theme.stitches";
 import routeConstant from "@/constants/route.constant";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import CategoryCreateTable from "./components/category-create-table";
-import CategoryForm from "./components/category-form";
+import CategoryCreateTable from "@/modules/category-item/components/table";
+import CategoryForm from "@/modules/category-item/components/form";
 
-export default function CategoryCreate() {
+export default function CreateCategoryItem() {
   const { mutateAsync: createCategoryItem } = useCreateCategoryItem();
 
   const onSubmit = useCallback(
@@ -32,7 +32,7 @@ export default function CategoryCreate() {
     <Container>
       <LinkText
         label="Kembali"
-        href={routeConstant.BarangList}
+        href={routeConstant.ItemList}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />

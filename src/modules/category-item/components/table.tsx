@@ -6,7 +6,7 @@ import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import useComposedQuery from "@/hooks/use-composed-query";
 import * as React from "react";
 
-export default function CategoryCreateTable() {
+export default function TableCategoryItem() {
   const [page, setPage] = React.useState<number>(1);
   const [limit, setLimit] = React.useState<number>();
   const _columns = React.useMemo<IColumn[]>(
@@ -42,7 +42,7 @@ export default function CategoryCreateTable() {
           return (
             <Button
               href={{
-                pathname: routeConstant.BarangCategoryView,
+                pathname: routeConstant.CategoryItemView,
                 query: { id: row?.original?.id },
               }}
               size="small"

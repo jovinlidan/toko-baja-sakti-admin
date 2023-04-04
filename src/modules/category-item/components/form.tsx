@@ -22,7 +22,7 @@ interface Props {
   defaultEditable?: boolean;
 }
 
-export default function CategoryForm(props: Props) {
+export default function FormCategoryItem(props: Props) {
   const { data, defaultEditable = true } = props;
   const YupSchema = React.useMemo(
     () =>

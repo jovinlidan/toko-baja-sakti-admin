@@ -11,12 +11,13 @@ import { useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useDeleteItem } from "@/api-hooks/item/item.mutation";
 import { useGetItem } from "@/api-hooks/item/item.query";
-import BarangForm from "./components/barang-form";
+import ItemForm from "./components/form";
 
-export default function BarangView() {
+export default function ViewItem() {
   const router = useRouter();
   const dialog = useDialog();
   const { mutateAsync } = useDeleteItem();
+
   const { data, isLoading, isFetching, error, refetch } = useGetItem(
     {
       id: router?.query?.id as string,
@@ -34,7 +35,7 @@ export default function BarangView() {
             id: router?.query?.id as string,
           });
           message && toast.success(message);
-          router.replace(routeConstant.BarangList);
+          router.replace(routeConstant.ItemList);
           close();
         } catch (e: any) {
           e?.messsage && toast.error(e?.message);
@@ -47,7 +48,7 @@ export default function BarangView() {
     <Container>
       <LinkText
         label="Kembali"
-        href={routeConstant.BarangList}
+        href={routeConstant.ItemList}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />
@@ -58,7 +59,7 @@ export default function BarangView() {
         component={
           <>
             {data?.data && (
-              <BarangForm
+              <ItemForm
                 data={data?.data}
                 onSubmit={() => {}}
                 defaultEditable={false}
@@ -67,7 +68,7 @@ export default function BarangView() {
             <Row>
               <Button
                 href={{
-                  pathname: routeConstant.BarangBarangEdit,
+                  pathname: routeConstant.ItemEdit,
                   query: { id: router?.query?.id },
                 }}
               >

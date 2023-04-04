@@ -62,7 +62,7 @@ export default function CategoryItemSelectOption(props: Props) {
     ),
     renderCreate: true,
     onClickCreate: () => {
-      router.push(routeConstant.BarangCategoryCreate);
+      router.push(routeConstant.CategoryItemCreate);
     },
     getMemoizedDetailVariables: React.useCallback(
       (value: string) => ({

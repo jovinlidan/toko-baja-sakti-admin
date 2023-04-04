@@ -11,9 +11,9 @@ import useDialog from "@/hooks/use-dialog";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import CategoryForm from "./components/category-form";
+import CategoryForm from "./components/form";
 
-export default function CategoryView() {
+export default function ViewCategoryItem() {
   const router = useRouter();
   const dialog = useDialog();
   const { mutateAsync } = useDeleteCategoryItem();
@@ -34,7 +34,7 @@ export default function CategoryView() {
             id: router?.query?.id as string,
           });
           message && toast.success(message);
-          router.replace(routeConstant.BarangCategoryCreate);
+          router.replace(routeConstant.CategoryItemCreate);
           close();
         } catch (e: any) {
           e?.messsage && toast.error(e?.message);
@@ -47,7 +47,7 @@ export default function CategoryView() {
     <Container>
       <LinkText
         label="Kembali"
-        href={routeConstant.BarangCategoryCreate}
+        href={routeConstant.CategoryItemCreate}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />
@@ -67,7 +67,7 @@ export default function CategoryView() {
             <Row>
               <Button
                 href={{
-                  pathname: routeConstant.BarangCategoryEdit,
+                  pathname: routeConstant.CategoryItemEdit,
                   query: { id: router?.query?.id },
                 }}
               >

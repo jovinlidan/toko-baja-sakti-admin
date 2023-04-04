@@ -3,7 +3,7 @@ import Separator from "@/components/common/separator";
 import TableComponent, { IColumn } from "@/components/common/table";
 import { Button, Text } from "@/components/elements";
 import { styled, theme } from "@/config/stitches/theme.stitches";
-import BarangListFilterForm from "./components/barang-list-filter-form";
+import BarangListFilterForm from "./components/item-list-filter-form";
 import * as React from "react";
 import routeConstant from "@/constants/route.constant";
 import useComposedQuery from "@/hooks/use-composed-query";
@@ -12,7 +12,7 @@ import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import { string2money } from "@/utils/string";
 import { useApplyQueryFilter } from "@/hooks/use-apply-query-filter";
 
-export default function BarangList() {
+export default function ListItem() {
   const [page, setPage] = React.useState<number>(1);
   const [limit, setLimit] = React.useState<number>();
 
@@ -85,7 +85,7 @@ export default function BarangList() {
           return (
             <Button
               href={{
-                pathname: routeConstant.BarangBarangView,
+                pathname: routeConstant.ItemView,
                 query: { id: row?.original?.id },
               }}
               size="small"
@@ -134,7 +134,7 @@ export default function BarangList() {
       <TopContainer>
         <Button
           size="large"
-          href={routeConstant.BarangCategoryCreate}
+          href={routeConstant.CategoryItemCreate}
           startEnhancer={(size) => (
             <PlusSVG
               width={size}
@@ -148,7 +148,7 @@ export default function BarangList() {
         <Separator mr={24} />
         <Button
           size="large"
-          href={routeConstant.BarangBarangCreate}
+          href={routeConstant.ItemCreate}
           startEnhancer={(size) => (
             <PlusSVG
               width={size}

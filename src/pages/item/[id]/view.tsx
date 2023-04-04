@@ -1,4 +1,4 @@
-import BarangView from "@/modules/barang/barang-view";
+import BarangView from "@/modules/item/view";
 
 export default function ViewBarangPage() {
   return <BarangView />;
