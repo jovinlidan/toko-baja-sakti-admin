@@ -32,7 +32,7 @@ const Container = styled("div", {
 
 const Content = styled("div", {
   marginTop: sizeConstant.headerHeight,
-  padding: "20px 37px 0px 24px",
+  padding: "20px 37px 40px 24px",
 });
 
 const SideNavigationContainer = styled("div", {

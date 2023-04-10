@@ -10,5 +10,7 @@ export default {
   ItemEdit: "/item/[id]/edit",
 
   CustomerList: "/customer/list",
-  CustomerCreate: "/category-item/create",
+  CustomerCreate: "/customer/create",
+  CustomerView: "/customer/[id]/view",
+  CustomerEdit: "/customer/[id]/edit",
 };

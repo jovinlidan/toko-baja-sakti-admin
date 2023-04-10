@@ -201,11 +201,11 @@ export default function useSelectInputHelper<
   ]);
 
   const onQueryChange = useDebouncedCallback(
-    (event) => {
+    (value) => {
       resetPageWhenQueryChanged && setPage(1);
-      setQuery(event?.target?.value || "");
+      setQuery(value || "");
     },
-    800,
+    300,
     {
       trailing: true,
     }

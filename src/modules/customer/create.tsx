@@ -1,5 +1,3 @@
-import { getCategoryItemsKey } from "@/api-hooks/category-item/category-item.query";
-import { useCreateCategoryItem } from "@/api-hooks/category-item/category-item.mutation";
 import { BxChevronLeftSVG } from "@/common/assets";
 import { queryClient } from "@/common/repositories/query-client";
 import Separator from "@/components/common/separator";
@@ -8,38 +6,37 @@ import { styled } from "@/config/stitches/theme.stitches";
 import routeConstant from "@/constants/route.constant";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import TableCategoryItem from "@/modules/category-item/components/table";
-import FormCategoryItem from "@/modules/category-item/components/form";
+import FormCustomer from "@/modules/customer/components/form";
+import { useCreateCustomer } from "@/api-hooks/customer/customer.mutation";
+import { getCustomersKey } from "@/api-hooks/customer/customer.query";
 import { useRouter } from "next/router";
 
-export default function CreateCategoryItem() {
-  const { mutateAsync: createCategoryItem } = useCreateCategoryItem();
+export default function CreateCustomer() {
+  const { mutateAsync } = useCreateCustomer();
   const router = useRouter();
 
   const onSubmit = useCallback(
     async (values) => {
-      const res = await createCategoryItem({ body: values });
+      const res = await mutateAsync({ body: values });
       res.message && toast.success(res.message);
       router.push({
-        pathname: routeConstant.CategoryItemView,
+        pathname: routeConstant.CustomerView,
         query: { id: res.data.id },
       });
-      await queryClient.invalidateQueries(getCategoryItemsKey());
+      await queryClient.invalidateQueries(getCustomersKey());
     },
-    [createCategoryItem, router]
+    [mutateAsync, router]
   );
 
   return (
     <Container>
       <LinkText
         label="Kembali"
-        href={routeConstant.ItemList}
+        href={routeConstant.CustomerList}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />
-      <FormCategoryItem onSubmit={onSubmit} />
-      <Separator mb={24} />
-      <TableCategoryItem />
+      <FormCustomer onSubmit={onSubmit} />
     </Container>
   );
 }

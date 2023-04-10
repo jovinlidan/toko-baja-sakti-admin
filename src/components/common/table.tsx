@@ -68,10 +68,10 @@ export default function TableComponent<T>(props: Props<T>) {
                     key={column.id}
                     //@ts-ignore
                     stickyRight={column.stickyRight && !loading}
-                    // css={{
-                    //   maxWidth: column.maxWidth,
-                    //   minWidth: column.minWidth,
-                    // }}
+                    css={{
+                      maxWidth: column.maxWidth,
+                      minWidth: column.minWidth,
+                    }}
                   >
                     {column.render("Header")}
                   </Th>
@@ -130,10 +130,10 @@ export default function TableComponent<T>(props: Props<T>) {
                                 //@ts-ignore
                                 stickyRight={cell.column.stickyRight}
                                 key={cell.value}
-                                // css={{
-                                //   maxWidth: cell.column.maxWidth,
-                                //   minWidth: cell.column.minWidth,
-                                // }}
+                                css={{
+                                  maxWidth: cell.column.maxWidth,
+                                  minWidth: cell.column.minWidth,
+                                }}
                               >
                                 {cell.render("Cell")}
                               </Td>
@@ -230,6 +230,8 @@ const Td = styled("td", {
   paddingRight: 16,
   whiteSpace: "nowrap",
   color: "$textPrimary",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 
   ...TypographyConstant.body2,
 

@@ -28,6 +28,7 @@ export default function CustomerList() {
         Header: "Alamat",
         accessor: "address.addressDetail",
         Cell: ({ value }) => <>{value ? value : "-"}</>,
+        maxWidth: 200,
       },
       {
         Header: "No Handphone",
@@ -50,7 +51,7 @@ export default function CustomerList() {
           return (
             <Button
               href={{
-                pathname: routeConstant.ItemView,
+                pathname: routeConstant.CustomerView,
                 query: { id: row?.original?.id },
               }}
               size="small"

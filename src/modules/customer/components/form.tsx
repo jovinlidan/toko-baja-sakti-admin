@@ -5,35 +5,41 @@ import * as Yup from "yup";
 import { Input, Form } from "@/components/elements";
 import { toast } from "react-hot-toast";
 import { FullContainer, HalfContainer } from "@/components/elements/styles";
-import { CategoryItem } from "@/api-hooks/category-item/category-item.model";
 import { formSetErrors } from "@/common/helpers/form";
+import { Customer } from "@/api-hooks/customer/customer.model";
+import CitySelectOption from "@/components/elements/select-input-helper/city-select-input";
 
 type FormType = {
-  code?: string;
-  name: string;
-  brand: string;
-  conversionUnit: number;
-  bigUnit: string;
-  smallUnit: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  status?: string;
+  address?: {
+    cityId?: string;
+    addressDetail?: string;
+  };
 };
 
 interface Props {
-  data?: CategoryItem;
+  data?: Customer;
   onSubmit: (values: FormType) => Promise<void> | void;
   defaultEditable?: boolean;
 }
 
-export default function FormCategoryItem(props: Props) {
+export default function FormCustomer(props: Props) {
   const { data, defaultEditable = true } = props;
   const YupSchema = React.useMemo(
     () =>
       Yup.object().shape({
         code: Yup.string().nullable().strip(true),
         name: Yup.string().required(),
-        brand: Yup.string().nullable(),
-        conversionUnit: Yup.number().nullable(),
-        bigUnit: Yup.string().required(),
-        smallUnit: Yup.string().required(),
+        email: Yup.string().email().nullable(),
+        phone: Yup.string().nullable(),
+        status: Yup.string().nullable(),
+        address: Yup.object().shape({
+          cityId: Yup.string().required(),
+          addressDetail: Yup.string().nullable(),
+        }),
       }),
     []
   );
@@ -42,7 +48,13 @@ export default function FormCategoryItem(props: Props) {
   const methods = useForm<FormType>({
     resolver,
     mode: "all",
-    defaultValues: data,
+    defaultValues: {
+      ...data,
+      address: {
+        cityId: data?.address?.city?.id,
+        addressDetail: data?.address?.addressDetail,
+      },
+    },
   });
 
   const onSubmit = React.useCallback(
@@ -73,35 +85,32 @@ export default function FormCategoryItem(props: Props) {
             <Input name="code" type="text" label="Kode" disabled />
           )}
           <Input name="name" type="text" label="Nama" />
-          <Input name="brand" type="text" label="Merk" />
+          <Input name="address.addressDetail" type="textarea" label="Alamat" />
           {!data?.code && (
-            <Input
-              name="conversionUnit"
-              type="number"
-              label="Konversi Satuan"
+            <CitySelectOption
+              name="address.cityId"
+              label="Kota"
+              placeholder="Pilih Kota"
             />
           )}
         </HalfContainer>
         <HalfContainer>
+          <Input name="phone" type="text" label="No Handphone" />
+          <Input name="email" type="text" label="Email" />
+          <Input
+            name="status"
+            type="enum"
+            label="Status"
+            placeholder="Pilih Status"
+            enumClass="status-type"
+          />
           {data?.code && (
-            <Input
-              name="conversionUnit"
-              type="number"
-              label="Konversi Satuan"
+            <CitySelectOption
+              name="address.cityId"
+              label="Kota"
+              placeholder="Pilih Kota"
             />
           )}
-          <Input
-            name="smallUnit"
-            type="enum"
-            label="Satuan Kecil (Ecer)"
-            enumClass="small-unit-type"
-          />
-          <Input
-            name="bigUnit"
-            type="enum"
-            label="Satuan Besar (Grosir)"
-            enumClass="big-unit-type"
-          />
         </HalfContainer>
       </FullContainer>
       <Input type="submit" text="SIMPAN" size="large" />

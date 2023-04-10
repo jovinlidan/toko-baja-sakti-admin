@@ -45,6 +45,18 @@ export default function Header() {
         href: routeConstant.CustomerList,
         label: "Pelanggan",
       },
+      {
+        href: routeConstant.CustomerCreate,
+        label: "Tambah Pelanggan",
+      },
+      {
+        href: routeConstant.CustomerEdit,
+        label: "Ubah Pelanggan",
+      },
+      {
+        href: routeConstant.CustomerView,
+        label: "Detail Pelanggan",
+      },
     ];
   }, [navigations]);
 

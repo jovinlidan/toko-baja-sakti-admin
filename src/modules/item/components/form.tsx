@@ -2,7 +2,7 @@ import Form from "@/components/elements/form";
 import { styled } from "@/config/stitches/theme.stitches";
 import useYupValidationResolver from "@/hooks/use-yup-validation-resolver";
 import * as React from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { Input } from "@/components/elements";
 import CategoryItemSelectOption from "@/components/elements/select-input-helper/category-item-select-input";
@@ -36,13 +36,13 @@ export default function ItemForm(props: Props) {
       Yup.object().shape({
         code: Yup.string().strip(true),
         categoryItemId: Yup.string().required(),
-        size: Yup.string(),
-        thick: Yup.number(),
-        color: Yup.string(),
-        minimumStock: Yup.number(),
+        size: Yup.string().nullable(),
+        thick: Yup.number().nullable(),
+        color: Yup.string().nullable(),
+        minimumStock: Yup.number().nullable(),
         stock: Yup.number().required(),
-        wholesalePrice: Yup.number(),
-        retailPrice: Yup.number(),
+        wholesalePrice: Yup.number().nullable(),
+        retailPrice: Yup.number().nullable(),
         status: Yup.string().required(),
         isAvailable: Yup.boolean().required(),
       }),

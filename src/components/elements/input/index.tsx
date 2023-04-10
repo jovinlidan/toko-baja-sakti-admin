@@ -7,10 +7,12 @@ import SelectField, { SelectFieldProps } from "./select-field";
 import SubmitField, { SubmitProps } from "./submit-field";
 import TextField, { TextFieldProps } from "./text-field";
 import TextNumberField, { TextNumberFieldProps } from "./text-number-field";
+import TextareaField, { TextareaFieldProps } from "./textarea-field";
 
 type InputType =
   | "text"
   | "password"
+  | "textarea"
   | "number"
   | "select"
   | "submit"
@@ -26,6 +28,7 @@ export interface BaseElementInputProps {
 function RawInput(
   props:
     | TextFieldProps
+    | TextareaFieldProps
     | TextNumberFieldProps
     | SelectFieldProps
     | SelectEnumFieldProps
@@ -37,6 +40,8 @@ function RawInput(
     case "text":
     case "password":
       return <TextField {...props} ref={ref} />;
+    case "textarea":
+      return <TextareaField {...props} ref={ref} />;
     case "number":
       return <TextNumberField {...props} />;
     case "select":

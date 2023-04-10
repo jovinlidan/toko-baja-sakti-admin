@@ -17,7 +17,7 @@ export class CustomerAddress {
   id: string;
   tag?: string;
 
-  @Expose({ name: "addressDetail" })
+  @Expose({ name: "address_detail" })
   addressDetail: string;
 
   @Expose({ name: "recipient_name" })
@@ -66,7 +66,7 @@ export class Customer {
   status?: string;
 
   @Type(() => CustomerAddress)
-  addresses: CustomerAddress[];
+  address?: CustomerAddress;
 
   @Expose({ name: "created_at" })
   @Type(() => Date)
