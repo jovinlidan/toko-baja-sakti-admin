@@ -15,6 +15,7 @@ type FormType = {
   phone?: string;
   status?: string;
   address?: {
+    id?: string;
     cityId?: string;
     addressDetail?: string;
   };
@@ -37,6 +38,7 @@ export default function FormCustomer(props: Props) {
         phone: Yup.string().nullable(),
         status: Yup.string().nullable(),
         address: Yup.object().shape({
+          id: Yup.string().nullable(),
           cityId: Yup.string().required(),
           addressDetail: Yup.string().nullable(),
         }),
@@ -51,6 +53,7 @@ export default function FormCustomer(props: Props) {
     defaultValues: {
       ...data,
       address: {
+        id: data?.address?.id,
         cityId: data?.address?.city?.id,
         addressDetail: data?.address?.addressDetail,
       },

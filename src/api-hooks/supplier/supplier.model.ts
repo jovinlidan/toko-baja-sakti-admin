@@ -1,10 +1,13 @@
 import { Expose, Type } from "class-transformer";
 import { Address } from "@/api-hooks/common/common.model";
-export class CustomerLite {
+
+export class SupplierLite {
   id: string;
   code: string;
   name: string;
-  type: string;
+
+  @Expose({ name: "contact_person" })
+  contactPerson: string;
 
   email?: string;
   phone?: string;
@@ -22,11 +25,13 @@ export class CustomerLite {
   updatedAt: Date;
 }
 
-export class Customer {
+export class Supplier {
   id: string;
   code: string;
   name: string;
-  type: string;
+
+  @Expose({ name: "contact_person" })
+  contactPerson: string;
 
   email?: string;
   phone?: string;
@@ -44,7 +49,7 @@ export class Customer {
   updatedAt: Date;
 }
 
-export class getCustomersInput {
+export class getSuppliersInput {
   params: {
     page?: number;
     limit?: number;
@@ -52,37 +57,39 @@ export class getCustomersInput {
   };
 }
 
-export class getCustomerInput {
+export class getSupplierInput {
   id: string;
 }
 
-export class DeleteCustomerInput {
+export class DeleteSupplierInput {
   id: string;
 }
 
-export class CreateCustomerInput {
-  body: CreateCustomerInputForm;
+export class CreateSupplierInput {
+  body: CreateSupplierInputForm;
 }
-export class CreateCustomerInputForm {
+export class CreateSupplierInputForm {
   name: string;
   email: string;
   phone: string;
   status: string;
+  contactPerson: string;
   address: {
     cityId: string;
     addressDetail: string;
   };
 }
 
-export class UpdateCustomerInput {
+export class UpdateSupplierInput {
   id: string;
-  body: UpdateCustomerInputForm;
+  body: UpdateSupplierInputForm;
 }
-export class UpdateCustomerInputForm {
+export class UpdateSupplierInputForm {
   name: string;
   email: string;
   phone: string;
   status: string;
+  contactPerson: string;
   address: {
     id: string;
     cityId: string;
