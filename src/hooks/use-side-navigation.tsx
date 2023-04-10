@@ -29,7 +29,7 @@ const navigations: NavigationInterface[] = [
     key: "customer",
   },
   {
-    href: "/supplier",
+    href: routeConstant.SupplierList,
     label: "Supplier",
     key: "supplier",
   },

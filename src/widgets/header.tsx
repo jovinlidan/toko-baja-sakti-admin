@@ -57,6 +57,22 @@ export default function Header() {
         href: routeConstant.CustomerView,
         label: "Detail Pelanggan",
       },
+      {
+        href: routeConstant.SupplierList,
+        label: "Supplier",
+      },
+      {
+        href: routeConstant.SupplierCreate,
+        label: "Tambah Supplier",
+      },
+      {
+        href: routeConstant.SupplierEdit,
+        label: "Ubah Supplier",
+      },
+      {
+        href: routeConstant.SupplierView,
+        label: "Detail Supplier",
+      },
     ];
   }, [navigations]);
 

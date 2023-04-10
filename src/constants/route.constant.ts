@@ -13,4 +13,9 @@ export default {
   CustomerCreate: "/customer/create",
   CustomerView: "/customer/[id]/view",
   CustomerEdit: "/customer/[id]/edit",
+
+  SupplierList: "/supplier/list",
+  SupplierCreate: "/supplier/create",
+  SupplierView: "/supplier/[id]/view",
+  SupplierEdit: "/supplier/[id]/edit",
 };
