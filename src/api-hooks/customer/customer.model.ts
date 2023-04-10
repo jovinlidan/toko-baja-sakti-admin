@@ -44,7 +44,7 @@ export class CustomerLite {
   status?: string;
 
   @Type(() => CustomerAddress)
-  addresses: CustomerAddress[];
+  address?: CustomerAddress;
 
   @Expose({ name: "created_at" })
   @Type(() => Date)

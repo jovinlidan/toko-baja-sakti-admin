@@ -10,4 +10,5 @@ export default {
   ItemEdit: "/item/[id]/edit",
 
   CustomerList: "/customer/list",
+  CustomerCreate: "/category-item/create",
 };

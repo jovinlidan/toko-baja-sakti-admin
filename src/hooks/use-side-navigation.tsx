@@ -22,7 +22,7 @@ const navigations: NavigationInterface[] = [
     label: "Barang",
   },
   {
-    href: "/pelanggan",
+    href: routeConstant.CustomerList,
     label: "Pelanggan",
   },
   {
