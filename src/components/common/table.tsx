@@ -35,9 +35,9 @@ interface Props<T> {
   meta?: PaginationMeta;
   queryKeyFn?: (input: any) => string[];
 
-  page: number;
-  setPage: (page: number) => void;
-  setLimit: (imit: number) => void;
+  page?: number;
+  setPage?: (page: number) => void;
+  setLimit?: (imit: number) => void;
 }
 export default function TableComponent<T>(props: Props<T>) {
   const {
@@ -162,12 +162,14 @@ export default function TableComponent<T>(props: Props<T>) {
           </Tbody>
         </StyledTable>
       </TableContainer>
-      <PaginationComponent
-        onPageChange={(page) => setPage(page)}
-        meta={meta}
-        page={page}
-        onLimitChange={(limit) => setLimit(limit)}
-      />
+      {typeof page !== "undefined" && (
+        <PaginationComponent
+          onPageChange={(page) => setPage?.(page)}
+          meta={meta}
+          page={page}
+          onLimitChange={(limit) => setLimit?.(limit)}
+        />
+      )}
     </Container>
   );
 }

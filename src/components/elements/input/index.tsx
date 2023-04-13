@@ -1,6 +1,7 @@
 import invariant from "invariant";
 import * as React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
+import DatePickerField, { DatePickerFieldProps } from "./date-picker-field";
 import { SingleFilePicker, SingleFilePickerProps } from "./file-picker";
 import SelectEnumField, { SelectEnumFieldProps } from "./select-enum-field";
 import SelectField, { SelectFieldProps } from "./select-field";
@@ -15,6 +16,7 @@ type InputType =
   | "textarea"
   | "number"
   | "select"
+  | "date"
   | "submit"
   | "file"
   | "enum";
@@ -30,12 +32,15 @@ function RawInput(
     | TextFieldProps
     | TextareaFieldProps
     | TextNumberFieldProps
+    | DatePickerFieldProps
     | SelectFieldProps
     | SelectEnumFieldProps
     | SingleFilePickerProps
     | SubmitProps,
-  ref: any
+  propsRef: any
 ) {
+  // const hookRef = React.useRef();
+  const ref = propsRef || React.createRef();
   switch (props.type) {
     case "text":
     case "password":
@@ -44,10 +49,12 @@ function RawInput(
       return <TextareaField {...props} ref={ref} />;
     case "number":
       return <TextNumberField {...props} />;
+    case "date":
+      return <DatePickerField {...props} ref={ref} />;
     case "select":
       return <SelectField {...props} ref={ref} />;
     case "enum":
-      return <SelectEnumField {...props} />;
+      return <SelectEnumField {...props} ref={ref} />;
     case "file":
       return <SingleFilePicker {...props} />;
     case "submit":

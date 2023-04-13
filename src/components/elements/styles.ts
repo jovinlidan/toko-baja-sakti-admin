@@ -128,6 +128,19 @@ export const FullContainer = styled("div", {
   "@md": {
     flexDirection: "row",
   },
+  defaultVariants: {
+    direction: "row",
+  },
+  variants: {
+    direction: {
+      column: {
+        flexDirection: "column",
+      },
+      row: {
+        flexDirection: "row",
+      },
+    },
+  },
 });
 
 export const HalfContainer = styled("div", {

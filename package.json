@@ -15,6 +15,7 @@
     "@stitches/react": "^1.2.8",
     "class-transformer": "^0.5.1",
     "classnames": "^2.3.2",
+    "date-fns": "^2.29.3",
     "humps": "^2.0.1",
     "immer": "^9.0.21",
     "invariant": "^2.2.4",
@@ -26,6 +27,7 @@
     "qs": "^6.11.0",
     "react": "18.2.0",
     "react-awesome-reveal": "4.1.0",
+    "react-datepicker": "^4.11.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.43.2",
@@ -43,12 +45,13 @@
     "ts-deepmerge": "^6.0.2",
     "tsparticles": "^2.9.3",
     "use-debounce": "^9.0.3",
-    "yup": "^0.32.11"
+    "yup": "1.1.0"
   },
   "devDependencies": {
     "@types/invariant": "^2.2.35",
     "@types/node": "18.14.0",
     "@types/react": "18.0.28",
+    "@types/react-datepicker": "^4.10.0",
     "@types/react-dom": "18.0.11",
     "@types/react-table": "^7.7.14",
     "eslint": "8.34.0",

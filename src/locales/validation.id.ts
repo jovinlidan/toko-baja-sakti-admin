@@ -1,9 +1,5 @@
-/*eslint-disable no-template-curly-in-string*/
+import { LocaleObject } from "yup";
 
-import printValue from "yup/lib/util/printValue";
-import { LocaleObject } from "yup/lib/locale";
-
-// Based on https://github.com/jquense/yup/blob/2973d0a/src/locale.js
 const mixed: LocaleObject["mixed"] = {
   default: "${path} tidak valid.",
   required: "Kolom ini wajib diisi",
@@ -13,10 +9,8 @@ const mixed: LocaleObject["mixed"] = {
     const isCast = originalValue != null && originalValue !== value;
     let msg =
       `${path} harus merupakan tipe \`${type}\`, ` +
-      `tetapi nilai akhir adalah: \`${printValue(value, true)}\`` +
-      (isCast
-        ? ` (dilemparkan dari nilai \`${printValue(originalValue, true)}\`).`
-        : ".");
+      `tetapi nilai akhir adalah: \`${value}\`` +
+      (isCast ? ` (dilemparkan dari nilai \`${originalValue}\`).` : ".");
 
     if (value === null) {
       msg +=

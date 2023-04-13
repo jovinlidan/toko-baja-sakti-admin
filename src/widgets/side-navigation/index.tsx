@@ -14,7 +14,7 @@ export default function SideNavigationWidget() {
       {navigations.map((nav) => (
         <NavigationItem
           {...nav}
-          active={pathname.includes(nav.key)}
+          active={new RegExp(`/${nav.key}/`).test(pathname)}
           key={nav.href}
         />
       ))}

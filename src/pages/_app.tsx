@@ -1,6 +1,8 @@
 import "reflect-metadata";
-import AdminLayout from "@/layouts/admin-layout";
+import "react-datepicker/dist/react-datepicker.css";
 import "@/styles/globals.css";
+
+import AdminLayout from "@/layouts/admin-layout";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
@@ -23,6 +25,7 @@ type AppPropsWithLayout = AppProps & {
 };
 
 setLocale(validationID);
+
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout =
     Component.getLayout || ((page) => <AdminLayout>{page}</AdminLayout>);

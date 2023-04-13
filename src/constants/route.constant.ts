@@ -18,4 +18,9 @@ export default {
   SupplierCreate: "/supplier/create",
   SupplierView: "/supplier/[id]/view",
   SupplierEdit: "/supplier/[id]/edit",
+
+  PurchaseOrderList: "/purchase-order/list",
+  PurchaseOrderCreate: "/purchase-order/create",
+  PurchaseOrderView: "/purchase-order/[id]/view",
+  PurchaseOrderEdit: "/purchase-order/[id]/edit",
 };

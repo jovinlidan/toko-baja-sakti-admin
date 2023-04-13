@@ -27,6 +27,7 @@ export default function Button(props: ButtonProps) {
     startEnhancer,
     endEnhancer,
     href,
+    type = "button",
     variant = "primary",
     size = "medium",
     loading,
@@ -51,6 +52,7 @@ export default function Button(props: ButtonProps) {
         {...restProps}
         variant={variant}
         size={size}
+        type={type}
         className={classNames(
           restProps.disabled ? styles.disabled() : undefined
         )}

@@ -34,9 +34,9 @@ const navigations: NavigationInterface[] = [
     key: "supplier",
   },
   {
-    href: "/pesanan-pembelian",
+    href: routeConstant.PurchaseOrderList,
     label: "Pesanan Pembelian",
-    key: "order-purchase",
+    key: "purchase-order",
   },
   {
     href: "/pembelian",

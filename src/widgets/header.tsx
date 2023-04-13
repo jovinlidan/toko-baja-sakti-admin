@@ -73,6 +73,22 @@ export default function Header() {
         href: routeConstant.SupplierView,
         label: "Detail Supplier",
       },
+      {
+        href: routeConstant.PurchaseOrderList,
+        label: "Pesanan Pembelian",
+      },
+      {
+        href: routeConstant.PurchaseOrderCreate,
+        label: "Tambah Pesanan Pembelian",
+      },
+      {
+        href: routeConstant.PurchaseOrderEdit,
+        label: "Ubah Pesanan Pembelian",
+      },
+      {
+        href: routeConstant.PurchaseOrderView,
+        label: "Detail Pesanan Pembelian",
+      },
     ];
   }, [navigations]);
 

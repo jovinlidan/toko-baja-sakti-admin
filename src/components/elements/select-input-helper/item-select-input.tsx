@@ -1,21 +1,19 @@
-import { City, CityLite } from "@/api-hooks/city/city.model";
-import { useGetCities, useGetCity } from "@/api-hooks/city/city.query";
+import { Item, ItemLite } from "@/api-hooks/item/item.model";
+import { useGetItem, useGetItems } from "@/api-hooks/item/item.query";
 import {
   BaseOption,
   BaseOptionPaginate,
 } from "@/common/repositories/common.model";
-import routeConstant from "@/constants/route.constant";
 import useSelectInputHelper from "@/hooks/use-select-input-helper";
-import { useRouter } from "next/router";
 import * as React from "react";
 import { useController, useFormContext } from "react-hook-form";
 import Input from "../input";
 
-function transformer(item: CityLite | City): BaseOptionPaginate {
+function transformer(item: ItemLite | Item): BaseOptionPaginate {
   return {
     id: item.id,
     value: item.id,
-    label: item.name,
+    label: `${item.categoryItem.name}-${item.size}`,
   };
 }
 
@@ -27,9 +25,8 @@ interface Props {
   onChange?: (value?: any) => void;
 }
 
-export default function CitySelectOption(props: Props) {
+export default function ItemSelectOption(props: Props) {
   const { control } = useFormContext();
-  const router = useRouter();
 
   const { field } = useController({
     name: props.name,
@@ -41,8 +38,8 @@ export default function CitySelectOption(props: Props) {
     onSelectItem: (value) => {
       field.onChange(value?.value);
     },
-    useListQueryHook: useGetCities,
-    useDetailLazyQueryHook: useGetCity,
+    useListQueryHook: useGetItems,
+    useDetailLazyQueryHook: useGetItem,
     getMemoizedListVariables: React.useCallback(
       (page, q) => ({
         params: {
