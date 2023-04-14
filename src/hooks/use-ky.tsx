@@ -1,23 +1,21 @@
+import { getRefreshToken } from "@/api-hooks/auth/auth.mutation";
 import configEnv from "@/common/config";
-import { getCookies } from "@/common/helpers/common";
+import { deleteCookie, getCookies, setCookie } from "@/common/helpers/common";
 import { queryClient } from "@/common/repositories/query-client";
-// import logout from "@/common/utils/auth";
 import invariant from "invariant";
 import ky, { Options } from "ky";
 import { useRouter } from "next/router";
 import * as React from "react";
-
+import { camelizeKeys } from "humps";
 export interface KYStateProps {
   credential?: any;
   setCredential: React.Dispatch<React.SetStateAction<any>>;
   setRedirectLogout?: React.Dispatch<React.SetStateAction<boolean>>;
-  refreshContainer: () => void;
 }
 
 export const KYContext = React.createContext<KYStateProps>({
   credential: undefined,
   setCredential: () => {},
-  refreshContainer: () => {},
 });
 
 interface Props {
@@ -49,6 +47,31 @@ const config: Options = {
 
         return newResponse;
       },
+      async (_request, _options, _response) => {
+        if (
+          _response.status === 401 &&
+          !_request.headers.get("x-client-fe-retry")
+        ) {
+          const refreshToken = getCookies("refresh");
+          try {
+            const res = camelizeKeys(await getRefreshToken({ refreshToken }));
+            setCookie("token", res.data.accessToken, 1);
+            setCookie("refresh", res.data.refreshToken, 1);
+            return client(_request);
+          } catch {}
+        }
+      },
+      async (_request, _options, _response) => {
+        if (
+          _response.status === 400 &&
+          _request.headers.get("x-client-fe-retry")
+        ) {
+          deleteCookie("token");
+          deleteCookie("refresh");
+          queryClient.invalidateQueries();
+          window.location.assign("/login");
+        }
+      },
     ],
     beforeRetry: [
       ({ request, options, error, retryCount }) => {
@@ -78,12 +101,6 @@ export async function setBeforeRetry(
   });
 }
 
-export async function setLogoutHook(func: (request, _, response) => void) {
-  //@ts-expect-error
-  config.hooks.afterResponse[1] = func;
-  client = client.extend(config);
-}
-
 export async function setupBeforeRetry(
   func: ({ request, options, error, retryCount }) => void
 ) {
@@ -95,39 +112,25 @@ export async function setupBeforeRetry(
 }
 
 export default function KYContainer(props: Props) {
-  const [refreshIndex, setRefreshIndex] = React.useState(0);
   const [userCredential, setUserCredential] = React.useState<any | undefined>();
-  // const [renderChild, setRenderChild] = React.useState<boolean>(false);
   const [redirectLogout, setRedirectLogout] = React.useState<boolean>(false);
   const router = useRouter();
 
   const { children } = props;
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const logoutFunc = async (request, _, response) => {
-    if (response.status === 401) {
-      setRedirectLogout(true);
-      // await logout(false);
-      queryClient.invalidateQueries();
-      await setUserCredential(undefined);
-    }
-  };
-
   React.useEffect(() => {
     async function exec() {
-      await router.push("/login");
+      deleteCookie("token");
+      deleteCookie("refresh");
+      queryClient.invalidateQueries();
       setRedirectLogout(false);
-      // setRenderChild(false);
+      await router.push("/login");
     }
 
     if (redirectLogout) {
       exec();
     }
   }, [redirectLogout, router]);
-
-  React.useEffect(() => {
-    setLogoutHook(logoutFunc);
-  }, [logoutFunc]);
 
   const value = React.useMemo<KYStateProps>(
     () => ({
@@ -140,14 +143,9 @@ export default function KYContainer(props: Props) {
         }
       },
       setRedirectLogout,
-      refreshContainer: () => {
-        setRefreshIndex((prev) => prev + 1);
-      },
     }),
     [userCredential]
   );
-
-  // const showChild = renderChild || router.pathname.startsWith("/login");
 
   return <KYContext.Provider value={value}>{children}</KYContext.Provider>;
 }
