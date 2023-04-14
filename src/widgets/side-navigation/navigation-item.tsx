@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Text } from "@/components/elements";
 import { css, styled, theme } from "@/config/stitches/theme.stitches";
 import Separator from "@/components/common/separator";
+import imageConstant from "@/constants/image.constant";
 
 interface Props extends NavigationInterface {
   active: boolean;
@@ -15,9 +16,7 @@ export default function NavigationItem(props: Props) {
       <Content active={props.active}>
         <Image
           src={
-            props.active
-              ? "/assets/supplier-active.png"
-              : "/assets/supplier.png"
+            props.active ? imageConstant.supplierActive : imageConstant.supplier
           }
           alt="supplier"
           width={24}

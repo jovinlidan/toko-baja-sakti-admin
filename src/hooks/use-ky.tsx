@@ -7,22 +7,30 @@ import ky, { Options } from "ky";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { camelizeKeys } from "humps";
+
+const logout = () => {
+  deleteCookie("token");
+  deleteCookie("refresh");
+  window.location.assign("/login");
+  queryClient.invalidateQueries();
+};
+
 export interface KYStateProps {
   credential?: any;
   setCredential: React.Dispatch<React.SetStateAction<any>>;
-  setRedirectLogout?: React.Dispatch<React.SetStateAction<boolean>>;
+  logout: () => void;
 }
 
 export const KYContext = React.createContext<KYStateProps>({
   credential: undefined,
   setCredential: () => {},
+  logout,
 });
 
 interface Props {
   userCredential?: any;
   children: React.ReactNode;
 }
-
 const config: Options = {
   prefixUrl: configEnv.apiEndpoint + "/api/employee",
   timeout: 60000,
@@ -66,10 +74,7 @@ const config: Options = {
           _response.status === 400 &&
           _request.headers.get("x-client-fe-retry")
         ) {
-          deleteCookie("token");
-          deleteCookie("refresh");
-          queryClient.invalidateQueries();
-          window.location.assign("/login");
+          logout();
         }
       },
     ],
@@ -113,24 +118,9 @@ export async function setupBeforeRetry(
 
 export default function KYContainer(props: Props) {
   const [userCredential, setUserCredential] = React.useState<any | undefined>();
-  const [redirectLogout, setRedirectLogout] = React.useState<boolean>(false);
   const router = useRouter();
 
   const { children } = props;
-
-  React.useEffect(() => {
-    async function exec() {
-      deleteCookie("token");
-      deleteCookie("refresh");
-      queryClient.invalidateQueries();
-      setRedirectLogout(false);
-      await router.push("/login");
-    }
-
-    if (redirectLogout) {
-      exec();
-    }
-  }, [redirectLogout, router]);
 
   const value = React.useMemo<KYStateProps>(
     () => ({
@@ -142,7 +132,7 @@ export default function KYContainer(props: Props) {
           setUserCredential(credential);
         }
       },
-      setRedirectLogout,
+      logout,
     }),
     [userCredential]
   );

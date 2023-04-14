@@ -3,12 +3,16 @@ import { useSideNavigation } from "@/hooks/use-side-navigation";
 import { useRouter } from "next/router";
 import { Text } from "@/components/elements";
 import * as React from "react";
-import { styled } from "@/config/stitches/theme.stitches";
+import { css, styled, theme } from "@/config/stitches/theme.stitches";
 import routeConstant from "@/constants/route.constant";
+import { useKY } from "@/hooks/use-ky";
+import Separator from "@/components/common/separator";
+import { LogoutSVG } from "@/common/assets";
 
 export default function Header() {
   const { navigations } = useSideNavigation();
   const router = useRouter();
+  const { logout } = useKY();
 
   const mappings = React.useMemo(() => {
     return [
@@ -122,21 +126,47 @@ export default function Header() {
       <Container>
         <Text variant="h5">{headerMapper(router.pathname)}</Text>
       </Container>
+      <LogoutContainer onClick={logout}>
+        <LogoutSVG
+          color={theme.colors.errorMain.value}
+          width={24}
+          height={24}
+        />
+        <Separator mr={12} />
+        <Text variant="h6" color="$errorMain">
+          Logout
+        </Text>
+      </LogoutContainer>
     </StyledHeader>
   );
 }
 
+const styles = {
+  logoutText: css({}),
+};
+
+const LogoutContainer = styled("div", {
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  "& > *": {},
+});
 const StyledHeader = styled("header", {
   position: "fixed",
   background: "#FFFFFF",
   height: sizeConstant.headerHeight,
-  width: "100%",
+  width: "calc(100% - 260px)",
   zIndex: "$header",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  paddingRight: 32,
   "&::after": {
     position: "absolute",
     content: "",
     width: "100%",
     height: 0.1,
+    bottom: 0,
     boxShadow: "$inputElevation",
   },
 });
