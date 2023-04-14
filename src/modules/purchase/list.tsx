@@ -7,11 +7,12 @@ import routeConstant from "@/constants/route.constant";
 import useComposedQuery from "@/hooks/use-composed-query";
 import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import { useApplyQueryFilter } from "@/hooks/use-apply-query-filter";
-import { useGetPurchaseOrders } from "@/api-hooks/purchase-order/purchase-order.query";
 import { format } from "date-fns";
-import PurchaseListFilterForm from "./components/purchase-order-list-filter-form";
+import PurchaseListFilterForm from "./components/purchase-list-filter-form";
+import { useGetPurchases } from "@/api-hooks/purchase/purchase.query";
+import { string2money } from "@/utils/string";
 
-export default function PurchaseOrderList() {
+export default function PurchaseList() {
   const [page, setPage] = React.useState<number>(1);
   const [limit, setLimit] = React.useState<number>();
 
@@ -23,22 +24,17 @@ export default function PurchaseOrderList() {
       },
       {
         Header: "Nama Supplier",
-        accessor: "supplier.name",
-      },
-      {
-        Header: "Jumlah Item",
-        accessor: "totalItem",
-        Cell: ({ value }) => <>{value ? value : "-"}</>,
-        maxWidth: 200,
+        accessor: "purchaseOrder.supplier.name",
       },
       {
         Header: "Tanggal",
-        accessor: "transactionDate",
+        accessor: "receivedDate",
         Cell: ({ value }) => <>{value ? format(value, "dd MMM yyyy") : "-"}</>,
       },
       {
-        Header: "Status",
-        accessor: "status",
+        Header: "Total",
+        accessor: "grandTotal",
+        Cell: ({ value }) => <>Rp {string2money(value)}</>,
       },
       {
         Header: "",
@@ -47,7 +43,7 @@ export default function PurchaseOrderList() {
           return (
             <Button
               href={{
-                pathname: routeConstant.PurchaseOrderView,
+                pathname: routeConstant.PurchaseView,
                 query: { id: row?.original?.id },
               }}
               size="small"
@@ -70,7 +66,7 @@ export default function PurchaseOrderList() {
     refetch,
     extras: [{ filters, setFilters }, { columns }],
   } = useComposedQuery(
-    useGetPurchaseOrders,
+    useGetPurchases,
     {
       params: {
         page,
@@ -95,7 +91,7 @@ export default function PurchaseOrderList() {
       <TopContainer>
         <Button
           size="large"
-          href={routeConstant.PurchaseOrderCreate}
+          href={routeConstant.PurchaseCreate}
           startEnhancer={(size) => (
             <PlusSVG
               width={size}

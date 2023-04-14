@@ -86,6 +86,8 @@ function TextField(props: DatePickerFieldProps, ref: any) {
           {...field}
           {...restProps}
           ref={ref}
+          className={styles.fullWidth()}
+          wrapperClassName={styles.fullWidth()}
           placeholderText={placeholder}
           selected={field.value || ""}
           disabled={_disabled}
@@ -115,6 +117,9 @@ const styles = {
       color: "$primaryDark",
       fontSize: 24,
     },
+  }),
+  fullWidth: css({
+    width: "100%",
   }),
 };
 

@@ -5,66 +5,65 @@ import * as Yup from "yup";
 import { Input, Form, Button } from "@/components/elements";
 import { toast } from "react-hot-toast";
 import { FullContainer, HalfContainer } from "@/components/elements/styles";
-import { formSetErrors } from "@/common/helpers/form";
-import { PurchaseOrder } from "@/api-hooks/purchase-order/purchase-order.model";
+import { formSetErrors, UpdateBatchHelper } from "@/common/helpers/form";
 import SupplierSelectOption from "@/components/elements/select-input-helper/supplier-select-input";
 import ItemSelectOption from "@/components/elements/select-input-helper/item-select-input";
 import { styled } from "@/config/stitches/theme.stitches";
-import TableItem, {
-  ItemTableDataType,
-} from "@/modules/purchase-order/components/item-table";
+import PurchaseOrderItemTable, {
+  PurchaseOrderItemTableDataType,
+} from "@/modules/purchase/components/purchase-order-item-table";
 import { FormValueState } from "@/components/elements/input";
 import { Item } from "@/api-hooks/item/item.model";
-import { useGetItem } from "@/api-hooks/item/item.query";
 import { camelizeKeys } from "humps";
+import { Purchase } from "@/api-hooks/purchase/purchase.model";
+import { useGetPurchaseOrderItems } from "@/api-hooks/purchase-order-item/purchase-order-item.query";
+import PurchaseOrderSelectOption from "@/components/elements/select-input-helper/purchase-order-select-input";
+import { PurchaseOrderItemLite } from "@/api-hooks/purchase-order-item/purchase-order-item.model";
 
 type FormType = {
   code?: string;
-  transactionDate?: Date;
-  purchaseOrderItems?: {
+  purchaseOrderId?: string;
+  receivedDate?: Date;
+  purchaseItems?: {
     id?: string;
-    itemId?: string;
+    purchaseOrderItemId?: string;
     quantity?: number;
+    price?: number;
+    amountNotReceived?: number;
     unit?: string;
   };
-  supplierId?: string;
-  status?: string;
 };
 
 interface Props {
-  data?: PurchaseOrder;
+  data?: Purchase;
   onSubmit: (
     values: FormType,
-    purchaseOrderItems: ItemTableDataType[]
+    purchaseItems: PurchaseOrderItemTableDataType[]
   ) => Promise<void> | void;
   defaultEditable?: boolean;
 }
 
-export default function PurchaseOrderForm(props: Props) {
+export default function PurchaseForm(props: Props) {
   const { data, defaultEditable = true } = props;
-  const [tableData, setTableData] = React.useState<ItemTableDataType[]>(
-    data?.purchaseOrderItems?.map((item) => ({
-      ...item.item,
-      poiId: item.id,
-      unit: item.unit,
-      quantity: item.quantity,
-    })) || []
-  );
-  const [tempData, setTempData] = React.useState<Item>();
+  const [tableData, setTableData] = React.useState<
+    PurchaseOrderItemTableDataType[]
+  >([]);
+  const [tempData, setTempData] = React.useState<PurchaseOrderItemLite>();
 
   const YupSchema = React.useMemo(
     () =>
       Yup.object().shape({
         code: Yup.string().nullable().strip(true),
-        status: Yup.string().nullable().strip(true),
-        transactionDate: Yup.date().required(),
-        supplierId: Yup.string().required(),
-        purchaseOrderItems: Yup.object()
+        purchaseOrderId: Yup.string().required(),
+        receivedDate: Yup.date().required(),
+        purchaseItems: Yup.object()
           .shape({
             id: Yup.string().nullable(),
-            itemId: Yup.string().required(),
+            purchaseOrderItemId: Yup.string().required(),
             quantity: Yup.number().required(),
-            unit: Yup.string().required(),
+            price: Yup.number().required(),
+            amountNotReceived: Yup.number().nullable().strip(true),
+            unit: Yup.string().nullable().strip(true),
           })
           .strip(true),
       }),
@@ -79,32 +78,40 @@ export default function PurchaseOrderForm(props: Props) {
       ...(data
         ? {
             code: data.code,
-            supplierId: data.supplier.id,
-            transactionDate: data.transactionDate,
-            status: data?.status,
+            purchaseOrderId: data.purchaseOrder.id,
+            receivedDate: data.receivedDate,
           }
         : {
-            transactionDate: new Date(Date.now()),
+            receivedDate: new Date(Date.now()),
           }),
     },
   });
 
-  const itemId = useWatch({
-    name: "purchaseOrderItems.itemId",
+  const purchaseOrderId = useWatch({
+    name: "purchaseOrderId",
     control: methods.control,
   });
 
-  const itemQuery = useGetItem(
-    { id: itemId! },
+  const purchaseOrderItemQuery = useGetPurchaseOrderItems(
+    { id: purchaseOrderId! },
     {
-      enabled: !!itemId,
+      enabled: !!purchaseOrderId,
       onSuccess: (data) => {
-        if (data.data) {
-          setTempData(camelizeKeys(data.data));
-        }
+        onPurchaseOrderItemSelect(undefined);
+        setTempData(undefined);
+        setTableData([]);
       },
     }
   );
+
+  const purchaseOrderItemOptions = React.useMemo(() => {
+    return (
+      purchaseOrderItemQuery.data?.data?.map((item) => ({
+        label: `${item.item.categoryItem.name}-(${item.item.categoryItem.code})`,
+        value: item.id,
+      })) || []
+    );
+  }, [purchaseOrderItemQuery.data?.data]);
 
   const onSubmit = React.useCallback(
     async (values) => {
@@ -114,8 +121,6 @@ export default function PurchaseOrderForm(props: Props) {
           input,
           tableData.map((data) => ({
             ...data,
-            unit:
-              data.unit === data.categoryItem.bigUnit ? "wholesale" : "retail",
           }))
         );
         methods.reset();
@@ -134,8 +139,8 @@ export default function PurchaseOrderForm(props: Props) {
     async (values) => {
       try {
         await YupSchema.validateAt(
-          "purchaseOrderItems",
-          { purchaseOrderItems: { ...values } },
+          "purchaseItems",
+          { purchaseItems: { ...values } },
           {
             abortEarly: false,
           }
@@ -146,7 +151,7 @@ export default function PurchaseOrderForm(props: Props) {
             {
               ...tempData,
               quantity: values.quantity,
-              unit: values.unit,
+              price: values.price,
               poiId: undefined,
             },
           ])
@@ -174,19 +179,41 @@ export default function PurchaseOrderForm(props: Props) {
     });
   }, []);
 
-  const satuanOptions = React.useMemo(() => {
-    if (!tempData) return [];
-    return [
-      {
-        label: tempData.categoryItem.bigUnit,
-        value: tempData.categoryItem.bigUnit,
-      },
-      {
-        label: tempData.categoryItem.smallUnit,
-        value: tempData.categoryItem.smallUnit,
-      },
-    ];
-  }, [tempData]);
+  const onPurchaseOrderItemSelect = React.useCallback(
+    (values) => {
+      const id = values?.value;
+      if (!id) {
+        UpdateBatchHelper(
+          {
+            purchaseItems: {
+              purchaseOrderItemId: "",
+              amountNotReceived: "",
+              unit: "",
+              price: "",
+              quantity: "",
+            },
+          },
+          methods
+        );
+        return;
+      }
+      const purchaseOrderItem = purchaseOrderItemQuery.data?.data?.find(
+        (item) => item.id === id
+      );
+      setTempData(purchaseOrderItem);
+      UpdateBatchHelper(
+        {
+          purchaseItems: {
+            purchaseOrderItemId: id,
+            amountNotReceived: purchaseOrderItem?.amountNotReceived,
+            unit: purchaseOrderItem?.unit,
+          },
+        },
+        methods
+      );
+    },
+    [methods, purchaseOrderItemQuery.data?.data]
+  );
 
   return (
     <Form
@@ -200,61 +227,68 @@ export default function PurchaseOrderForm(props: Props) {
             <Input name="code" type="text" label="Kode" disabled />
           )}
 
-          <SupplierSelectOption
-            name="supplierId"
-            label="Supplier"
-            placeholder="Pilih Supplier"
+          <PurchaseOrderSelectOption
+            name="purchaseOrderId"
+            label="Pesanan Pembelian"
+            placeholder="Pilih Pesanan Pembelian"
           />
         </HalfContainer>
         <HalfContainer>
-          <Input
-            name="transactionDate"
-            type="date"
-            label="Tanggal Pesanan Pembelian"
-          />
-          {data?.status && (
-            <Input name="status" type="text" label="Status Pesanan" disabled />
-          )}
+          <Input name="receivedDate" type="date" label="Tanggal Pembelian" />
         </HalfContainer>
       </FullContainer>
       <FullContainer direction="column">
         {defaultEditable && (
           <>
-            <ItemSelectOption
-              name="purchaseOrderItems.itemId"
+            <Input
+              name="purchaseItems.purchaseOrderItemId"
+              type="select"
               label="Tambah Barang"
               placeholder="Pilih Barang"
+              options={purchaseOrderItemOptions}
+              isClearable
+              isLoading={
+                purchaseOrderItemQuery.isLoading ||
+                purchaseOrderItemQuery.isFetching
+              }
+              onSelect={onPurchaseOrderItemSelect}
             />
             <Row>
               <HalfContainer>
                 <Input
-                  name="purchaseOrderItems.quantity"
+                  name="purchaseItems.quantity"
                   type="number"
                   label="Jumlah"
+                />
+                <Input
+                  name="purchaseItems.amountNotReceived"
+                  type="number"
+                  label="Jumlah Belum Diterima"
+                  disabled
                 />
               </HalfContainer>
               <HalfContainer>
                 <Input
-                  name="purchaseOrderItems.unit"
-                  type="select"
+                  name="purchaseItems.price"
+                  type="number"
+                  label="Harga Satuan"
+                />
+                <Input
+                  name="purchaseItems.unit"
+                  type="text"
                   label="Satuan"
-                  isLoading={itemQuery.isLoading || itemQuery.isFetching}
-                  placeholder="Pilih Satuan"
-                  options={satuanOptions}
+                  disabled
                 />
               </HalfContainer>
             </Row>
           </>
         )}
-        <TableItem data={tableData} onDelete={onDeleteItem} />
+        <PurchaseOrderItemTable data={tableData} onDelete={onDeleteItem} />
         {defaultEditable && (
           <AddButtonContainer>
-            <FormValueState keys={["purchaseOrderItems"]}>
-              {({ purchaseOrderItems }) => (
-                <Button
-                  size="large"
-                  onClick={() => onAddItem(purchaseOrderItems)}
-                >
+            <FormValueState keys={["purchaseItems"]}>
+              {({ purchaseItems }) => (
+                <Button size="large" onClick={() => onAddItem(purchaseItems)}>
                   TAMBAH
                 </Button>
               )}

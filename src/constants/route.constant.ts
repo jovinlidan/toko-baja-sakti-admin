@@ -23,4 +23,9 @@ export default {
   PurchaseOrderCreate: "/purchase-order/create",
   PurchaseOrderView: "/purchase-order/[id]/view",
   PurchaseOrderEdit: "/purchase-order/[id]/edit",
+
+  PurchaseList: "/purchase/list",
+  PurchaseCreate: "/purchase/create",
+  PurchaseView: "/purchase/[id]/view",
+  PurchaseEdit: "/purchase/[id]/edit",
 };

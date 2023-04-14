@@ -22,7 +22,7 @@ const FILTER_STATUS = "status";
 const FILTER_DATE_BEFORE = "transaction_date_before";
 const FILTER_DATE_AFTER = "transaction_date_after";
 
-export default function PurchaseOrderListFilterForm(props: Props) {
+export default function PurchaseListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;
   const inputRef = React.useRef<any>();
   const YupSchema = React.useMemo(() => Yup.object().shape({}), []);

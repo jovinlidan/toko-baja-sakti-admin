@@ -89,6 +89,22 @@ export default function Header() {
         href: routeConstant.PurchaseOrderView,
         label: "Detail Pesanan Pembelian",
       },
+      {
+        href: routeConstant.PurchaseList,
+        label: "Pembelian",
+      },
+      {
+        href: routeConstant.PurchaseCreate,
+        label: "Tambah Pembelian",
+      },
+      {
+        href: routeConstant.PurchaseEdit,
+        label: "Ubah Pembelian",
+      },
+      {
+        href: routeConstant.PurchaseView,
+        label: "Detail Pembelian",
+      },
     ];
   }, [navigations]);
 
