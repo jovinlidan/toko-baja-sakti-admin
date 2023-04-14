@@ -3,7 +3,7 @@ import { getCookies } from "@/common/helpers/common";
 import { queryClient } from "@/common/repositories/query-client";
 // import logout from "@/common/utils/auth";
 import invariant from "invariant";
-import ky from "ky";
+import ky, { Options } from "ky";
 import { useRouter } from "next/router";
 import * as React from "react";
 
@@ -25,7 +25,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-const config = {
+const config: Options = {
   prefixUrl: configEnv.apiEndpoint + "/api/employee",
   timeout: 60000,
   headers: {
@@ -55,6 +55,14 @@ const config = {
         request.headers.set("x-retry", retryCount.toString());
       },
     ],
+    beforeRequest: [
+      (request) => {
+        request.headers.set("Accept-Language", "id");
+        request.headers.set("Content-Type", "application/json");
+        request.headers.set("Authorization", `Bearer ${getCookies("token")}`);
+        request.headers.set("ngrok-skip-browser-warning", "true");
+      },
+    ],
   },
 };
 
@@ -76,21 +84,6 @@ export async function setLogoutHook(func: (request, _, response) => void) {
   client = client.extend(config);
 }
 
-export async function setupBeforeHooks() {
-  client = await client.extend({
-    hooks: {
-      beforeRequest: [
-        (request) => {
-          request.headers.set("Accept-Language", "id");
-          request.headers.set("Content-Type", "application/json");
-          request.headers.set("Authorization", `Bearer ${getCookies("token")}`);
-          request.headers.set("ngrok-skip-browser-warning", "true");
-        },
-      ],
-    },
-  });
-}
-
 export async function setupBeforeRetry(
   func: ({ request, options, error, retryCount }) => void
 ) {
@@ -104,7 +97,7 @@ export async function setupBeforeRetry(
 export default function KYContainer(props: Props) {
   const [refreshIndex, setRefreshIndex] = React.useState(0);
   const [userCredential, setUserCredential] = React.useState<any | undefined>();
-  const [renderChild, setRenderChild] = React.useState<boolean>(false);
+  // const [renderChild, setRenderChild] = React.useState<boolean>(false);
   const [redirectLogout, setRedirectLogout] = React.useState<boolean>(false);
   const router = useRouter();
 
@@ -124,27 +117,13 @@ export default function KYContainer(props: Props) {
     async function exec() {
       await router.push("/login");
       setRedirectLogout(false);
-      setRenderChild(false);
+      // setRenderChild(false);
     }
 
     if (redirectLogout) {
       exec();
     }
   }, [redirectLogout, router]);
-
-  React.useEffect(() => {
-    async function exec() {
-      // const cookies = await getCookies();
-
-      await setupBeforeHooks();
-
-      // set login
-
-      setRenderChild(true);
-    }
-
-    exec();
-  }, [refreshIndex, userCredential]);
 
   React.useEffect(() => {
     setLogoutHook(logoutFunc);
@@ -168,13 +147,9 @@ export default function KYContainer(props: Props) {
     [userCredential]
   );
 
-  const showChild = renderChild || router.pathname.startsWith("/login");
+  // const showChild = renderChild || router.pathname.startsWith("/login");
 
-  return (
-    <KYContext.Provider value={value}>
-      {showChild ? children : null}
-    </KYContext.Provider>
-  );
+  return <KYContext.Provider value={value}>{children}</KYContext.Provider>;
 }
 
 export function useKY() {
