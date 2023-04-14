@@ -4,7 +4,6 @@ import TypographyConstant from "@/config/stitches/typography.stitches";
 import { VariantProps } from "@stitches/react";
 import * as React from "react";
 import { useFormContext, useController } from "react-hook-form";
-import { NumericFormatProps, NumericFormat } from "react-number-format";
 
 import { BaseElementInputProps } from ".";
 import CustomFormControl, {
@@ -12,10 +11,14 @@ import CustomFormControl, {
 } from "../custom-form-control";
 import { FormContext } from "../form";
 
+type BaseInputType = React.DetailedHTMLProps<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  HTMLInputElement
+>;
 export interface TextNumberFieldProps
   extends BaseElementInputProps,
     Omit<CustomFormControlProps, "name" | "error" | "children">,
-    Omit<NumericFormatProps, "name" | "ref" | "size" | "type"> {
+    Omit<BaseInputType, "name" | "ref" | "size" | "type"> {
   type: "number";
   startEnhancer?: React.ReactNode;
   endEnhancer?: React.ReactNode;
@@ -44,7 +47,7 @@ export default function TextNumberField(props: TextNumberFieldProps) {
 
   const _onChange = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      field.onChange(e.target.value || undefined);
+      field.onChange(e.target.value || null);
     },
     [field]
   );
@@ -70,7 +73,7 @@ export default function TextNumberField(props: TextNumberFieldProps) {
         <StyledInput
           {...field}
           {...restProps}
-          customInput={undefined}
+          type="number"
           value={field.value}
           disabled={_disabled}
           onChange={_onChange}
@@ -88,7 +91,7 @@ export default function TextNumberField(props: TextNumberFieldProps) {
 
 const BaseInput = styled("input", {});
 
-const StyledInput = styled(NumericFormat, {
+const StyledInput = styled("input", {
   border: "none",
   width: "100%",
   color: "$textPrimary",
