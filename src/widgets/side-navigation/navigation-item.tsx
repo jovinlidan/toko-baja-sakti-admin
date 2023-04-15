@@ -15,12 +15,11 @@ export default function NavigationItem(props: Props) {
     <Link href={props.href} className={styles.link()}>
       <Content active={props.active}>
         <Image
-          src={
-            props.active ? imageConstant.supplierActive : imageConstant.supplier
-          }
+          src={props.active ? props.iconActive : props.icon}
           alt="supplier"
           width={24}
           height={24}
+          priority
         />
         <Separator mr={8} />
         <Text
