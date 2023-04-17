@@ -16,7 +16,7 @@ interface Props {
   setFilters: (value: React.SetStateAction<Filter[] | undefined>) => void;
 }
 
-const FILTER_CODE = "code";
+const FILTER_SEARCH = "search";
 
 export default function SupplierListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;
@@ -26,13 +26,10 @@ export default function SupplierListFilterForm(props: Props) {
 
   const methods = useForm<any>({
     resolver,
-    resetOptions: {
-      keepTouched: true,
-    },
     mode: "all",
     defaultValues: {
-      code:
-        filters?.find((filter) => filter.name === FILTER_CODE)?.value ||
+      [FILTER_SEARCH]:
+        filters?.find((filter) => filter.name === FILTER_SEARCH)?.value ||
         undefined,
     },
   });
@@ -41,9 +38,9 @@ export default function SupplierListFilterForm(props: Props) {
     async (values) => {
       setFilters((prevFilters) =>
         produce(prevFilters, (draft) => {
-          const matchedCode = draft?.find((f) => f.name === FILTER_CODE);
-          if (matchedCode) {
-            matchedCode.value = values.code;
+          const matchedSearch = draft?.find((f) => f.name === FILTER_SEARCH);
+          if (matchedSearch) {
+            matchedSearch.value = values[FILTER_SEARCH];
           }
         })
       );
@@ -55,7 +52,7 @@ export default function SupplierListFilterForm(props: Props) {
     <Form methods={methods} onSubmit={onSubmit}>
       <Container>
         <Input
-          name="code"
+          name={FILTER_SEARCH}
           type="text"
           size="large"
           placeholder="Cari Kode/Nama Pelanggan"
