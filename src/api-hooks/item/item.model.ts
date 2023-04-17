@@ -1,9 +1,10 @@
 import { Expose, Type } from "class-transformer";
-import {
-  CategoryItemLite,
-  CategoryItem,
-} from "@/api-hooks/category-item/category-item.model";
-import { number } from "yup";
+import { CategoryItem } from "@/api-hooks/category-item/category-item.model";
+
+export enum ItemUnitEnum {
+  Wholesale = "wholesale",
+  Retail = "retail",
+}
 
 export class ItemLite {
   id: string;
