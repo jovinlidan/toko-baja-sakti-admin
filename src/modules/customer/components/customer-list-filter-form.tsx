@@ -16,26 +16,22 @@ interface Props {
   setFilters: (value: React.SetStateAction<Filter[] | undefined>) => void;
 }
 
-const FILTER_CODE = "code";
+const FILTER_SEARCH = "search";
 const FILTER_PHONE = "phone";
 
 export default function CustomerListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;
-  const inputRef = React.useRef<any>();
   const YupSchema = React.useMemo(() => Yup.object().shape({}), []);
   const resolver = useYupValidationResolver(YupSchema);
 
   const methods = useForm<any>({
     resolver,
-    resetOptions: {
-      keepTouched: true,
-    },
     mode: "all",
     defaultValues: {
-      code:
-        filters?.find((filter) => filter.name === FILTER_CODE)?.value ||
+      [FILTER_SEARCH]:
+        filters?.find((filter) => filter.name === FILTER_SEARCH)?.value ||
         undefined,
-      phone:
+      [FILTER_PHONE]:
         filters?.find((filter) => filter.name === FILTER_PHONE)?.value ||
         undefined,
     },
@@ -45,13 +41,13 @@ export default function CustomerListFilterForm(props: Props) {
     async (values) => {
       setFilters((prevFilters) =>
         produce(prevFilters, (draft) => {
-          const matchedCode = draft?.find((f) => f.name === FILTER_CODE);
+          const matchedSearch = draft?.find((f) => f.name === FILTER_SEARCH);
           const matchedPhone = draft?.find((f) => f.name === FILTER_PHONE);
-          if (matchedCode) {
-            matchedCode.value = values.code;
+          if (matchedSearch) {
+            matchedSearch.value = values[FILTER_SEARCH];
           }
           if (matchedPhone) {
-            matchedPhone.value = values.phone;
+            matchedPhone.value = values[FILTER_PHONE];
           }
         })
       );
@@ -63,12 +59,11 @@ export default function CustomerListFilterForm(props: Props) {
     <Form methods={methods} onSubmit={onSubmit}>
       <Container>
         <Input
-          name="code"
+          name={FILTER_SEARCH}
           type="text"
           size="large"
           placeholder="Cari Kode/Nama Pelanggan"
           disabled={loading}
-          ref={inputRef}
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}
           endEnhancer={loading && <ClipLoader size={24} />}
           onKeyDown={(e) => {
@@ -78,12 +73,11 @@ export default function CustomerListFilterForm(props: Props) {
           }}
         />
         <Input
-          name="phone"
+          name={FILTER_PHONE}
           type="text"
           size="large"
           placeholder="Cari No Handphone Pelanggan"
           disabled={loading}
-          ref={inputRef}
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}
           endEnhancer={loading && <ClipLoader size={24} />}
           onKeyDown={(e) => {
