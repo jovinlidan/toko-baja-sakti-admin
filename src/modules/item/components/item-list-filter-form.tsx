@@ -16,7 +16,7 @@ interface Props {
   setFilters: (value: React.SetStateAction<Filter[] | undefined>) => void;
 }
 
-const FILTER_NAME = "category_item_name";
+const FILTER_NAME = "search";
 
 export default function ItemListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;
