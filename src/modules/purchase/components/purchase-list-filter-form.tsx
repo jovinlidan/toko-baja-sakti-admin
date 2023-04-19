@@ -17,8 +17,7 @@ interface Props {
   setFilters: (value: React.SetStateAction<Filter[] | undefined>) => void;
 }
 
-const FILTER_CODE = "code";
-const FILTER_STATUS = "status";
+const FILTER_SEARCH = "search";
 const FILTER_DATE_BEFORE = "transaction_date_before";
 const FILTER_DATE_AFTER = "transaction_date_after";
 
@@ -35,8 +34,8 @@ export default function PurchaseListFilterForm(props: Props) {
     },
     mode: "all",
     defaultValues: {
-      [FILTER_CODE]:
-        filters?.find((filter) => filter.name === FILTER_CODE)?.value ||
+      [FILTER_SEARCH]:
+        filters?.find((filter) => filter.name === FILTER_SEARCH)?.value ||
         undefined,
       [FILTER_DATE_BEFORE]:
         filters?.find((filter) => filter.name === FILTER_DATE_BEFORE)?.value ||
@@ -51,14 +50,14 @@ export default function PurchaseListFilterForm(props: Props) {
     async (values) => {
       setFilters((prevFilters) =>
         produce(prevFilters, (draft) => {
-          const matchedCode = draft?.find((f) => f.name === FILTER_CODE);
+          const matchedCode = draft?.find((f) => f.name === FILTER_SEARCH);
           const matchedDateBefore = draft?.find(
             (f) => f.name === FILTER_DATE_BEFORE
           );
           const matchedDateAfter = draft?.find(
             (f) => f.name === FILTER_DATE_AFTER
           );
-          if (matchedCode) matchedCode.value = values[FILTER_CODE];
+          if (matchedCode) matchedCode.value = values[FILTER_SEARCH];
           if (matchedDateAfter)
             matchedDateAfter.value = values[FILTER_DATE_AFTER];
           if (matchedDateBefore)
@@ -73,7 +72,7 @@ export default function PurchaseListFilterForm(props: Props) {
     <Form methods={methods} onSubmit={onSubmit}>
       <Container>
         <Input
-          name={FILTER_CODE}
+          name={FILTER_SEARCH}
           type="text"
           size="large"
           placeholder="Cari Kode Pesanan Pembelian atau Nama Supplier"
