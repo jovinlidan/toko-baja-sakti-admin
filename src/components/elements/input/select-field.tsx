@@ -76,7 +76,7 @@ function SelectField<
         background: isDisabled
           ? theme.colors.disabledInput.value
           : theme.colors.backgroundPaper.value,
-        padding: size === "large" ? "15px 22px" : "0px 15px",
+        padding: size === "large" ? "15px 22px" : "0px 9px",
       }),
 
       indicatorSeparator: () => ({}),
