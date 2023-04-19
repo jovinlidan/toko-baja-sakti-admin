@@ -85,6 +85,7 @@ const CustomLabelContainer = styled("div", {
 
 const ContentContainer = styled("div", {
   width: "100%",
+  position: "relative",
 });
 
 const FormContainer = styled("div", {

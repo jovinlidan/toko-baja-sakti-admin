@@ -5,3 +5,4 @@ export { default as BxChevronLeftSVG } from "./bx-chevron-left-svg";
 export { default as BxChevronRightSVG } from "./bx-chevron-right-svg";
 export { default as CalendarSVG } from "./calendar-svg";
 export { default as LogoutSVG } from "./logout-svg";
+export { default as DocumentScannerSVG } from "./document-scanner-svg";

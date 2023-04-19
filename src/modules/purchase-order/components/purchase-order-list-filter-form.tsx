@@ -5,7 +5,7 @@ import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { Input } from "@/components/elements";
-import { BxSearchSVG, CalendarSVG } from "@/common/assets";
+import { BxSearchSVG, CalendarSVG, DocumentScannerSVG } from "@/common/assets";
 import ClipLoader from "react-spinners/ClipLoader";
 import { Filter } from "@/common/repositories/common.model";
 import { produce } from "immer";
@@ -17,26 +17,25 @@ interface Props {
   setFilters: (value: React.SetStateAction<Filter[] | undefined>) => void;
 }
 
-const FILTER_CODE = "code";
+const FILTER_SEARCH = "code";
 const FILTER_STATUS = "status";
-const FILTER_DATE_BEFORE = "transaction_date_before";
-const FILTER_DATE_AFTER = "transaction_date_after";
+const FILTER_DATE_BEFORE = "start_at";
+const FILTER_DATE_AFTER = "end_at";
 
 export default function PurchaseOrderListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;
-  const inputRef = React.useRef<any>();
   const YupSchema = React.useMemo(() => Yup.object().shape({}), []);
   const resolver = useYupValidationResolver(YupSchema);
 
   const methods = useForm<any>({
     resolver,
-    resetOptions: {
-      keepTouched: true,
-    },
     mode: "all",
     defaultValues: {
-      [FILTER_CODE]:
-        filters?.find((filter) => filter.name === FILTER_CODE)?.value ||
+      [FILTER_SEARCH]:
+        filters?.find((filter) => filter.name === FILTER_SEARCH)?.value ||
+        undefined,
+      [FILTER_STATUS]:
+        filters?.find((filter) => filter.name === FILTER_STATUS)?.value ||
         undefined,
       [FILTER_DATE_BEFORE]:
         filters?.find((filter) => filter.name === FILTER_DATE_BEFORE)?.value ||
@@ -51,14 +50,16 @@ export default function PurchaseOrderListFilterForm(props: Props) {
     async (values) => {
       setFilters((prevFilters) =>
         produce(prevFilters, (draft) => {
-          const matchedCode = draft?.find((f) => f.name === FILTER_CODE);
+          const matchedSearch = draft?.find((f) => f.name === FILTER_SEARCH);
+          const matchedStatus = draft?.find((f) => f.name === FILTER_STATUS);
           const matchedDateBefore = draft?.find(
             (f) => f.name === FILTER_DATE_BEFORE
           );
           const matchedDateAfter = draft?.find(
             (f) => f.name === FILTER_DATE_AFTER
           );
-          if (matchedCode) matchedCode.value = values[FILTER_CODE];
+          if (matchedSearch) matchedSearch.value = values[FILTER_SEARCH];
+          if (matchedStatus) matchedStatus.value = values[FILTER_STATUS];
           if (matchedDateAfter)
             matchedDateAfter.value = values[FILTER_DATE_AFTER];
           if (matchedDateBefore)
@@ -73,13 +74,33 @@ export default function PurchaseOrderListFilterForm(props: Props) {
     <Form methods={methods} onSubmit={onSubmit}>
       <Container>
         <Input
-          name={FILTER_CODE}
+          name={FILTER_SEARCH}
           type="text"
           size="large"
           placeholder="Cari Kode Pesanan Pembelian atau Nama Supplier"
           disabled={loading}
-          ref={inputRef}
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}
+          endEnhancer={loading && <ClipLoader size={24} />}
+          onKeyDown={(e) => {
+            if (e.code === "Enter") {
+              methods.handleSubmit(onSubmit);
+            }
+          }}
+        />
+        <Input
+          name={FILTER_STATUS}
+          type="select"
+          size="large"
+          options={
+            filters?.find((filter) => filter.name === FILTER_STATUS)?.options ||
+            []
+          }
+          isClearable
+          placeholder="Status Pesanan"
+          isDisabled={loading}
+          startEnhancer={
+            <DocumentScannerSVG color={theme.colors.textPrimary.value} />
+          }
           endEnhancer={loading && <ClipLoader size={24} />}
           onKeyDown={(e) => {
             if (e.code === "Enter") {

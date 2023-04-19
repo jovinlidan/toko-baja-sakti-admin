@@ -5,9 +5,10 @@ import * as React from "react";
 import { BaseElementInputProps } from ".";
 import CustomFormControl from "../custom-form-control";
 import { FormContext } from "../form";
-import { theme } from "@/config/stitches/theme.stitches";
+import { css, styled, theme } from "@/config/stitches/theme.stitches";
 import TypographyConstant from "@/config/stitches/typography.stitches";
 import { BaseOption } from "@/common/repositories/common.model";
+import Separator from "@/components/common/separator";
 
 export type SelectFieldProps<
   Option = unknown,
@@ -19,7 +20,11 @@ export type SelectFieldProps<
     label?: string;
     required?: boolean;
     onSelect?: (data: any | null) => void;
+    startEnhancer?: React.ReactNode;
+    endEnhancer?: React.ReactNode;
     options: BaseOption[];
+    size?: "large" | "small";
+    disabled?: boolean;
   };
 
 function SelectField<
@@ -39,6 +44,9 @@ function SelectField<
     onSelect,
     required,
     placeholder = "",
+    size = "small",
+    startEnhancer,
+    endEnhancer,
     ...restProps
   } = props;
   const context = React.useContext(FormContext);
@@ -48,7 +56,7 @@ function SelectField<
       if (onSelect) {
         onSelect(selected || null);
       } else {
-        field.onChange(selected.value);
+        field.onChange(selected?.value || null);
       }
     },
     [onSelect, field]
@@ -65,8 +73,12 @@ function SelectField<
         border: "none",
         minHeight: 42,
         boxShadow: theme.shadows.inputElevation.value,
-        background: isDisabled ? theme.colors.disabledInput.value : undefined,
+        background: isDisabled
+          ? theme.colors.disabledInput.value
+          : theme.colors.backgroundPaper.value,
+        padding: size === "large" ? "15px 22px" : "0px 15px",
       }),
+
       indicatorSeparator: () => ({}),
       indicatorsContainer: (styles) => ({
         ...styles,
@@ -87,20 +99,22 @@ function SelectField<
           color: "white",
         },
       }),
+      input: (styles) => ({
+        ...styles,
+      }),
       menuList: (styles) => ({
         ...styles,
         padding: 0,
-        borderRadius: 4,
+        borderRadius: 8,
       }),
       menu: (styles) => ({
         ...styles,
-        borderRadius: 4,
+        borderRadius: 8,
       }),
       valueContainer: (styles) => ({
         ...styles,
-        paddingLeft: 15,
-        paddingRight: 15,
         ...TypographyConstant.body1,
+        paddingLeft: !!startEnhancer ? "32px" : undefined,
       }),
       singleValue: (styles, { isDisabled }) => ({
         ...styles,
@@ -111,13 +125,16 @@ function SelectField<
       placeholder: (styles) => ({
         ...styles,
         ...TypographyConstant.body1,
+        color: theme.colors.textDisabled.value,
       }),
+
       clearIndicator: (styles) => ({
         ...styles,
       }),
     }),
-    []
+    [size, startEnhancer]
   );
+
   const value = React.useMemo(() => {
     return (
       (restProps.options?.find(
@@ -125,6 +142,7 @@ function SelectField<
       ) as any) || null
     );
   }, [field.value, restProps.options]);
+
   return (
     <CustomFormControl
       label={label}
@@ -132,6 +150,12 @@ function SelectField<
       error={_error}
       required={required}
     >
+      {!!startEnhancer && (
+        <StartEnhancerContainer>
+          {startEnhancer}
+          <Separator mr={8} />
+        </StartEnhancerContainer>
+      )}
       <Select
         {...field}
         {...restProps}
@@ -142,9 +166,27 @@ function SelectField<
         onChange={_onChange}
         styles={styles as any}
         noOptionsMessage={() => "Tidak ada Data"}
+        components={{
+          ...(endEnhancer
+            ? {
+                DropdownIndicator: () => <>{endEnhancer}</>,
+              }
+            : {}),
+        }}
       />
     </CustomFormControl>
   );
 }
 
 export default React.forwardRef(SelectField);
+
+const StartEnhancerContainer = styled("div", {
+  display: "flex",
+  position: "absolute",
+  top: 0,
+  left: 0,
+  bottom: 0,
+  alignItems: "center",
+  paddingLeft: 20,
+  zIndex: 100000,
+});

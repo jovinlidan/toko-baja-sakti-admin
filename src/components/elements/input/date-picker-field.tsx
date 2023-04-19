@@ -120,6 +120,9 @@ const styles = {
   }),
   fullWidth: css({
     width: "100%",
+    "& > div": {
+      display: "flex",
+    },
   }),
 };
 
