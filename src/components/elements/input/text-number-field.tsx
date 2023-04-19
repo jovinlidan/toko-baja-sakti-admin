@@ -74,6 +74,7 @@ export default function TextNumberField(props: TextNumberFieldProps) {
           {...field}
           {...restProps}
           type="number"
+          autoComplete="off"
           value={field.value}
           disabled={_disabled}
           onChange={_onChange}
@@ -88,8 +89,6 @@ export default function TextNumberField(props: TextNumberFieldProps) {
     </CustomFormControl>
   );
 }
-
-const BaseInput = styled("input", {});
 
 const StyledInput = styled("input", {
   border: "none",

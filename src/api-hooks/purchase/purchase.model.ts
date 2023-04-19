@@ -1,5 +1,6 @@
 import { Expose, Type } from "class-transformer";
 import { PurchaseOrderLite } from "@/api-hooks/purchase-order/purchase-order.model";
+import { Item } from "@/api-hooks/item/item.model";
 
 export class PurchaseLite {
   id: string;
@@ -24,7 +25,11 @@ class PurchaseItem {
 
   @Type(() => Number)
   price: number;
-  // sad-dad;;
+
+  @Type(() => Number)
+  @Expose({ name: "amount_not_received" })
+  amountNotReceived: number;
+  item: Item;
 }
 export class Purchase {
   id: string;

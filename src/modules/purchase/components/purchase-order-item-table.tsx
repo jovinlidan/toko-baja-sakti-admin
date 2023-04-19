@@ -52,10 +52,6 @@ export default function PurchaseOrderItemTable(props: Props) {
         accessor: "quantity",
       },
       {
-        Header: "Jumlah belum diterima",
-        accessor: "amountNotReceived",
-      },
-      {
         Header: "Satuan",
         accessor: "unit",
       },
@@ -96,5 +92,11 @@ export default function PurchaseOrderItemTable(props: Props) {
     ],
     [editable, onDelete]
   );
-  return <TableComponent columns={columns} data={data || []} />;
+  return (
+    <TableComponent
+      columns={columns}
+      data={data || []}
+      name="purchaseItems.0.purchaseOrderItemId"
+    />
+  );
 }

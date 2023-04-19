@@ -101,6 +101,11 @@ input:-webkit-autofill:active {
     -webkit-transition-delay: 9999s;
 }
 
+input:-internal-autofill-selected {
+  background-color : inherit !important;
+  color : inherit;
+}
+
 *::before {
   box-sizing: border-box;
 }

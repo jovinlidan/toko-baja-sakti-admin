@@ -8,6 +8,7 @@ import { Oval } from "react-loader-spinner";
 import { Button, Text } from "../elements";
 import Separator from "./separator";
 import PaginationComponent from "./pagination-component";
+import { useController, useFormContext } from "react-hook-form";
 
 export interface IColumn {
   Header: any;
@@ -29,6 +30,7 @@ export interface IColumn {
 interface Props<T> {
   data: T;
   columns: IColumn[];
+  name?: string;
   loading?: boolean;
   error?: ApiError | null;
   onRetry?: () => void;
@@ -39,6 +41,31 @@ interface Props<T> {
   setPage?: (page: number) => void;
   setLimit?: (imit: number) => void;
 }
+
+function FormErrorComponent({ name }: { name: string }) {
+  const { control } = useFormContext();
+  const { fieldState } = useController({ name, control });
+  if (!fieldState.error?.message) return null;
+  const ErrorContainer = styled("div", {
+    border: "1px solid",
+    borderColor: "$errorDark",
+    background: "rgba(255, 91, 63, 0.5)",
+    padding: "4px 8px",
+    borderRadius: 4,
+    marginTop: 4,
+    position: "relative",
+    "& span": {
+      color: "#FFFFFF",
+      zIndex: 2,
+    },
+  });
+  return (
+    <ErrorContainer>
+      <Text variant="body1">{fieldState.error.message}</Text>
+    </ErrorContainer>
+  );
+}
+
 export default function TableComponent<T>(props: Props<T>) {
   const {
     columns,
@@ -50,6 +77,7 @@ export default function TableComponent<T>(props: Props<T>) {
     page,
     setLimit,
     setPage,
+    name,
   } = props;
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -162,6 +190,7 @@ export default function TableComponent<T>(props: Props<T>) {
           </Tbody>
         </StyledTable>
       </TableContainer>
+      {name && <FormErrorComponent name={name} />}
       {typeof page !== "undefined" && (
         <PaginationComponent
           onPageChange={(page) => setPage?.(page)}
@@ -202,6 +231,7 @@ const Th = styled("th", {
 
   textTransform: "uppercase",
   color: "$textPrimary",
+
   textAlign: "start",
   ...TypographyConstant.tableHeader,
 

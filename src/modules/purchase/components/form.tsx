@@ -29,7 +29,6 @@ type FormType = {
     purchaseOrderItemId?: string;
     quantity?: number;
     price?: number;
-    amountNotReceived?: number;
     unit?: string;
   };
 };
@@ -62,7 +61,6 @@ export default function PurchaseForm(props: Props) {
             purchaseOrderItemId: Yup.string().required(),
             quantity: Yup.number().required(),
             price: Yup.number().required(),
-            amountNotReceived: Yup.number().nullable().strip(true),
             unit: Yup.string().nullable().strip(true),
           })
           .strip(true),
@@ -172,13 +170,16 @@ export default function PurchaseForm(props: Props) {
     [YupSchema, methods, tempData]
   );
 
-  const onDeleteItem = React.useCallback((index: number) => {
-    setTableData((prev) => {
-      prev.splice(index, 1);
-      return [...prev];
-    });
-  }, []);
-
+  const onDeleteItem = React.useCallback(
+    (index: number) => {
+      methods.clearErrors("purchaseItems");
+      setTableData((prev) => {
+        prev.splice(index, 1);
+        return [...prev];
+      });
+    },
+    [methods]
+  );
   const onPurchaseOrderItemSelect = React.useCallback(
     (values) => {
       const id = values?.value;
@@ -261,9 +262,9 @@ export default function PurchaseForm(props: Props) {
                   label="Jumlah"
                 />
                 <Input
-                  name="purchaseItems.amountNotReceived"
-                  type="number"
-                  label="Jumlah Belum Diterima"
+                  name="purchaseItems.unit"
+                  type="text"
+                  label="Satuan"
                   disabled
                 />
               </HalfContainer>
@@ -272,12 +273,6 @@ export default function PurchaseForm(props: Props) {
                   name="purchaseItems.price"
                   type="number"
                   label="Harga Satuan"
-                />
-                <Input
-                  name="purchaseItems.unit"
-                  type="text"
-                  label="Satuan"
-                  disabled
                 />
               </HalfContainer>
             </Row>
