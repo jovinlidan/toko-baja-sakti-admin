@@ -29,6 +29,10 @@ class PurchaseItem {
   @Type(() => Number)
   @Expose({ name: "amount_not_received" })
   amountNotReceived: number;
+
+  unit: string;
+
+  @Type(() => Item)
   item: Item;
 }
 export class Purchase {

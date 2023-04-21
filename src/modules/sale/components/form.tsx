@@ -28,7 +28,6 @@ type FormType = {
     quantity?: number;
     price?: number;
     unit?: string;
-    piId?: string;
   };
 };
 
@@ -45,12 +44,7 @@ export default function PurchaseForm(props: Props) {
   const { data, defaultEditable = true } = props;
   const [tableData, setTableData] = React.useState<
     PurchaseOrderItemTableDataType[]
-  >(
-    data?.purchaseItems.map((item) => ({
-      ...item,
-      piId: item.id,
-    })) || []
-  );
+  >([]);
   const [tempData, setTempData] = React.useState<PurchaseOrderItemLite>();
 
   const YupSchema = React.useMemo(
@@ -101,7 +95,15 @@ export default function PurchaseForm(props: Props) {
       onSuccess: (purchaseOrderItemData) => {
         onPurchaseOrderItemSelect(undefined);
         setTempData(undefined);
-        if (!data) setTableData([]);
+        if (!data) {
+          setTableData([]);
+        } else {
+          setTableData([]);
+          // data?.purchaseItems.map((item) => ({
+          //   ...item,
+          //   poiId: item.id,
+          // }))
+        }
       },
     }
   );
@@ -121,9 +123,8 @@ export default function PurchaseForm(props: Props) {
         const input = YupSchema.cast(values) as FormType;
         await props.onSubmit(
           input,
-          tableData.map((data, idx) => ({
+          tableData.map((data) => ({
             ...data,
-            id: purchaseOrderItemQuery?.data?.data?.[idx]?.id!,
           }))
         );
         methods.reset();
@@ -135,7 +136,7 @@ export default function PurchaseForm(props: Props) {
         e?.message && toast.error(e?.message);
       }
     },
-    [YupSchema, methods, props, purchaseOrderItemQuery?.data?.data, tableData]
+    [YupSchema, methods, props, tableData]
   );
 
   const onAddItem = React.useCallback(
@@ -155,7 +156,7 @@ export default function PurchaseForm(props: Props) {
               ...tempData,
               quantity: values.quantity,
               price: values.price,
-              piId: undefined,
+              poiId: undefined,
             },
           ])
         );
@@ -283,16 +284,7 @@ export default function PurchaseForm(props: Props) {
             </Row>
           </>
         )}
-        <PurchaseOrderItemTable
-          data={tableData}
-          onDelete={onDeleteItem}
-          grandTotal={
-            data?.grandTotal ||
-            tableData?.reduce((prev, current) => {
-              return prev + current.quantity * current.price;
-            }, 0)
-          }
-        />
+        <PurchaseOrderItemTable data={tableData} onDelete={onDeleteItem} />
         {defaultEditable && (
           <AddButtonContainer>
             <FormValueState keys={["purchaseItems"]}>

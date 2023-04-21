@@ -22,7 +22,7 @@ const FILTER_STATUS = "status";
 const FILTER_DATE_BEFORE = "start_at";
 const FILTER_DATE_AFTER = "end_at";
 
-export default function PurchaseOrderListFilterForm(props: Props) {
+export default function SaleOrderListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;
   const YupSchema = React.useMemo(() => Yup.object().shape({}), []);
   const resolver = useYupValidationResolver(YupSchema);
@@ -77,7 +77,7 @@ export default function PurchaseOrderListFilterForm(props: Props) {
           name={FILTER_SEARCH}
           type="text"
           size="large"
-          placeholder="Cari Kode Pesanan Pembelian atau Nama Supplier"
+          placeholder="Cari Kode Pesanan Penjualan atau Nama Pelanggan"
           disabled={loading}
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}
           endEnhancer={loading && <ClipLoader size={24} />}

@@ -33,4 +33,9 @@ export default {
   SaleOrderCreate: "/sale-order/create",
   SaleOrderView: "/sale-order/[id]/view",
   SaleOrderEdit: "/sale-order/[id]/edit",
+
+  SaleList: "/sale/list",
+  SaleCreate: "/sale/create",
+  SaleView: "/sale/[id]/view",
+  SaleEdit: "/sale/[id]/edit",
 };

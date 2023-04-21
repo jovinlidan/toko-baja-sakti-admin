@@ -59,12 +59,12 @@ const navigations: NavigationInterface[] = [
   {
     href: routeConstant.SaleOrderList,
     label: "Pesanan Penjualan",
-    key: "order-sale",
+    key: "sale-order",
     icon: imageConstant.saleOrder,
     iconActive: imageConstant.saleOrderActive,
   },
   {
-    href: "/penjualan",
+    href: routeConstant.SaleList,
     label: "Penjualan",
     key: "sale",
     icon: imageConstant.sale,

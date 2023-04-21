@@ -17,35 +17,35 @@ import { FormValueState } from "@/components/elements/input";
 import { Item, ItemUnitEnum } from "@/api-hooks/item/item.model";
 import { useGetItem } from "@/api-hooks/item/item.query";
 import { camelizeKeys } from "humps";
+import { SalesOrder } from "@/api-hooks/sales-order/sales-order.model";
 
 type FormType = {
   code?: string;
   transactionDate?: Date;
-  purchaseOrderItems?: {
+  salesOrderItems?: {
     id?: string;
     itemId?: string;
     quantity?: number;
     unit?: string;
   };
-  supplierId?: string;
-  status?: string;
+  userId?: string;
 };
 
 interface Props {
-  data?: PurchaseOrder;
+  data?: SalesOrder;
   onSubmit: (
     values: FormType,
-    purchaseOrderItems: ItemTableDataType[]
+    salesOrderItems: ItemTableDataType[]
   ) => Promise<void> | void;
   defaultEditable?: boolean;
 }
 
-export default function PurchaseOrderForm(props: Props) {
+export default function SaleOrderForm(props: Props) {
   const { data, defaultEditable = true } = props;
   const [tableData, setTableData] = React.useState<ItemTableDataType[]>(
-    data?.purchaseOrderItems?.map((item) => ({
+    data?.salesOrderItems?.map((item) => ({
       ...item.item,
-      poiId: item.id,
+      soiId: item.id,
       unit: item.unit,
       quantity: item.quantity,
     })) || []
@@ -56,10 +56,9 @@ export default function PurchaseOrderForm(props: Props) {
     () =>
       Yup.object().shape({
         code: Yup.string().nullable().strip(true),
-        status: Yup.string().nullable().strip(true),
         transactionDate: Yup.date().required(),
-        supplierId: Yup.string().required(),
-        purchaseOrderItems: Yup.object()
+        userId: Yup.string().required(),
+        salesOrderItems: Yup.object()
           .shape({
             id: Yup.string().nullable(),
             itemId: Yup.string().required(),
@@ -79,7 +78,7 @@ export default function PurchaseOrderForm(props: Props) {
       ...(data
         ? {
             code: data.code,
-            supplierId: data.supplier.id,
+            userId: data.id,
             transactionDate: data.transactionDate,
             status: data?.status,
           }

@@ -77,7 +77,7 @@ export default function TableItem(props: Props) {
     <TableComponent
       columns={columns}
       data={data || []}
-      name="purchaseOrderItems.0.itemId"
+      name="salesOrderItems.0.itemId"
     />
   );
 }

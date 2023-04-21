@@ -15,6 +15,10 @@ export class SalesOrderLite {
   @Type(() => CustomerLite)
   user: CustomerLite;
 
+  @Expose({ name: "total_item" })
+  @Type(() => Number)
+  totalItem: number;
+
   @Expose({ name: "created_at" })
   @Type(() => Date)
   createdAt: Date;

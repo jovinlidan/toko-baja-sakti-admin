@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
 import { SupplierLite } from "@/api-hooks/supplier/supplier.model";
-import { Item } from "@/api-hooks/item/item.model";
+import { Item, ItemUnitEnum } from "@/api-hooks/item/item.model";
 
 export class PurchaseOrderPOI {
   id: string;
@@ -88,7 +88,7 @@ export class CreatePurchaseOrderInputForm {
   purchaseOrderItems: {
     itemId: string;
     quantity: number;
-    unit: string;
+    unit: ItemUnitEnum;
   }[];
   supplierId: string;
 }
@@ -103,7 +103,7 @@ export class UpdatePurchaseOrderInputForm {
     id: string;
     itemId: string;
     quantity: number;
-    unit: string;
+    unit: ItemUnitEnum;
   }[];
   supplierId: string;
 }
