@@ -1,8 +1,8 @@
-import { useUpdatePurchaseOrder } from "@/api-hooks/purchase-order/purchase-order.mutation";
+import { useUpdateSalesOrder } from "@/api-hooks/sales-order/sales-order.mutation";
 import {
-  getPurchaseOrdersKey,
-  useGetPurchaseOrder,
-} from "@/api-hooks/purchase-order/purchase-order.query";
+  getSalesOrdersKey,
+  useGetSalesOrder,
+} from "@/api-hooks/sales-order/sales-order.query";
 import { BxChevronLeftSVG } from "@/common/assets";
 import { queryClient } from "@/common/repositories/query-client";
 import FetchWrapperComponent from "@/components/common/fetch-wrapper-component";
@@ -13,25 +13,25 @@ import routeConstant from "@/constants/route.constant";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import FormPurchaseOrder from "./components/form";
+import FormSaleOrder from "./components/form";
 
-export default function EditPurchaseOrder() {
+export default function EditSaleOrder() {
   const router = useRouter();
-  const { data, isLoading, isFetching, error, refetch } = useGetPurchaseOrder(
+  const { data, isLoading, isFetching, error, refetch } = useGetSalesOrder(
     {
       id: router?.query?.id as string,
     },
     { enabled: !!router?.query?.id }
   );
-  const { mutateAsync } = useUpdatePurchaseOrder();
+  const { mutateAsync } = useUpdateSalesOrder();
 
   const onSubmit = useCallback(
-    async (values, purchaseOrderItems) => {
+    async (values, salesOrderItems) => {
       const res = await mutateAsync({
         id: router?.query?.id as string,
         body: {
           ...values,
-          purchaseOrderItems: purchaseOrderItems.map((item) => ({
+          salesOrderItems: salesOrderItems.map((item) => ({
             id: item.poiId,
             itemId: item.id,
             quantity: item.quantity,
@@ -41,10 +41,10 @@ export default function EditPurchaseOrder() {
       });
       res.message && toast.success(res.message);
       await router.replace({
-        pathname: routeConstant.PurchaseOrderView,
+        pathname: routeConstant.SaleOrderView,
         query: { id: router?.query?.id },
       });
-      await queryClient.invalidateQueries(getPurchaseOrdersKey());
+      await queryClient.invalidateQueries(getSalesOrdersKey());
     },
     [mutateAsync, router]
   );
@@ -54,7 +54,7 @@ export default function EditPurchaseOrder() {
       <LinkText
         label="Kembali"
         href={{
-          pathname: routeConstant.PurchaseOrderView,
+          pathname: routeConstant.SaleOrderView,
           query: { id: router?.query?.id as string },
         }}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
@@ -65,9 +65,7 @@ export default function EditPurchaseOrder() {
         error={error}
         onRetry={refetch}
         component={
-          data?.data && (
-            <FormPurchaseOrder data={data?.data} onSubmit={onSubmit} />
-          )
+          data?.data && <FormSaleOrder data={data?.data} onSubmit={onSubmit} />
         }
       />
     </Container>

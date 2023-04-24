@@ -109,6 +109,38 @@ export default function Header() {
         href: routeConstant.PurchaseView,
         label: "Detail Pembelian",
       },
+      {
+        href: routeConstant.SaleOrderList,
+        label: "Pesanan Penjualan",
+      },
+      {
+        href: routeConstant.SaleOrderCreate,
+        label: "Tambah Pesanan Penjualan",
+      },
+      {
+        href: routeConstant.SaleOrderEdit,
+        label: "Ubah Pesanan Penjualan",
+      },
+      {
+        href: routeConstant.SaleOrderView,
+        label: "Detail Pesanan Penjualan",
+      },
+      {
+        href: routeConstant.SaleList,
+        label: "Penjualan",
+      },
+      {
+        href: routeConstant.SaleCreate,
+        label: "Tambah Penjualan",
+      },
+      {
+        href: routeConstant.SaleEdit,
+        label: "Ubah Penjualan",
+      },
+      {
+        href: routeConstant.SaleView,
+        label: "Detail Penjualan",
+      },
     ];
   }, [navigations]);
 

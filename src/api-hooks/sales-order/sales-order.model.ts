@@ -38,6 +38,9 @@ export class SalesOrder {
 
   status: string;
 
+  @Type(() => CustomerLite)
+  user: CustomerLite;
+
   @Expose({ name: "sales_order_items" })
   @Type(() => SalesOrderItemLite)
   salesOrderItems: SalesOrderItemLite[];

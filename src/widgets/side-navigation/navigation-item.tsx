@@ -16,7 +16,7 @@ export default function NavigationItem(props: Props) {
       <Content active={props.active}>
         <Image
           src={props.active ? props.iconActive : props.icon}
-          alt="supplier"
+          alt={props.label}
           width={24}
           height={24}
           priority

@@ -6,8 +6,6 @@ import { Input, Form, Button } from "@/components/elements";
 import { toast } from "react-hot-toast";
 import { FullContainer, HalfContainer } from "@/components/elements/styles";
 import { formSetErrors } from "@/common/helpers/form";
-import { PurchaseOrder } from "@/api-hooks/purchase-order/purchase-order.model";
-import SupplierSelectOption from "@/components/elements/select-input-helper/supplier-select-input";
 import ItemSelectOption from "@/components/elements/select-input-helper/item-select-input";
 import { styled } from "@/config/stitches/theme.stitches";
 import TableItem, {
@@ -18,6 +16,7 @@ import { Item, ItemUnitEnum } from "@/api-hooks/item/item.model";
 import { useGetItem } from "@/api-hooks/item/item.query";
 import { camelizeKeys } from "humps";
 import { SalesOrder } from "@/api-hooks/sales-order/sales-order.model";
+import CustomerSelectOption from "@/components/elements/select-input-helper/customer-select-input";
 
 type FormType = {
   code?: string;
@@ -78,7 +77,7 @@ export default function SaleOrderForm(props: Props) {
       ...(data
         ? {
             code: data.code,
-            userId: data.id,
+            userId: data.user.id,
             transactionDate: data.transactionDate,
             status: data?.status,
           }
@@ -89,7 +88,7 @@ export default function SaleOrderForm(props: Props) {
   });
 
   const itemId = useWatch({
-    name: "purchaseOrderItems.itemId",
+    name: "salesOrderItems.itemId",
     control: methods.control,
   });
 
@@ -135,8 +134,8 @@ export default function SaleOrderForm(props: Props) {
     async (values) => {
       try {
         await YupSchema.validateAt(
-          "purchaseOrderItems",
-          { purchaseOrderItems: { ...values } },
+          "salesOrderItems",
+          { salesOrderItems: { ...values } },
           {
             abortEarly: false,
           }
@@ -201,9 +200,9 @@ export default function SaleOrderForm(props: Props) {
             <Input name="code" type="text" label="Kode" disabled />
           )}
 
-          <SupplierSelectOption
-            name="supplierId"
-            label="Supplier"
+          <CustomerSelectOption
+            name="userId"
+            label="Pelanggan"
             placeholder="Pilih Supplier"
           />
         </HalfContainer>
@@ -222,21 +221,21 @@ export default function SaleOrderForm(props: Props) {
         {defaultEditable && (
           <>
             <ItemSelectOption
-              name="purchaseOrderItems.itemId"
+              name="salesOrderItems.itemId"
               label="Tambah Barang"
               placeholder="Pilih Barang"
             />
             <Row>
               <HalfContainer>
                 <Input
-                  name="purchaseOrderItems.quantity"
+                  name="salesOrderItems.quantity"
                   type="number"
                   label="Jumlah"
                 />
               </HalfContainer>
               <HalfContainer>
                 <Input
-                  name="purchaseOrderItems.unit"
+                  name="salesOrderItems.unit"
                   type="select"
                   label="Satuan"
                   isLoading={itemQuery.isLoading || itemQuery.isFetching}
@@ -250,12 +249,9 @@ export default function SaleOrderForm(props: Props) {
         <TableItem data={tableData} onDelete={onDeleteItem} />
         {defaultEditable && (
           <AddButtonContainer>
-            <FormValueState keys={["purchaseOrderItems"]}>
-              {({ purchaseOrderItems }) => (
-                <Button
-                  size="large"
-                  onClick={() => onAddItem(purchaseOrderItems)}
-                >
+            <FormValueState keys={["salesOrderItems"]}>
+              {({ salesOrderItems }) => (
+                <Button size="large" onClick={() => onAddItem(salesOrderItems)}>
                   TAMBAH
                 </Button>
               )}
