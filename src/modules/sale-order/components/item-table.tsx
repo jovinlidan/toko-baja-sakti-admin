@@ -7,7 +7,7 @@ import * as React from "react";
 export type ItemTableDataType = {
   quantity: number;
   unit: string;
-  poiId?: string;
+  soiId?: string;
 } & Item;
 
 interface Props {
@@ -77,7 +77,7 @@ export default function TableItem(props: Props) {
     <TableComponent
       columns={columns}
       data={data || []}
-      name="salesOrderItems.0.itemId"
+      name="salesOrderItems"
     />
   );
 }

@@ -7,33 +7,32 @@ import routeConstant from "@/constants/route.constant";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
-import { useCreatePurchase } from "@/api-hooks/purchase/purchase.mutation";
-import { PurchaseOrderItemTableDataType } from "@/modules/purchase/components/purchase-order-item-table";
-import PurchaseForm from "@/modules/purchase/components/form";
-import { getPurchasesKey } from "@/api-hooks/purchase/purchase.query";
+import { SaleItemTableDataType } from "@/modules/sale/components/sale-item-table";
+import SaleForm from "@/modules/sale/components/form";
+import { useCreateSale } from "@/api-hooks/sales/sales.mutation";
+import { getSalesKey } from "@/api-hooks/sales/sales.query";
 
-export default function CreatePurchase() {
-  const { mutateAsync } = useCreatePurchase();
+export default function CreateSale() {
+  const { mutateAsync } = useCreateSale();
   const router = useRouter();
 
   const onSubmit = useCallback(
-    async (values, purchaseItems: PurchaseOrderItemTableDataType[]) => {
+    async (values, salesItems: SaleItemTableDataType[]) => {
       const res = await mutateAsync({
         body: {
           ...values,
-          purchaseItems: purchaseItems.map((item) => ({
-            purchaseOrderItemId: item.id,
+          salesItems: salesItems.map((item) => ({
+            salesOrderItemId: item.id,
             quantity: item.quantity,
-            price: item.price,
           })),
         },
       });
       res.message && toast.success(res.message);
       router.push({
-        pathname: routeConstant.PurchaseView,
+        pathname: routeConstant.SaleView,
         query: { id: res.data.id },
       });
-      await queryClient.invalidateQueries(getPurchasesKey());
+      await queryClient.invalidateQueries(getSalesKey());
     },
     [mutateAsync, router]
   );
@@ -42,11 +41,11 @@ export default function CreatePurchase() {
     <Container>
       <LinkText
         label="Kembali"
-        href={routeConstant.PurchaseList}
+        href={routeConstant.SaleList}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />
-      <PurchaseForm onSubmit={onSubmit} />
+      <SaleForm onSubmit={onSubmit} />
     </Container>
   );
 }

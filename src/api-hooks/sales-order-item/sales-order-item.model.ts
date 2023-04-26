@@ -6,7 +6,8 @@ export class SalesOrderItemLite {
   unit: string;
 
   @Expose({ name: "price_unit" })
-  priceUnit?: string;
+  @Type(() => Number)
+  priceUnit: number;
 
   @Expose({ name: "amount_not_received" })
   @Type(() => Number)
@@ -17,4 +18,7 @@ export class SalesOrderItemLite {
 
   @Type(() => Item)
   item: Item;
+}
+export class getSalesOrderItemsInput {
+  id: string;
 }

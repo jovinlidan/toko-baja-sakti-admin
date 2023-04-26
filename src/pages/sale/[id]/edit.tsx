@@ -1,5 +1,5 @@
 import EditSale from "@/modules/sale/edit";
 
-export default function EditPurchaseOrderPage() {
+export default function EditSalePage() {
   return <EditSale />;
 }

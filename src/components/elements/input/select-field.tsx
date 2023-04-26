@@ -36,6 +36,7 @@ function SelectField<
   const { field, fieldState } = useController({
     name: props.name,
     control,
+    shouldUnregister: false,
   });
 
   const {

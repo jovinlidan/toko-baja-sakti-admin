@@ -8,7 +8,7 @@ import { Oval } from "react-loader-spinner";
 import { Button, Text } from "../elements";
 import Separator from "./separator";
 import PaginationComponent from "./pagination-component";
-import { useController, useFormContext } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 
 export interface IColumn {
   Header: any;
@@ -44,8 +44,20 @@ interface Props<T> {
 
 function FormErrorComponent({ name }: { name: string }) {
   const { control } = useFormContext();
-  const { fieldState } = useController({ name, control });
-  if (!fieldState.error?.message) return null;
+  const { errors } = useFormState({
+    name,
+    control,
+  });
+
+  if (!Object.keys(errors).length) return null;
+
+  //@ts-ignore
+  const firstErrorObject = errors?.[name]?.find((error) => {
+    if (!error) return false;
+    return Object.keys(error)?.length > 0;
+  });
+  const firstKey = Object.keys(firstErrorObject)?.[0];
+  if (!firstErrorObject?.[firstKey]?.message) return null;
   const ErrorContainer = styled("div", {
     border: "1px solid",
     borderColor: "$errorDark",
@@ -61,7 +73,7 @@ function FormErrorComponent({ name }: { name: string }) {
   });
   return (
     <ErrorContainer>
-      <Text variant="body1">{fieldState.error.message}</Text>
+      <Text variant="body1">{firstErrorObject?.[firstKey]?.message}</Text>
     </ErrorContainer>
   );
 }

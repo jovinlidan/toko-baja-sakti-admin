@@ -48,7 +48,7 @@ export default function LoginForm() {
       try {
         const res = await mutateAsync({ body: values });
         setCookie("token", res.data.accessToken, 1);
-        setCookie("refresh", res.data.refreshToken, 1);
+        setCookie("refresh", res.data.refreshToken, 30);
         res?.message && toast.success(res?.message);
         router.push("/");
         methods.reset();

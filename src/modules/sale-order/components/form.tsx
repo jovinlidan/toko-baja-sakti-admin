@@ -10,7 +10,7 @@ import ItemSelectOption from "@/components/elements/select-input-helper/item-sel
 import { styled } from "@/config/stitches/theme.stitches";
 import TableItem, {
   ItemTableDataType,
-} from "@/modules/purchase-order/components/item-table";
+} from "@/modules/sale-order/components/item-table";
 import { FormValueState } from "@/components/elements/input";
 import { Item, ItemUnitEnum } from "@/api-hooks/item/item.model";
 import { useGetItem } from "@/api-hooks/item/item.query";
@@ -147,7 +147,7 @@ export default function SaleOrderForm(props: Props) {
               ...tempData,
               quantity: values.quantity,
               unit: values.unit,
-              poiId: undefined,
+              soiId: undefined,
             },
           ])
         );

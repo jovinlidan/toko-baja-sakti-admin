@@ -1,23 +1,22 @@
-import { Item } from "@/api-hooks/item/item.model";
-import { PurchaseOrderItemLite } from "@/api-hooks/purchase-order-item/purchase-order-item.model";
+import { SalesOrderItemLite } from "@/api-hooks/sales-order-item/sales-order-item.model";
 import TableComponent, { IColumn } from "@/components/common/table";
 import { Button } from "@/components/elements";
 import { useFormState } from "@/components/elements/form";
 import { string2money } from "@/utils/string";
 import * as React from "react";
 
-export type PurchaseOrderItemTableDataType = {
+export type SaleItemTableDataType = {
   quantity: number;
   price: number;
-  poiId?: string;
-} & PurchaseOrderItemLite;
+  siId?: string;
+} & SalesOrderItemLite;
 
 interface Props {
-  data: PurchaseOrderItemTableDataType[];
+  data: SaleItemTableDataType[];
   onDelete: (index: number) => void;
 }
 
-export default function PurchaseOrderItemTable(props: Props) {
+export default function SaleItemTable(props: Props) {
   const { editable } = useFormState();
   const { data, onDelete } = props;
 
@@ -93,10 +92,6 @@ export default function PurchaseOrderItemTable(props: Props) {
     [editable, onDelete]
   );
   return (
-    <TableComponent
-      columns={columns}
-      data={data || []}
-      name="purchaseItems.0.purchaseOrderItemId"
-    />
+    <TableComponent columns={columns} data={data || []} name="salesItems" />
   );
 }

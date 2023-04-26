@@ -64,7 +64,7 @@ const config: Options = {
           try {
             const res = camelizeKeys(await getRefreshToken({ refreshToken }));
             setCookie("token", res.data.accessToken, 1);
-            setCookie("refresh", res.data.refreshToken, 1);
+            setCookie("refresh", res.data.refreshToken, 30);
             return client(_request);
           } catch {}
         }

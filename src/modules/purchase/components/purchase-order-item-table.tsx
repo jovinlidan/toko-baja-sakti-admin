@@ -107,7 +107,7 @@ export default function PurchaseOrderItemTable(props: Props) {
       <TableComponent
         columns={columns}
         data={data || []}
-        name="purchaseItems.0.purchaseOrderItemId"
+        name="purchaseItems"
       />
       <TextContainer>
         <Text variant="buttonLarge">

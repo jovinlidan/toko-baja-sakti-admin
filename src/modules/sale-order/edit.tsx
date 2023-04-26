@@ -32,7 +32,7 @@ export default function EditSaleOrder() {
         body: {
           ...values,
           salesOrderItems: salesOrderItems.map((item) => ({
-            id: item.poiId,
+            id: item.soiId,
             itemId: item.id,
             quantity: item.quantity,
             unit: item.unit,

@@ -8,9 +8,9 @@ import useComposedQuery from "@/hooks/use-composed-query";
 import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import { useApplyQueryFilter } from "@/hooks/use-apply-query-filter";
 import { format } from "date-fns";
-import PurchaseListFilterForm from "./components/sale-list-filter-form";
-import { useGetPurchases } from "@/api-hooks/purchase/purchase.query";
+import SaleListFilterForm from "./components/sale-list-filter-form";
 import { string2money } from "@/utils/string";
+import { useGetSales } from "@/api-hooks/sales/sales.query";
 
 export default function SaleList() {
   const [page, setPage] = React.useState<number>(1);
@@ -24,17 +24,16 @@ export default function SaleList() {
       },
       {
         Header: "Nama Pelanggan",
-        accessor: "purchaseOrder.supplier.name",
+        accessor: "salesOrder.user.name",
       },
       {
         Header: "Tanggal",
-        accessor: "receivedDate",
+        accessor: "transactionDate",
         Cell: ({ value }) => <>{value ? format(value, "dd MMM yyyy") : "-"}</>,
       },
       {
         Header: "Metode Pembayaran",
-        accessor: "grandTotal",
-        Cell: ({ value }) => <>Rp {string2money(value)}</>,
+        accessor: "salesOrder.paymentMethod",
       },
       {
         Header: "Total",
@@ -48,7 +47,7 @@ export default function SaleList() {
           return (
             <Button
               href={{
-                pathname: routeConstant.PurchaseView,
+                pathname: routeConstant.SaleView,
                 query: { id: row?.original?.id },
               }}
               size="small"
@@ -71,7 +70,7 @@ export default function SaleList() {
     refetch,
     extras: [{ filters, setFilters }, { columns }],
   } = useComposedQuery(
-    useGetPurchases,
+    useGetSales,
     {
       params: {
         page,
@@ -88,7 +87,7 @@ export default function SaleList() {
   );
   return (
     <Container>
-      <PurchaseListFilterForm
+      <SaleListFilterForm
         filters={filters}
         loading={isLoading || isFetching}
         setFilters={setFilters}
@@ -96,7 +95,7 @@ export default function SaleList() {
       <TopContainer>
         <Button
           size="large"
-          href={routeConstant.PurchaseCreate}
+          href={routeConstant.SaleCreate}
           startEnhancer={(size) => (
             <PlusSVG
               width={size}

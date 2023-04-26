@@ -16,7 +16,20 @@ export class SaleLite {
   grandTotal: number;
 
   @Expose({ name: "sales_order" })
+  @Type(() => SalesOrderLite)
   salesOrder: SalesOrderLite;
+}
+
+class SaleOrderItem {
+  id: string;
+
+  @Type(() => Number)
+  quantity: number;
+
+  unit: string;
+
+  @Type(() => Item)
+  item: Item;
 }
 
 class SaleItem {
@@ -27,6 +40,10 @@ class SaleItem {
 
   @Type(() => Number)
   price: number;
+
+  @Expose({ name: "sales_order_item" })
+  @Type(() => SaleOrderItem)
+  salesOrderItem: SaleOrderItem;
 }
 export class Sale {
   id: string;

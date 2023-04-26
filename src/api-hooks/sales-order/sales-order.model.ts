@@ -15,6 +15,9 @@ export class SalesOrderLite {
   @Type(() => CustomerLite)
   user: CustomerLite;
 
+  @Expose({ name: "payment_method" })
+  paymentMethod: string;
+
   @Expose({ name: "total_item" })
   @Type(() => Number)
   totalItem: number;
