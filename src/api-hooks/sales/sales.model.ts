@@ -32,7 +32,7 @@ class SaleOrderItem {
   item: Item;
 }
 
-class SaleItem {
+export class SaleItem {
   id: string;
 
   @Type(() => Number)

@@ -29,7 +29,7 @@ export async function middleware(req: NextRequest) {
   if (isWhitelist) {
     return NextResponse.next();
   }
-  const isAuthed = !!req?.cookies.get("token") || false;
+  const isAuthed = !!req?.cookies.get("refresh") || false;
 
   const baseUrl = getRedirectUrl(req, "/");
   const loginUrl = getRedirectUrl(req, "/login");

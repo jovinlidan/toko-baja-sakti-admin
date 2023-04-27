@@ -141,6 +141,22 @@ export default function Header() {
         href: routeConstant.SaleView,
         label: "Detail Penjualan",
       },
+      {
+        href: routeConstant.SaleReturnList,
+        label: "Retur Penjualan",
+      },
+      {
+        href: routeConstant.SaleReturnCreate,
+        label: "Tambah Retur Penjualan",
+      },
+      {
+        href: routeConstant.SaleReturnEdit,
+        label: "Ubah Retur Penjualan",
+      },
+      {
+        href: routeConstant.SaleReturnView,
+        label: "Detail Retur Penjualan",
+      },
     ];
   }, [navigations]);
 

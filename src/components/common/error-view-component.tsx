@@ -1,4 +1,5 @@
 import { styled, theme } from "@/config/stitches/theme.stitches";
+import { ApiError } from "next/dist/server/api-utils";
 import * as React from "react";
 import { Oval } from "react-loader-spinner";
 import { Button, Text } from "../elements";
@@ -8,16 +9,17 @@ interface Props {
   title?: string;
   subtitle?: string;
   refetch?: () => void;
+  error?: ApiError;
 }
 
 export default function ErrorViewComponent(props: Props) {
-  const { isLoading, refetch } = props;
+  const { isLoading, refetch, error } = props;
 
   return (
     <ErrorViewContainer>
       <ErrorContentContainer>
         <Text variant="body1" color={theme.colors.errorMain.value}>
-          Gagal Memuat
+          Gagal Memuat {error && `(${error?.message})`}
         </Text>
       </ErrorContentContainer>
       <ErrorActionContainer>

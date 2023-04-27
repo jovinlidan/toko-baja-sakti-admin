@@ -21,7 +21,7 @@ const FILTER_SEARCH = "search";
 const FILTER_DATE_BEFORE = "start_at";
 const FILTER_DATE_AFTER = "end_at";
 
-export default function PurchaseListFilterForm(props: Props) {
+export default function SaleReturnListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;
   const inputRef = React.useRef<any>();
   const YupSchema = React.useMemo(() => Yup.object().shape({}), []);
@@ -75,7 +75,7 @@ export default function PurchaseListFilterForm(props: Props) {
           name={FILTER_SEARCH}
           type="text"
           size="large"
-          placeholder="Cari Kode Pesanan Pembelian atau Nama Supplier"
+          placeholder="Cari Kode Retur Penjualan atau Nama Pelanggan"
           disabled={loading}
           ref={inputRef}
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}

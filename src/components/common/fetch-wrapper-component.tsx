@@ -37,7 +37,7 @@ export default function FetchWrapperComponent(props: WrapperProps) {
       return <>{errorComponent}</>;
     }
 
-    return <ErrorView refetch={onRetry} />;
+    return <ErrorView refetch={onRetry} error={error as any} />;
   }
 
   return <>{component}</>;

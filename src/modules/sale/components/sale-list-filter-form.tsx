@@ -18,8 +18,8 @@ interface Props {
 }
 
 const FILTER_SEARCH = "search";
-const FILTER_DATE_BEFORE = "transaction_date_before";
-const FILTER_DATE_AFTER = "transaction_date_after";
+const FILTER_DATE_BEFORE = "start_at";
+const FILTER_DATE_AFTER = "end_at";
 
 export default function PurchaseListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;

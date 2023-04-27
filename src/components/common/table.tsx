@@ -52,10 +52,11 @@ function FormErrorComponent({ name }: { name: string }) {
   if (!Object.keys(errors).length) return null;
 
   //@ts-ignore
-  const firstErrorObject = errors?.[name]?.find((error) => {
+  const firstErrorObject = errors?.[name]?.find?.((error) => {
     if (!error) return false;
     return Object.keys(error)?.length > 0;
   });
+  if (!firstErrorObject) return null;
   const firstKey = Object.keys(firstErrorObject)?.[0];
   if (!firstErrorObject?.[firstKey]?.message) return null;
   const ErrorContainer = styled("div", {
