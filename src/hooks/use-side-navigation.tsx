@@ -71,11 +71,11 @@ const navigations: NavigationInterface[] = [
     iconActive: imageConstant.saleActive,
   },
   {
-    href: "/retur-penjualan",
+    href: routeConstant.SaleReturnList,
     label: "Retur Penjualan",
-    key: "refund-sale",
-    icon: imageConstant.saleRefund,
-    iconActive: imageConstant.saleRefundActive,
+    key: "sale-return",
+    icon: imageConstant.saleReturn,
+    iconActive: imageConstant.saleReturnActive,
   },
   {
     href: "/penyesuaian-barang",

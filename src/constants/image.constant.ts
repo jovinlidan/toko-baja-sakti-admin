@@ -21,8 +21,8 @@ export default {
   saleActive: "/assets/sale-active.png",
   sale: "/assets/sale.png",
 
-  saleRefundActive: "/assets/sale-refund-active.png",
-  saleRefund: "/assets/sale-refund.png",
+  saleReturnActive: "/assets/sale-return-active.png",
+  saleReturn: "/assets/sale-return.png",
 
   itemAdjustmentActive: "/assets/item-adjustment-active.png",
   itemAdjustment: "/assets/item-adjustment.png",

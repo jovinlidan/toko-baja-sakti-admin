@@ -38,4 +38,9 @@ export default {
   SaleCreate: "/sale/create",
   SaleView: "/sale/[id]/view",
   SaleEdit: "/sale/[id]/edit",
+
+  SaleReturnList: "/sale-return/list",
+  SaleReturnCreate: "/sale-return/create",
+  SaleReturnView: "/sale-return/[id]/view",
+  SaleReturnEdit: "/sale-return/[id]/edit",
 };
