@@ -32,7 +32,6 @@ export default function EditSale() {
             salesOrderItemId: item.id,
             quantity: item.quantity,
             id: item.siId,
-            price: item.price,
           })),
         },
       });
