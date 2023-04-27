@@ -1,7 +1,8 @@
 import { SalesOrderItemLite } from "@/api-hooks/sales-order-item/sales-order-item.model";
 import TableComponent, { IColumn } from "@/components/common/table";
-import { Button } from "@/components/elements";
+import { Button, Text } from "@/components/elements";
 import { useFormState } from "@/components/elements/form";
+import { styled } from "@/config/stitches/theme.stitches";
 import { string2money } from "@/utils/string";
 import * as React from "react";
 
@@ -14,11 +15,12 @@ export type SaleItemTableDataType = {
 interface Props {
   data: SaleItemTableDataType[];
   onDelete: (index: number) => void;
+  grandTotal: number;
 }
 
 export default function SaleItemTable(props: Props) {
   const { editable } = useFormState();
-  const { data, onDelete } = props;
+  const { data, onDelete, grandTotal = 0 } = props;
 
   const columns = React.useMemo<IColumn[]>(
     () => [
@@ -92,6 +94,20 @@ export default function SaleItemTable(props: Props) {
     [editable, onDelete]
   );
   return (
-    <TableComponent columns={columns} data={data || []} name="salesItems" />
+    <>
+      <TableComponent columns={columns} data={data || []} name="salesItems" />
+      <TextContainer>
+        <Text variant="buttonLarge">
+          GRAND TOTAL : Rp {string2money(grandTotal)}
+        </Text>
+      </TextContainer>
+    </>
   );
 }
+
+const TextContainer = styled("div", {
+  display: "flex",
+  flex: 1,
+  justifyContent: "flex-end",
+  mt: 20,
+});

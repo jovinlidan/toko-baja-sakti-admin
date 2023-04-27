@@ -9,16 +9,16 @@ import useDialog from "@/hooks/use-dialog";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { toast } from "react-hot-toast";
-import { useDeletePurchase } from "@/api-hooks/purchase/purchase.mutation";
-import { useGetPurchase } from "@/api-hooks/purchase/purchase.query";
-import PurchaseForm from "./components/form";
+import { useDeleteSale } from "@/api-hooks/sales/sales.mutation";
+import { useGetSale } from "@/api-hooks/sales/sales.query";
+import SaleForm from "./components/form";
 
-export default function ViewPurchase() {
+export default function ViewSale() {
   const router = useRouter();
   const dialog = useDialog();
-  const { mutateAsync } = useDeletePurchase();
+  const { mutateAsync } = useDeleteSale();
 
-  const { data, isLoading, isFetching, error, refetch } = useGetPurchase(
+  const { data, isLoading, isFetching, error, refetch } = useGetSale(
     {
       id: router?.query?.id as string,
     },
@@ -27,7 +27,7 @@ export default function ViewPurchase() {
 
   const handleDelete = useCallback(() => {
     dialog.showConfirmation({
-      title: "Hapus Pembelian",
+      title: "Hapus Penjualan",
       message: "Apakah anda yakin? Aksi tidak dapat dibatalkan",
       onPositiveAction: async (close) => {
         try {
@@ -35,7 +35,7 @@ export default function ViewPurchase() {
             id: router?.query?.id as string,
           });
           message && toast.success(message);
-          router.replace(routeConstant.PurchaseList);
+          router.replace(routeConstant.SaleList);
           close();
         } catch (e: any) {
           e?.messsage && toast.error(e?.message);
@@ -48,7 +48,7 @@ export default function ViewPurchase() {
     <Container>
       <LinkText
         label="Kembali"
-        href={routeConstant.PurchaseList}
+        href={routeConstant.SaleList}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
       />
       <Separator mb={24} />
@@ -59,7 +59,7 @@ export default function ViewPurchase() {
         component={
           <>
             {data?.data && (
-              <PurchaseForm
+              <SaleForm
                 data={data?.data}
                 onSubmit={() => {}}
                 defaultEditable={false}
@@ -68,7 +68,7 @@ export default function ViewPurchase() {
             <Row>
               <Button
                 href={{
-                  pathname: routeConstant.PurchaseEdit,
+                  pathname: routeConstant.SaleEdit,
                   query: { id: router?.query?.id },
                 }}
               >

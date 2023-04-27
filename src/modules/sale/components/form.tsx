@@ -16,6 +16,7 @@ import { Sale } from "@/api-hooks/sales/sales.model";
 
 type FormType = {
   code?: string;
+  paymentMethod?: string;
   salesOrderId?: string;
   transactionDate?: Date;
   salesItems?: {
@@ -35,15 +36,26 @@ interface Props {
   defaultEditable?: boolean;
 }
 
-export default function PurchaseForm(props: Props) {
+export default function SaleForm(props: Props) {
   const { data, defaultEditable = true } = props;
-  const [tableData, setTableData] = React.useState<SaleItemTableDataType[]>([]);
+  const [tableData, setTableData] = React.useState<SaleItemTableDataType[]>(
+    data?.salesItems.map((item) => ({
+      ...item,
+      amountNotReceived: 0,
+      item: item.salesOrderItem.item,
+      priceUnit: item.price,
+      siId: item.id,
+      id: item.salesOrderItem.id,
+      unit: item.salesOrderItem.unit,
+    })) || []
+  );
   const [tempData, setTempData] = React.useState<SalesOrderItemLite>();
 
   const YupSchema = React.useMemo(
     () =>
       Yup.object().shape({
         code: Yup.string().nullable().strip(true),
+        paymentMethod: Yup.string().nullable().strip(true),
         salesOrderId: Yup.string().required(),
         transactionDate: Yup.date().required(),
         salesItems: Yup.object()
@@ -66,6 +78,7 @@ export default function PurchaseForm(props: Props) {
       ...(data
         ? {
             code: data.code,
+            paymentMethod: data.salesOrder.paymentMethod,
             salesOrderId: data.salesOrder.id,
             transactionDate: data.transactionDate,
           }
@@ -87,7 +100,7 @@ export default function PurchaseForm(props: Props) {
       onSuccess: (salesOrderItemData) => {
         onSalesOrderItemSelect(undefined);
         setTempData(undefined);
-        setTableData([]);
+        if (!data) setTableData([]);
       },
     }
   );
@@ -206,8 +219,6 @@ export default function PurchaseForm(props: Props) {
     [methods, salesOrderItemQuery.data?.data]
   );
 
-  console.log(methods.getValues());
-
   return (
     <Form
       methods={methods}
@@ -228,6 +239,14 @@ export default function PurchaseForm(props: Props) {
         </HalfContainer>
         <HalfContainer>
           <Input name="transactionDate" type="date" label="Tanggal Penjualan" />
+          {data?.salesOrder.paymentMethod && (
+            <Input
+              name="paymentMethod"
+              type="text"
+              label="Metode Pembayaran"
+              disabled
+            />
+          )}
         </HalfContainer>
       </FullContainer>
       <FullContainer direction="column">
@@ -270,7 +289,16 @@ export default function PurchaseForm(props: Props) {
             </Row>
           </>
         )}
-        <SaleItemTable data={tableData} onDelete={onDeleteItem} />
+        <SaleItemTable
+          data={tableData}
+          onDelete={onDeleteItem}
+          grandTotal={
+            data?.grandTotal ||
+            tableData?.reduce((prev, current) => {
+              return prev + current.quantity * current.price;
+            }, 0)
+          }
+        />
         {defaultEditable && (
           <AddButtonContainer>
             <FormValueState keys={["salesItems"]}>

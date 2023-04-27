@@ -58,6 +58,7 @@ export class Sale {
   grandTotal: number;
 
   @Expose({ name: "sales_order" })
+  @Type(() => SalesOrderLite)
   salesOrder: SalesOrderLite;
 
   @Expose({ name: "sales_items" })
