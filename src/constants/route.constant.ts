@@ -43,4 +43,8 @@ export default {
   SaleReturnCreate: "/sale-return/create",
   SaleReturnView: "/sale-return/[id]/view",
   SaleReturnEdit: "/sale-return/[id]/edit",
+
+  AdjustmentItemList: "/adjustment-item/list",
+  AdjustmentItemCreate: "/adjustment-item/create",
+  AdjustmentItemView: "/adjustment-item/[id]/view",
 };

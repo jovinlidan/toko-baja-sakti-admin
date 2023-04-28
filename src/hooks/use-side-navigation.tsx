@@ -78,9 +78,9 @@ const navigations: NavigationInterface[] = [
     iconActive: imageConstant.saleReturnActive,
   },
   {
-    href: "/penyesuaian-barang",
+    href: routeConstant.AdjustmentItemList,
     label: "Penyesuaian Barang",
-    key: "adjust-item",
+    key: "adjustment-item",
     icon: imageConstant.itemAdjustment,
     iconActive: imageConstant.itemAdjustmentActive,
   },

@@ -157,6 +157,19 @@ export default function Header() {
         href: routeConstant.SaleReturnView,
         label: "Detail Retur Penjualan",
       },
+
+      {
+        href: routeConstant.AdjustmentItemList,
+        label: "Penyesuaian Barang",
+      },
+      {
+        href: routeConstant.AdjustmentItemCreate,
+        label: "Tambah Penyesuaian Barang",
+      },
+      {
+        href: routeConstant.AdjustmentItemView,
+        label: "Detail Penyesuaian Barang",
+      },
     ];
   }, [navigations]);
 

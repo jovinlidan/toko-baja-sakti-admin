@@ -9,6 +9,7 @@ import CategoryItemSelectOption from "@/components/elements/select-input-helper/
 import { Item, ItemAvailableOptions } from "@/api-hooks/item/item.model";
 import { toast } from "react-hot-toast";
 import { formSetErrors } from "@/common/helpers/form";
+import { FullContainer, HalfContainer } from "@/components/elements/styles";
 
 type FormType = {
   code?: string;
@@ -123,16 +124,3 @@ export default function ItemForm(props: Props) {
     </Form>
   );
 }
-const FullContainer = styled("div", {
-  background: "#FFFFFF",
-  padding: "40px 44px",
-  borderRadius: 4,
-  mb: 24,
-
-  display: "flex",
-  justifyContent: "space-between",
-});
-
-const HalfContainer = styled("div", {
-  width: "48%",
-});
