@@ -194,7 +194,12 @@ export default function Header() {
   return (
     <StyledHeader>
       <Container>
-        <Text variant="h5">{headerMapper(router.pathname)}</Text>
+        <Text variant="h5">
+          {headerMapper(router.pathname) +
+            (!!router?.query?.additionalData
+              ? ` - ${router?.query?.additionalData}`
+              : "")}
+        </Text>
       </Container>
       <LogoutContainer onClick={logout}>
         <LogoutSVG

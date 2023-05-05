@@ -75,7 +75,10 @@ export default function ListAdjusmentItem() {
             <Button
               href={{
                 pathname: routeConstant.AuditView,
-                query: { id: row?.original?.id },
+                query: {
+                  id: row?.original?.id,
+                  additionalData: row?.original?.menu,
+                },
               }}
               size="small"
             >
