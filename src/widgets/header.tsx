@@ -170,6 +170,15 @@ export default function Header() {
         href: routeConstant.AdjustmentItemView,
         label: "Detail Penyesuaian Barang",
       },
+
+      {
+        href: routeConstant.AuditList,
+        label: "Data Logging",
+      },
+      {
+        href: routeConstant.AuditView,
+        label: "Detail Data Logging",
+      },
     ];
   }, [navigations]);
 

@@ -47,4 +47,7 @@ export default {
   AdjustmentItemList: "/adjustment-item/list",
   AdjustmentItemCreate: "/adjustment-item/create",
   AdjustmentItemView: "/adjustment-item/[id]/view",
+
+  AuditList: "/audit/list",
+  AuditView: "/audit/[id]/view",
 };

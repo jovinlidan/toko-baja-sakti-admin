@@ -111,6 +111,7 @@ function SelectField<
       menu: (styles) => ({
         ...styles,
         borderRadius: 8,
+        zIndex: theme.zIndices.selectMenu.value,
       }),
       valueContainer: (styles) => ({
         ...styles,
@@ -189,5 +190,5 @@ const StartEnhancerContainer = styled("div", {
   bottom: 0,
   alignItems: "center",
   paddingLeft: 20,
-  zIndex: 100000,
+  zIndex: "$selectStartEnhancer",
 });

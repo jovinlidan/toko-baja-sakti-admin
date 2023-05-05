@@ -85,9 +85,9 @@ const navigations: NavigationInterface[] = [
     iconActive: imageConstant.itemAdjustmentActive,
   },
   {
-    href: "/data-logging",
+    href: routeConstant.AuditList,
     label: "Data Logging",
-    key: "data-logging",
+    key: "audit",
     icon: imageConstant.dataLogging,
     iconActive: imageConstant.dataLoggingActive,
   },

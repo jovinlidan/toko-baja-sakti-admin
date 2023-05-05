@@ -22,6 +22,8 @@ export const stitches = createStitches({
       header: 10000,
       toast: 10001,
       modal: 10002,
+      selectStartEnhancer: 100000,
+      selectMenu: 100001,
     },
   },
   media: {

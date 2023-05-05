@@ -33,7 +33,6 @@ export default function PaginationComponent(props: Props) {
   if (!meta) {
     return null;
   }
-
   const pageCount = Math.ceil(meta.total / meta.perPage);
 
   if (pageCount <= 0) {
@@ -59,11 +58,11 @@ export default function PaginationComponent(props: Props) {
         }-${meta?.to || 0} of ${meta.total}`}</Text>
         <Separator mr={56} />
         <Pagination
-          onPageChange={({ selected }) =>
-            onPageChange(Math.min(Math.max(selected, 1), meta.lastPage))
-          }
+          onPageChange={({ selected }) => {
+            onPageChange(Math.min(Math.max(selected + 1, 1), meta.lastPage));
+          }}
           pageCount={pageCount}
-          forcePage={page}
+          forcePage={page - 1}
           pageRangeDisplayed={-1}
           marginPagesDisplayed={-1}
           previousLabel={
@@ -75,7 +74,7 @@ export default function PaginationComponent(props: Props) {
           containerClassName={styles.container()}
           previousClassName={styles.previous()}
           nextClassName={styles.next()}
-          activeClassName={styles.active()}
+          activeClassName={styles.active().toString()}
           disabledClassName={styles.disabled()}
         />
       </PaginationSectionContainer>
@@ -89,11 +88,15 @@ const styles = {
   }),
   previous: css({
     marginRight: 12,
+    cursor: "pointer",
   }),
   next: css({
     marginLeft: 12,
+    cursor: "pointer",
   }),
-  active: css({}),
+  active: css({
+    cursor: "pointer",
+  }),
   disabled: css({}),
 };
 
