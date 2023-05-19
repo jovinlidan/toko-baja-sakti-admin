@@ -1,4 +1,5 @@
 import { Expose, Type } from "class-transformer";
+import { File } from "@/api-hooks/upload/upload.model";
 
 export class CategoryItemLite {
   id: string;
@@ -41,6 +42,9 @@ export class CategoryItem {
   @Expose({ name: "small_unit" })
   smallUnit: string;
 
+  @Type(() => File)
+  file: File;
+
   @Expose({ name: "created_at" })
   @Type(() => Date)
   createdAt: Date;
@@ -75,6 +79,7 @@ export class CreateCategoryItemInputForm {
   conversionUnit: number;
   bigUnit: string;
   smallUnit: string;
+  image: string;
 }
 
 export class UpdateCategoryItemInput {
@@ -87,4 +92,5 @@ export class UpdateCategoryItemInputForm {
   conversionUnit: number;
   bigUnit: string;
   smallUnit: string;
+  image: string;
 }

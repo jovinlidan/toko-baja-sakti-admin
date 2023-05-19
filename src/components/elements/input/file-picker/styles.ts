@@ -1,10 +1,10 @@
 import { styled, theme } from "@/config/stitches/theme.stitches";
 
 export const PickerContainer = styled("div", {
-  width: 64,
-  height: 64,
-  minWidth: 64,
-  minHeight: 64,
+  width: 128,
+  height: 128,
+  minWidth: 128,
+  minHeight: 128,
 });
 
 export const MainPreviewContainer = styled("div", {
@@ -53,7 +53,7 @@ export const BrowseFilesPill = styled("div", {
 export const PreviewContainer = styled("div", {
   display: "flex",
   flexDirection: "row",
-  width: "22%",
+  width: "100%",
   marginTop: "12px",
   position: "relative",
 });
@@ -112,7 +112,6 @@ export const FilePreview = styled("img", {
   left: "0",
   bottom: "0",
   right: "0",
-  padding: "8px",
   width: "100%",
   height: "100%",
 });

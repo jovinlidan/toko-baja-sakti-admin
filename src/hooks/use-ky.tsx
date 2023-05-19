@@ -85,8 +85,13 @@ const config: Options = {
     ],
     beforeRequest: [
       (request) => {
+        if (
+          !request.headers.get("Content-Type") &&
+          !request.headers.get("no-default-content-type")
+        ) {
+          request.headers.set("Content-Type", "application/json");
+        }
         request.headers.set("Accept-Language", "id");
-        request.headers.set("Content-Type", "application/json");
         request.headers.set("Authorization", `Bearer ${getCookies("token")}`);
         request.headers.set("ngrok-skip-browser-warning", "true");
       },

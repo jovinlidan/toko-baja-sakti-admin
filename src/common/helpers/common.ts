@@ -17,6 +17,8 @@ interface FetchMutationOptions<T> {
   body?: any;
   classType?: ClassConstructor<T>;
   headers?: any;
+  decamelize?: boolean;
+  asBody?: boolean;
 }
 
 export function MutationFetchFunction<T>({
@@ -25,19 +27,23 @@ export function MutationFetchFunction<T>({
   body,
   classType,
   headers,
+  decamelize = true,
+  asBody = false,
 }: FetchMutationOptions<T>): Promise<any> {
   return new Promise(async (resolve, reject) => {
-    const newBody = body ? decamelizeKeys(body) : undefined;
+    const newBody = body
+      ? decamelize
+        ? decamelizeKeys(body)
+        : body
+      : undefined;
+
+    const data = asBody ? { body: newBody } : { json: newBody };
 
     try {
       const json = (await client(url, {
         method,
 
-        ...(newBody
-          ? {
-              json: newBody,
-            }
-          : {}),
+        ...(newBody ? data : {}),
         headers,
       }).json()) as any;
 

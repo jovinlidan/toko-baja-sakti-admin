@@ -1,16 +1,15 @@
-import { UploadFileParam, UploadInput } from "@/api-hooks/upload/upload.model";
+import { UploadInput } from "@/api-hooks/upload/upload.model";
 import { ApiError } from "@/common/repositories/common.model";
 import { camelizeKeys } from "humps";
 import { MutateOptions } from "react-query";
-
+import { decamelizeKeys } from "humps";
+import { client } from "@/hooks/use-ky";
 interface Props {
   acceptedFiles: File[];
-  setIsUploading?: (value: React.SetStateAction<boolean>) => void;
+  setIsUploading: (value: React.SetStateAction<boolean>) => void;
   uploadFileParam: (
     variables: UploadInput,
-    options?:
-      | MutateOptions<UploadFileParam, ApiError, UploadInput, unknown>
-      | undefined
+    options?: MutateOptions<any, ApiError, UploadInput, unknown> | undefined
   ) => Promise<any>;
   onPicked: (filename: string, fullUrl: string) => void;
   resizeImage?: boolean;
@@ -39,64 +38,32 @@ export async function onDrop(props: Props) {
     resizeImage,
     ResizeImageFunc,
   } = props;
-  const method = "PUT";
-  const headers = {
-    "Content-Type": acceptedFiles[0].type,
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "*",
-  };
+
   try {
     const fileToUpload = acceptedFiles[0];
-    setIsUploading?.(true);
-    let result: any = await uploadFileParam({
-      contentType: getFileUploadContentType(fileToUpload.type),
-    });
-    result = await camelizeKeys(result);
-    if (!result) {
-      throw new Error("Data is undefined");
-    }
+    setIsUploading(true);
+    const fileBlob = Object.assign(fileToUpload);
+    await ResizeImageFunc?.(
+      fileBlob,
+      async (uri: File) => {
+        const formData = new FormData();
+        formData.append("file", uri);
+        formData.append(
+          "contentType",
+          getFileUploadContentType(fileToUpload.type)
+        );
+        const previewUrl = URL.createObjectURL(uri);
 
-    const fileBlob = Object.assign(fileToUpload, {
-      preview: URL.createObjectURL(fileToUpload),
-    });
+        const result: any = await uploadFileParam({
+          body: formData,
+        });
 
-    if (resizeImage) {
-      await ResizeImageFunc?.(
-        fileBlob,
-        async (uri: File) => {
-          const { fileName, url } = result;
-          const uploadResponse = await fetch(url, {
-            method,
-            body: await uri.arrayBuffer(),
-            headers,
-          });
-          const uploadResponseBody = await uploadResponse.text();
-          if (!uploadResponse.ok) {
-            throw new Error(uploadResponseBody);
-          }
-
-          onPicked(fileName, url.split("?")[0]);
-          setIsUploading?.(false);
-        },
-        fileToUpload.type
-      );
-    } else {
-      const { fileName, url } = result;
-
-      const uploadResponse = await fetch(url, {
-        method,
-        body: await fileToUpload.arrayBuffer(),
-        headers,
-      });
-      const uploadResponseBody = await uploadResponse.text();
-      if (!uploadResponse.ok) {
-        throw new Error(uploadResponseBody);
-      }
-
-      onPicked(fileName, url.split("?")[0]);
-    }
+        onPicked(result?.file_name, previewUrl);
+        setIsUploading(false);
+      },
+      fileToUpload.type
+    );
   } catch (e) {
-  } finally {
-    setIsUploading?.(false);
+    setIsUploading(false);
   }
 }

@@ -1,7 +1,9 @@
 import { useGetUploadFileParam } from "@/api-hooks/upload/upload.mutation";
 import { ResizeImage } from "@/common/helpers/image";
+import ColorConstant from "@/config/stitches/color.stitches";
 import * as React from "react";
 import { useDropzone } from "react-dropzone";
+import { toast } from "react-hot-toast";
 import { Oval } from "react-loader-spinner";
 import Text from "../../text";
 
@@ -38,23 +40,26 @@ export function PreviewContent({ url }) {
   const extension = splits[splits?.length - 1]?.toLowerCase();
 
   const currentUrl = url.startsWith("blob:") ? splits[0] : url;
-
-  if (["jpeg", "jpg", "png", "svg", "gif"].includes(extension)) {
-    return <ImagePreview src={currentUrl} alt={extension} />;
+  if (url.startsWith("blob:")) {
+    return <FilePreview src={currentUrl} alt={extension} />;
   }
+  return <FilePreview src={currentUrl} alt={extension} />;
+  // if (["jpeg", "jpg", "png", "svg", "gif"].includes(extension)) {
+  //   return <ImagePreview src={currentUrl} alt={extension} />;
+  // }
 
-  if (["pdf", "xlsx", "docx", "doc", "xls"].includes(extension)) {
-    const Icon = (extension) => {
-      return <FilePreview src="/assets/global-file.png" alt={extension} />;
-    };
-    return (
-      <PreviewContainer>
-        <Icon extension={extension} />
-      </PreviewContainer>
-    );
-  }
+  // if (["pdf", "xlsx", "docx", "doc", "xls"].includes(extension)) {
+  //   const Icon = (extension) => {
+  //     return <FilePreview src="/assets/global-file.png" alt={extension} />;
+  //   };
+  //   return (
+  //     <PreviewContainer>
+  //       <Icon extension={extension} />
+  //     </PreviewContainer>
+  //   );
+  // }
 
-  return <FilePreview src="/assets/global-file.png" alt={extension} />;
+  // return <FilePreview src={currentUrl} alt={extension} />;
 }
 
 export default function PreviewPicker(props: PreviewOptions) {
@@ -107,7 +112,19 @@ export default function PreviewPicker(props: PreviewOptions) {
       if (!isUploading) {
         const splits = preview?.split("?")[0].split(".");
         const currentUrl = preview.startsWith("blob:") ? splits[0] : preview;
-        window.open(currentUrl);
+        if (preview.startsWith("blob:")) {
+          const newWindow = window.open();
+          if (newWindow) {
+            newWindow.document.title = "Preview Gambar";
+            newWindow.document.write(
+              `<img src="${preview}" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; object-fit:contain;"></img>`
+            );
+          } else {
+            toast.error("Tidak dapat membuka tab baru");
+          }
+        } else {
+          window.open(currentUrl);
+        }
       }
     },
     [isUploading, preview]
@@ -121,9 +138,9 @@ export default function PreviewPicker(props: PreviewOptions) {
             <Oval
               strokeWidth={4}
               strokeWidthSecondary={4}
-              height={40}
-              width={40}
-              color="#9590bb"
+              height={48}
+              width={48}
+              color={ColorConstant.primaryDark}
               secondaryColor="#fffff"
             />
           </LoadingContainer>

@@ -15,6 +15,8 @@ type FormType = {
   conversionUnit: number;
   bigUnit: string;
   smallUnit: string;
+  image: string;
+  imagePreview?: string;
 };
 
 interface Props {
@@ -34,6 +36,7 @@ export default function FormCategoryItem(props: Props) {
         conversionUnit: Yup.number().nullable(),
         bigUnit: Yup.string().required(),
         smallUnit: Yup.string().required(),
+        image: Yup.string().required(),
       }),
     []
   );
@@ -42,7 +45,11 @@ export default function FormCategoryItem(props: Props) {
   const methods = useForm<FormType>({
     resolver,
     mode: "all",
-    defaultValues: data,
+    defaultValues: {
+      ...data,
+      image: data?.file?.name,
+      imagePreview: data?.file?.fileUrl,
+    },
   });
 
   const onSubmit = React.useCallback(
@@ -81,6 +88,15 @@ export default function FormCategoryItem(props: Props) {
               label="Konversi Satuan"
             />
           )}
+          <Input
+            name="image"
+            type="file"
+            label="Gambar"
+            previewName="imagePreview"
+            resizeImage
+            resizeWidth={720}
+            resizeHeight={720}
+          />
         </HalfContainer>
         <HalfContainer>
           {data?.code && (

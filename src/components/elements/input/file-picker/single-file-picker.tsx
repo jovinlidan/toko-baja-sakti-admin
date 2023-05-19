@@ -55,7 +55,6 @@ export default function SingleFilePicker(props: SingleFilePickerProps) {
   const hasValue = !!field?.value && !!previewField?.value;
 
   const _error = fieldState?.error?.message;
-
   return (
     <CustomFormControl
       required={required}

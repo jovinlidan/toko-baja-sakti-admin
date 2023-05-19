@@ -1,7 +1,9 @@
 // import { useGetUploadFileParam } from "api-hooks/upload/upload.mutation";
 
+import { useGetUploadFileParam } from "@/api-hooks/upload/upload.mutation";
 import { PlusSVG } from "@/common/assets";
 import { ResizeImage } from "@/common/helpers/image";
+import ColorConstant from "@/config/stitches/color.stitches";
 import { theme } from "@/config/stitches/theme.stitches";
 import * as React from "react";
 import { useDropzone } from "react-dropzone";
@@ -44,8 +46,7 @@ export default function MainFilePicker(props: FilePickerOptions) {
   } = props;
 
   const [isUploading, setIsUploading] = React.useState(false);
-  // const { mutateAsync: uploadFileParam } = useGetUploadFileParam();
-  const uploadFileParam: any = () => {};
+  const { mutateAsync: uploadFileParam } = useGetUploadFileParam();
 
   const ResizeImageFunc = React.useCallback(
     async (file, onImageResized, type) => {
@@ -88,9 +89,9 @@ export default function MainFilePicker(props: FilePickerOptions) {
           <Oval
             strokeWidth={4}
             strokeWidthSecondary={4}
-            height={40}
-            width={40}
-            color="#9590bb"
+            height={48}
+            width={48}
+            color={ColorConstant.primaryDark}
             secondaryColor="#fffff"
           />
         </>
