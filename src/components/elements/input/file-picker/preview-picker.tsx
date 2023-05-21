@@ -39,11 +39,10 @@ export function PreviewContent({ url }) {
   const splits = url?.split("?")[0].split(".");
   const extension = splits[splits?.length - 1]?.toLowerCase();
 
-  const currentUrl = url.startsWith("blob:") ? splits[0] : url;
   if (url.startsWith("blob:")) {
-    return <FilePreview src={currentUrl} alt={extension} />;
+    return <FilePreview src={url} alt={extension} />;
   }
-  return <FilePreview src={currentUrl} alt={extension} />;
+  return <FilePreview src={url} alt={extension} />;
   // if (["jpeg", "jpg", "png", "svg", "gif"].includes(extension)) {
   //   return <ImagePreview src={currentUrl} alt={extension} />;
   // }
