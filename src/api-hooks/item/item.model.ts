@@ -76,6 +76,8 @@ export class Item {
   @Expose({ name: "category_item" })
   @Type(() => CategoryItem)
   categoryItem: CategoryItem;
+
+  weight : number;
 }
 
 export class getItemsInput {
