@@ -4,6 +4,7 @@ import { camelizeKeys } from "humps";
 import { MutateOptions } from "react-query";
 import { decamelizeKeys } from "humps";
 import { client } from "@/hooks/use-ky";
+import { toast } from "react-hot-toast";
 interface Props {
   acceptedFiles: File[];
   setIsUploading: (value: React.SetStateAction<boolean>) => void;
@@ -39,13 +40,13 @@ export async function onDrop(props: Props) {
     ResizeImageFunc,
   } = props;
 
-  try {
-    const fileToUpload = acceptedFiles[0];
-    setIsUploading(true);
-    const fileBlob = Object.assign(fileToUpload);
-    await ResizeImageFunc?.(
-      fileBlob,
-      async (uri: File) => {
+  const fileToUpload = acceptedFiles[0];
+  const fileBlob = Object.assign(fileToUpload);
+  await ResizeImageFunc?.(
+    fileBlob,
+    async (uri: File) => {
+      try {
+        setIsUploading(true);
         const formData = new FormData();
         formData.append("file", uri);
         formData.append(
@@ -60,10 +61,11 @@ export async function onDrop(props: Props) {
 
         onPicked(result?.file_name, previewUrl);
         setIsUploading(false);
-      },
-      fileToUpload.type
-    );
-  } catch (e) {
-    setIsUploading(false);
-  }
+      } catch (e: any) {
+        setIsUploading(false);
+        e?.message && toast.error(e?.message);
+      }
+    },
+    fileToUpload.type
+  );
 }
