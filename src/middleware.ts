@@ -1,5 +1,6 @@
 // import { AUTH_ROUTE, NOAUTH_ROUTE } from "common/helpers/route";
 import { NextRequest, NextResponse } from "next/server";
+import routeConstant from "./constants/route.constant";
 
 const WHITE_LIST = ["api", "favicon", "assets", "_next", "images", "vercel"];
 
@@ -29,14 +30,15 @@ export async function middleware(req: NextRequest) {
   if (isWhitelist) {
     return NextResponse.next();
   }
+
   const isAuthed = !!req?.cookies.get("refresh") || false;
 
-  const baseUrl = getRedirectUrl(req, "/");
+  const baseUrl = getRedirectUrl(req, routeConstant.ItemList);
   const loginUrl = getRedirectUrl(req, "/login");
 
   if (!isAuthed && CURRENT_PATH !== "login") {
     return NextResponse.redirect(loginUrl);
-  } else if (isAuthed && CURRENT_PATH === "login") {
+  } else if ((isAuthed && CURRENT_PATH === "login") || pathname === "/") {
     return NextResponse.redirect(baseUrl);
   }
 
