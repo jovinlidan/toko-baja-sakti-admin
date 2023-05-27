@@ -186,7 +186,7 @@ export default function Header() {
     (path: string) => {
       const res = mappings.filter((mapping) => mapping.href === path);
       if (res.length) return res[0].label;
-      return "";
+      return "Halaman Tidak Ditemukan";
     },
     [mappings]
   );
