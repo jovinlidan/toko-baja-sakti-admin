@@ -122,7 +122,7 @@ export default function EditPurchaseItem() {
   const dataForm = useMemo(() => {
     return {
       ...data?.data?.purchaseItems?.find(
-        (item) => item.id === router?.query?.itemId
+        (item) => item.purchaseOrderItem?.id === router?.query?.itemId
       ),
       purchaseOrderId: data?.data?.purchaseOrder?.id,
     };

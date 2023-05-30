@@ -8,8 +8,6 @@ import { FullContainer, HalfContainer } from "@/components/elements/styles";
 import { formSetErrors } from "@/common/helpers/form";
 import { styled } from "@/config/stitches/theme.stitches";
 import { PurchaseItem } from "@/api-hooks/purchase/purchase.model";
-import { useGetPurchaseOrderItems } from "@/api-hooks/purchase-order-item/purchase-order-item.query";
-import PurchaseOrderSelectOption from "@/components/elements/select-input-helper/purchase-order-select-input";
 import Separator from "@/components/common/separator";
 
 type FormType = {

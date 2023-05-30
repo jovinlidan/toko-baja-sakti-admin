@@ -111,7 +111,6 @@ export default function PurchaseOrderItemTable(props: Props) {
               Header: "",
               accessor: "detail",
               Cell: ({ row }) => {
-                if (!editable) return null;
                 return (
                   <Button
                     size="small"
