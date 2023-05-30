@@ -3,6 +3,30 @@ import { CustomerLite } from "@/api-hooks/customer/customer.model";
 import { SalesOrderItemLite } from "@/api-hooks/sales-order-item/sales-order-item.model";
 import { ItemUnitEnum } from "@/api-hooks/item/item.model";
 
+export class TransactionLite {
+  id: string;
+  @Expose({ name: "transaction_at" })
+  @Type(() => Date)
+  transactionAt: Date;
+
+  @Expose({ name: "sub_total" })
+  @Type(() => Number)
+  subTotal: number;
+
+  @Expose({ name: "shipping_cost" })
+  @Type(() => Number)
+  shippingCost: number;
+
+  @Expose({ name: "grand_total" })
+  @Type(() => Number)
+  grandTotal: number;
+
+  status: string;
+
+  @Expose({ name: "no_receipt" })
+  noReceipt?: string;
+}
+
 export class SalesOrderLite {
   id: string;
   code: string;
@@ -16,7 +40,10 @@ export class SalesOrderLite {
   user: CustomerLite;
 
   @Expose({ name: "payment_method" })
-  paymentMethod: string;
+  paymentMethod?: string;
+
+  @Type(() => TransactionLite)
+  transaction: TransactionLite;
 
   @Expose({ name: "total_item" })
   @Type(() => Number)

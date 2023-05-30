@@ -106,4 +106,9 @@ export class UpdateSaleInputForm {
     salesOrderItemId: string;
     quantity: number;
   }[];
+
+  transaction: {
+    status: string;
+    noReceipt: string;
+  };
 }

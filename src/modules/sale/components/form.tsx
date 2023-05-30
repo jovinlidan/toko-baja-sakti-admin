@@ -13,12 +13,14 @@ import { SalesOrderItemLite } from "@/api-hooks/sales-order-item/sales-order-ite
 import SalesOrderSelectOption from "@/components/elements/select-input-helper/sales-order-select-input";
 import { useGetSalesOrderItems } from "@/api-hooks/sales-order-item/sales-order-item.query";
 import { Sale } from "@/api-hooks/sales/sales.model";
+import { TransactionLite } from "@/api-hooks/sales-order/sales-order.model";
 
 type FormType = {
   code?: string;
   paymentMethod?: string;
   salesOrderId?: string;
   transactionDate?: Date;
+  transaction?: TransactionLite;
   salesItems?: {
     id?: string;
     salesOrderItemId?: string;
@@ -81,6 +83,7 @@ export default function SaleForm(props: Props) {
             paymentMethod: data.salesOrder.paymentMethod,
             salesOrderId: data.salesOrder.id,
             transactionDate: data.transactionDate,
+            transaction: data.salesOrder.transaction,
           }
         : {
             transactionDate: new Date(Date.now()),
@@ -239,6 +242,19 @@ export default function SaleForm(props: Props) {
         </HalfContainer>
         <HalfContainer>
           <Input name="transactionDate" type="date" label="Tanggal Penjualan" />
+
+          {data?.salesOrder?.transaction?.status && (
+            <Input name="transaction.noReceipt" type="text" label="No Resi" />
+          )}
+          {data?.salesOrder?.transaction?.status && (
+            <Input
+              name="transaction.status"
+              type="enum"
+              enumClass="transaction-status"
+              label="Status"
+            />
+          )}
+
           {data?.salesOrder.paymentMethod && (
             <Input
               name="paymentMethod"
