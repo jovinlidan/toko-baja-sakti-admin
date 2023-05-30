@@ -12,6 +12,7 @@ import CustomFormControl, {
 } from "../custom-form-control";
 import { FormContext } from "../form";
 import { CalendarSVG } from "@/common/assets";
+import { addDays, isDate, setHours, setMinutes } from "date-fns";
 
 export interface DatePickerFieldProps
   extends BaseElementInputProps,
@@ -50,6 +51,9 @@ function TextField(props: DatePickerFieldProps, ref: any) {
 
   const _onChange = React.useCallback(
     (e: Date | null) => {
+      if (e) {
+        e = addDays(e, 1);
+      }
       field.onChange(e);
     },
     [field]
@@ -89,7 +93,7 @@ function TextField(props: DatePickerFieldProps, ref: any) {
           className={styles.fullWidth()}
           wrapperClassName={styles.fullWidth()}
           placeholderText={placeholder}
-          selected={field.value || ""}
+          selected={isDate(field.value) ? addDays(field.value, -1) : null}
           disabled={_disabled}
           onChange={_onChange}
           onSelect={_onChange}
