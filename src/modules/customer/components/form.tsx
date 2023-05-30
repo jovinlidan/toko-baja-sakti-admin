@@ -39,7 +39,7 @@ export default function FormCustomer(props: Props) {
         status: Yup.string().nullable(),
         address: Yup.object().shape({
           id: Yup.string().nullable(),
-          cityId: Yup.string().required(),
+          cityId: Yup.string(),
           addressDetail: Yup.string().nullable(),
         }),
       }),
