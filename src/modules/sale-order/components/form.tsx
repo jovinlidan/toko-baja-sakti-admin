@@ -203,7 +203,7 @@ export default function SaleOrderForm(props: Props) {
           <CustomerSelectOption
             name="userId"
             label="Pelanggan"
-            placeholder="Pilih Supplier"
+            placeholder="Pilih Pelanggan"
           />
         </HalfContainer>
         <HalfContainer>
