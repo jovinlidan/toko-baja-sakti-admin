@@ -13,7 +13,7 @@ const BxChevronLeftSVG = (props: SVGProps<SVGSVGElement>) => (
     <path
       d="M14.255 6.293 8.548 12l5.707 5.707 1.414-1.414L11.376 12l4.293-4.293-1.414-1.414Z"
       fill={props.color}
-      fillOpacity={0.54}
+      fillOpacity={1}
     />
   </svg>
 );

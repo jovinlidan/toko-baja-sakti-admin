@@ -74,7 +74,7 @@ export default function PaginationComponent(props: Props) {
           containerClassName={styles.container()}
           previousClassName={styles.previous()}
           nextClassName={styles.next()}
-          activeClassName={styles.active().toString()}
+          activeClassName={styles.active()}
           disabledClassName={styles.disabled()}
         />
       </PaginationSectionContainer>
@@ -97,7 +97,10 @@ const styles = {
   active: css({
     cursor: "pointer",
   }),
-  disabled: css({}),
+  disabled: css({
+    opacity: 0.2,
+    cursor: "initial",
+  }),
 };
 
 const PaginationContainer = styled("div", {
