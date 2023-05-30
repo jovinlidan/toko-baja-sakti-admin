@@ -90,9 +90,9 @@ export default function AdjustmentItemForm(props: Props) {
     { id: itemId },
     {
       enabled: !!itemId,
-      onSettled: (data) => {
-        if (!data?.data) return;
-        const camelData: ApiResult<Item> = camelizeKeys(data);
+      onSettled: (itemData) => {
+        if (!itemData?.data || !!data?.id) return;
+        const camelData: ApiResult<Item> = camelizeKeys(itemData);
         methods.setValue("oldStock", camelData?.data.stock);
       },
     }

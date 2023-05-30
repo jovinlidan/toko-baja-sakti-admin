@@ -109,7 +109,6 @@ export default function PurchaseForm(props: Props) {
 
   const purchaseOrderItemOptions = React.useMemo(() => {
     let data = [...(purchaseOrderItemQuery?.data?.data || [])];
-    console.log(tableData, data);
     data = data.filter(
       (item) => !tableData.find((tableItem) => tableItem.id === item.id)
     );

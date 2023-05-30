@@ -81,6 +81,10 @@ export default function SaleReturnItemTable(props: Props) {
         },
       },
       {
+        Header: "Alasan",
+        accessor: "reason",
+      },
+      {
         Header: "",
         accessor: "detail",
         Cell: ({ row }) => {
