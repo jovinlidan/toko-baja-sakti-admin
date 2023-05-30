@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import "react-datepicker/dist/react-datepicker.css";
-import "@/styles/globals.css";
 
 import AdminLayout from "@/layouts/admin-layout";
 import { NextPage } from "next";

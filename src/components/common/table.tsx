@@ -221,13 +221,16 @@ const Container = styled("div", {
 });
 const TableContainer = styled("div", {
   overflowX: "auto",
+
+  "&::-webkit-scrollbar": {
+    height: 8,
+  },
 });
 
 const StyledTable = styled("table", {
   background: "#FFFF",
   borderCollapse: "collapse",
   width: "100%",
-  // marginTop: 33,
   position: "sticky",
   top: 0,
 });
