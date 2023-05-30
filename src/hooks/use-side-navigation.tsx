@@ -5,7 +5,7 @@ import * as React from "react";
 export interface NavigationInterface {
   label: string;
   href: string;
-  key: string;
+  key: string | string[];
   icon: string;
   iconActive: string;
 }
@@ -24,7 +24,7 @@ const navigations: NavigationInterface[] = [
   {
     href: routeConstant.ItemList,
     label: "Barang",
-    key: "item",
+    key: ["item", "category-item"],
     icon: imageConstant.item,
     iconActive: imageConstant.itemActive,
   },

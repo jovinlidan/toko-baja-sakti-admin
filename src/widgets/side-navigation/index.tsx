@@ -4,6 +4,20 @@ import { useRouter } from "next/router";
 import Logo from "./logo";
 import NavigationItem from "./navigation-item";
 
+function checkForActive(key: string | string[], pathname) {
+  if (Array.isArray(key)) {
+    let valid = false;
+    for (let i = 0; i < key.length; i++) {
+      if (new RegExp(`/${key[i]}/`).test(pathname)) {
+        valid = true;
+      }
+    }
+    return valid;
+  } else {
+    return new RegExp(`/${key}/`).test(pathname);
+  }
+}
+
 export default function SideNavigationWidget() {
   const { navigations } = useSideNavigation();
   const { pathname } = useRouter();
@@ -14,7 +28,7 @@ export default function SideNavigationWidget() {
       {navigations.map((nav) => (
         <NavigationItem
           {...nav}
-          active={new RegExp(`/${nav.key}/`).test(pathname)}
+          active={checkForActive(nav.key, pathname)}
           key={nav.href}
         />
       ))}
