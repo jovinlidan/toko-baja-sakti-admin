@@ -107,13 +107,17 @@ export default function PurchaseForm(props: Props) {
   );
 
   const purchaseOrderItemOptions = React.useMemo(() => {
+    let data = [...(purchaseOrderItemQuery?.data?.data || [])];
+    data = data.filter(
+      (item) => !tableData.find((tableItem) => tableItem.id === item.id)
+    );
     return (
-      purchaseOrderItemQuery.data?.data?.map((item) => ({
+      data?.map((item) => ({
         label: `${item.item.categoryItem.name}-(${item.item.categoryItem.code})`,
         value: item.id,
       })) || []
     );
-  }, [purchaseOrderItemQuery.data?.data]);
+  }, [purchaseOrderItemQuery?.data?.data, tableData]);
 
   const onSubmit = React.useCallback(
     async (values) => {
@@ -158,6 +162,18 @@ export default function PurchaseForm(props: Props) {
               piId: undefined,
             },
           ])
+        );
+        UpdateBatchHelper(
+          {
+            purchaseItems: {
+              purchaseOrderItemId: "",
+              amountNotReceived: "",
+              unit: "",
+              price: "",
+              quantity: "",
+            },
+          },
+          methods
         );
       } catch (e: unknown) {
         if (e instanceof Yup.ValidationError) {
