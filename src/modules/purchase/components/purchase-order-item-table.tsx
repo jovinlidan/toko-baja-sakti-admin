@@ -18,11 +18,12 @@ interface Props {
   data: PurchaseOrderItemTableDataType[];
   onDelete: (index: number) => void;
   grandTotal: number;
+  showAmountNotReceived?: boolean;
 }
 
 export default function PurchaseOrderItemTable(props: Props) {
   const { editable } = useFormState();
-  const { data, onDelete, grandTotal = 0 } = props;
+  const { data, onDelete, grandTotal = 0, showAmountNotReceived } = props;
 
   const columns = React.useMemo<IColumn[]>(
     () => [
@@ -54,10 +55,15 @@ export default function PurchaseOrderItemTable(props: Props) {
         Header: "Jumlah",
         accessor: "quantity",
       },
-      {
-        Header: "Jumlah Belum Diterima",
-        accessor: "amountNotReceived",
-      },
+      ...(showAmountNotReceived
+        ? [
+            {
+              Header: "Jumlah Belum Diterima",
+              accessor: "amountNotReceived",
+            },
+          ]
+        : []),
+
       {
         Header: "Satuan",
         accessor: "unit",

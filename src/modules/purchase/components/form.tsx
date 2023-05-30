@@ -286,6 +286,7 @@ export default function PurchaseForm(props: Props) {
         <PurchaseOrderItemTable
           data={tableData}
           onDelete={onDeleteItem}
+          showAmountNotReceived={!!data?.id && !defaultEditable}
           grandTotal={
             data?.grandTotal ||
             tableData?.reduce((prev, current) => {
