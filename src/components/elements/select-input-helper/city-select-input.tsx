@@ -48,6 +48,7 @@ export default function CitySelectOption(props: Props) {
         params: {
           q,
           page,
+          limit: -1,
         },
       }),
       []

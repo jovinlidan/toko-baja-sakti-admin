@@ -45,6 +45,7 @@ export default function ItemSelectOption(props: Props) {
         params: {
           q,
           page,
+          limit: -1,
         },
       }),
       []

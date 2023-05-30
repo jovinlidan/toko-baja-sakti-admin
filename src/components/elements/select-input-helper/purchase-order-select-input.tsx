@@ -53,6 +53,7 @@ export default function PurchaseOrderSelectOption(props: Props) {
         params: {
           q,
           page,
+          limit: -1,
         },
       }),
       []

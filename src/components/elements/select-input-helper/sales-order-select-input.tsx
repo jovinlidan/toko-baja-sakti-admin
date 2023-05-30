@@ -51,6 +51,7 @@ export default function SalesOrderSelectOption(props: Props) {
         params: {
           q,
           page,
+          limit: -1,
         },
       }),
       []

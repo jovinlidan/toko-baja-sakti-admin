@@ -56,6 +56,7 @@ export default function CategoryItemSelectOption(props: Props) {
         params: {
           q,
           page,
+          limit: -1,
         },
       }),
       []

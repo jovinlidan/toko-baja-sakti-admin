@@ -48,6 +48,7 @@ export default function SupplierSelectOption(props: Props) {
         params: {
           q,
           page,
+          limit: -1,
         },
       }),
       []

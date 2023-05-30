@@ -48,6 +48,7 @@ export default function CustomerSelectOption(props: Props) {
         params: {
           q,
           page,
+          limit: -1,
         },
       }),
       []
