@@ -5,7 +5,9 @@ import TableComponent, { IColumn } from "@/components/common/table";
 import { Button, Text } from "@/components/elements";
 import { useFormState } from "@/components/elements/form";
 import { styled } from "@/config/stitches/theme.stitches";
+import routeConstant from "@/constants/route.constant";
 import { string2money } from "@/utils/string";
+import { useRouter } from "next/router";
 import * as React from "react";
 
 export type PurchaseOrderItemTableDataType = {
@@ -19,11 +21,26 @@ interface Props {
   onDelete: (index: number) => void;
   grandTotal: number;
   showAmountNotReceived?: boolean;
+  id?: string;
 }
 
 export default function PurchaseOrderItemTable(props: Props) {
   const { editable } = useFormState();
-  const { data, onDelete, grandTotal = 0, showAmountNotReceived } = props;
+  const { data, onDelete, grandTotal = 0, showAmountNotReceived, id } = props;
+  const router = useRouter();
+
+  const onNavigateEditPurchaseOrderItem = React.useCallback(
+    (itemId) => {
+      router.push({
+        pathname: routeConstant.PurchaseEditOrderItemEdit,
+        query: {
+          id,
+          itemId,
+        },
+      });
+    },
+    [id, router]
+  );
 
   const columns = React.useMemo<IColumn[]>(
     () => [
@@ -88,25 +105,55 @@ export default function PurchaseOrderItemTable(props: Props) {
           return <>Rp 0</>;
         },
       },
-      {
-        Header: "",
-        accessor: "detail",
-        Cell: ({ row }) => {
-          if (!editable) return null;
-          return (
-            <Button
-              size="small"
-              variant="error"
-              onClick={() => onDelete(row.index)}
-            >
-              HAPUS
-            </Button>
-          );
-        },
-        stickyRight: editable,
-      },
+      ...(id
+        ? [
+            {
+              Header: "",
+              accessor: "detail",
+              Cell: ({ row }) => {
+                if (!editable) return null;
+                return (
+                  <Button
+                    size="small"
+                    variant="primary"
+                    onClick={() =>
+                      onNavigateEditPurchaseOrderItem(row.original.id)
+                    }
+                  >
+                    Detail
+                  </Button>
+                );
+              },
+              stickyRight: editable,
+            },
+          ]
+        : [
+            {
+              Header: "",
+              accessor: "delete",
+              Cell: ({ row }) => {
+                if (!editable) return null;
+                return (
+                  <Button
+                    size="small"
+                    variant="error"
+                    onClick={() => onDelete(row.index)}
+                  >
+                    HAPUS
+                  </Button>
+                );
+              },
+              stickyRight: editable,
+            },
+          ]),
     ],
-    [editable, onDelete]
+    [
+      editable,
+      id,
+      onDelete,
+      onNavigateEditPurchaseOrderItem,
+      showAmountNotReceived,
+    ]
   );
   return (
     <>

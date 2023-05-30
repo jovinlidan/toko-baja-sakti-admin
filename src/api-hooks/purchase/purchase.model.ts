@@ -18,7 +18,11 @@ export class PurchaseLite {
   purchaseOrder: PurchaseOrderLite;
 }
 
-class PurchaseItem {
+export class PurchaseItemPurchaseOrderItem {
+  id: string;
+  quantity: number;
+}
+export class PurchaseItem {
   id: string;
   @Type(() => Number)
   quantity: number;
@@ -34,6 +38,10 @@ class PurchaseItem {
 
   @Type(() => Item)
   item: Item;
+
+  @Expose({ name: "purchase_order_item" })
+  @Type(() => PurchaseItemPurchaseOrderItem)
+  purchaseOrderItem: PurchaseItemPurchaseOrderItem;
 }
 export class Purchase {
   id: string;

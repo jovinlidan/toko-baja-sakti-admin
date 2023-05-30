@@ -106,6 +106,10 @@ export default function Header() {
         label: "Ubah Pembelian",
       },
       {
+        href: routeConstant.PurchaseEditOrderItemEdit,
+        label: "Ubah Barang Pembelian",
+      },
+      {
         href: routeConstant.PurchaseView,
         label: "Detail Pembelian",
       },
@@ -157,7 +161,6 @@ export default function Header() {
         href: routeConstant.SaleReturnView,
         label: "Detail Retur Penjualan",
       },
-
       {
         href: routeConstant.AdjustmentItemList,
         label: "Penyesuaian Barang",
@@ -170,7 +173,6 @@ export default function Header() {
         href: routeConstant.AdjustmentItemView,
         label: "Detail Penyesuaian Barang",
       },
-
       {
         href: routeConstant.AuditList,
         label: "Data Logging",

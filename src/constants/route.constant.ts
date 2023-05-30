@@ -28,6 +28,7 @@ export default {
   PurchaseCreate: "/purchase/create",
   PurchaseView: "/purchase/[id]/view",
   PurchaseEdit: "/purchase/[id]/edit",
+  PurchaseEditOrderItemEdit: "/purchase/[id]/edit/[itemId]/edit",
 
   SaleOrderList: "/sale-order/list",
   SaleOrderCreate: "/sale-order/create",
