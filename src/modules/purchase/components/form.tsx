@@ -48,6 +48,7 @@ export default function PurchaseForm(props: Props) {
   >(
     data?.purchaseItems.map((item) => ({
       ...item,
+      id: item.purchaseOrderItem.id,
       piId: item.id,
     })) || []
   );
@@ -108,13 +109,14 @@ export default function PurchaseForm(props: Props) {
 
   const purchaseOrderItemOptions = React.useMemo(() => {
     let data = [...(purchaseOrderItemQuery?.data?.data || [])];
+    console.log(tableData, data);
     data = data.filter(
       (item) => !tableData.find((tableItem) => tableItem.id === item.id)
     );
     return (
-      data?.map((item) => ({
-        label: `${item.item.categoryItem.name}-(${item.item.categoryItem.code})`,
-        value: item.id,
+      data?.map(({ item, id }) => ({
+        label: `${item?.categoryItem.name} | ${item?.categoryItem.code} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
+        value: id,
       })) || []
     );
   }, [purchaseOrderItemQuery?.data?.data, tableData]);
@@ -201,6 +203,7 @@ export default function PurchaseForm(props: Props) {
     },
     [methods]
   );
+
   const onPurchaseOrderItemSelect = React.useCallback(
     (values) => {
       const id = values?.value;

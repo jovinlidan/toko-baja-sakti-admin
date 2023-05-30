@@ -77,6 +77,7 @@ export default function TextNumberField(props: TextNumberFieldProps) {
           autoComplete="off"
           value={field.value}
           disabled={_disabled}
+          onWheel={(e: any) => e?.target?.blur?.()}
           onChange={_onChange}
         />
         {!!endEnhancer && (

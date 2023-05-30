@@ -105,7 +105,7 @@ export default function PurchaseOrderItemTable(props: Props) {
           return <>Rp 0</>;
         },
       },
-      ...(id
+      ...(id && !editable
         ? [
             {
               Header: "",

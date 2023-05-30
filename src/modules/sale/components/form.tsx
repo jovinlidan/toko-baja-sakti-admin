@@ -109,13 +109,17 @@ export default function SaleForm(props: Props) {
   );
 
   const salesOrderItemOptions = React.useMemo(() => {
+    let data = [...(salesOrderItemQuery?.data?.data || [])];
+    data = data.filter(
+      (item) => !tableData.find((tableItem) => tableItem.id === item.id)
+    );
     return (
-      salesOrderItemQuery.data?.data?.map((item) => ({
-        label: `${item.item.categoryItem.name} (${item.item.categoryItem.code})`,
-        value: item.id,
+      data?.map(({ item, id }) => ({
+        label: `${item?.categoryItem.name} | ${item?.categoryItem.code} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
+        value: id,
       })) || []
     );
-  }, [salesOrderItemQuery.data?.data]);
+  }, [salesOrderItemQuery?.data?.data, tableData]);
 
   const onSubmit = React.useCallback(
     async (values) => {
@@ -160,6 +164,18 @@ export default function SaleForm(props: Props) {
               amountNotReceived: 0,
             },
           ])
+        );
+        UpdateBatchHelper(
+          {
+            salesItems: {
+              salesOrderItemId: "",
+              amountNotReceived: "",
+              price: "",
+              unit: "",
+              quantity: "",
+            },
+          },
+          methods
         );
       } catch (e: unknown) {
         if (e instanceof Yup.ValidationError) {
