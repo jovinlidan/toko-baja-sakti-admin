@@ -5,18 +5,12 @@ import { Button } from "@/components/elements";
 import LinkText from "@/components/elements/link-text";
 import { styled } from "@/config/stitches/theme.stitches";
 import routeConstant from "@/constants/route.constant";
-import useDialog from "@/hooks/use-dialog";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
-import { toast } from "react-hot-toast";
-import { useDeleteSale } from "@/api-hooks/sales/sales.mutation";
 import { useGetSale } from "@/api-hooks/sales/sales.query";
 import SaleForm from "./components/form";
 
 export default function ViewSale() {
   const router = useRouter();
-  const dialog = useDialog();
-  const { mutateAsync } = useDeleteSale();
 
   const { data, isLoading, isFetching, error, refetch } = useGetSale(
     {
@@ -24,25 +18,6 @@ export default function ViewSale() {
     },
     { enabled: !!router?.query?.id }
   );
-
-  const handleDelete = useCallback(() => {
-    dialog.showConfirmation({
-      title: "Hapus Penjualan",
-      message: "Apakah anda yakin? Aksi tidak dapat dibatalkan",
-      onPositiveAction: async (close) => {
-        try {
-          const { message } = await mutateAsync({
-            id: router?.query?.id as string,
-          });
-          message && toast.success(message);
-          router.replace(routeConstant.SaleList);
-          close();
-        } catch (e: any) {
-          e?.messsage && toast.error(e?.message);
-        }
-      },
-    });
-  }, [dialog, mutateAsync, router]);
 
   return (
     <Container>
@@ -73,10 +48,6 @@ export default function ViewSale() {
                 }}
               >
                 UBAH
-              </Button>
-              <Separator mr={24} />
-              <Button variant="error" onClick={handleDelete}>
-                HAPUS
               </Button>
             </Row>
           </>
