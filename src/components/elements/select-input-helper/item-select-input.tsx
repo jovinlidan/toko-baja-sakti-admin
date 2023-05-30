@@ -13,7 +13,7 @@ function transformer(item: ItemLite | Item): BaseOptionPaginate {
   return {
     id: item.id,
     value: item.id,
-    label: `${item.categoryItem.name}-${item.size}`,
+    label: `${item?.categoryItem.name} | ${item?.categoryItem.code} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code})`,
   };
 }
 

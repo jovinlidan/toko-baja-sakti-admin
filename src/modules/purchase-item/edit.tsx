@@ -86,7 +86,7 @@ export default function EditPurchaseItem() {
               receivedDate: data?.data?.receivedDate!,
               purchaseOrderId: data?.data?.purchaseOrder?.id!,
               purchaseItems:
-                data?.data.purchaseItems
+                data?.data?.purchaseItems
                   .filter((item) => router?.query?.itemId !== item.id)
                   .map((item) => ({
                     id: item.id,
@@ -112,7 +112,7 @@ export default function EditPurchaseItem() {
       },
     });
   }, [
-    data?.data.purchaseItems,
+    data?.data?.purchaseItems,
     data?.data?.purchaseOrder?.id,
     data?.data?.receivedDate,
     dialog,
