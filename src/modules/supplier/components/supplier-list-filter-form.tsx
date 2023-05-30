@@ -55,7 +55,7 @@ export default function SupplierListFilterForm(props: Props) {
           name={FILTER_SEARCH}
           type="text"
           size="large"
-          placeholder="Cari Kode/Nama Pelanggan"
+          placeholder="Cari Kode/Nama Supplier"
           disabled={loading}
           ref={inputRef}
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}
