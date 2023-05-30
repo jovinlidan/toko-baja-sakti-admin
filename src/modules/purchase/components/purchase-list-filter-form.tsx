@@ -75,7 +75,7 @@ export default function PurchaseListFilterForm(props: Props) {
           name={FILTER_SEARCH}
           type="text"
           size="large"
-          placeholder="Cari Kode Pesanan Pembelian atau Nama Supplier"
+          placeholder="Cari Kode Pembelian atau Nama Supplier"
           disabled={loading}
           ref={inputRef}
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}
