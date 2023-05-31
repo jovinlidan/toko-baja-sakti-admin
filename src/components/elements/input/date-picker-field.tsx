@@ -98,7 +98,7 @@ function TextField(props: DatePickerFieldProps, ref: any) {
           onChange={_onChange}
           onSelect={_onChange}
           dateFormat="d MMM yyyy"
-          isClearable={!!field.value}
+          isClearable={!!field.value && !_disabled}
           clearButtonClassName={styles.clearButton()}
         />
         {!!endEnhancer && (
