@@ -115,7 +115,7 @@ export default function SaleForm(props: Props) {
     );
     return (
       data?.map(({ item, id }) => ({
-        label: `${item?.categoryItem.name} | ${item?.categoryItem.code} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
+        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
         value: id,
       })) || []
     );
@@ -230,6 +230,7 @@ export default function SaleForm(props: Props) {
             amountNotReceived: salesOrderItem?.amountNotReceived,
             unit: salesOrderItem?.unit,
             price: salesOrderItem?.priceUnit,
+            stock: salesOrderItem?.item?.stock,
           },
         },
         methods
@@ -298,11 +299,19 @@ export default function SaleForm(props: Props) {
             />
             <Row>
               <HalfContainer>
-                <Input
-                  name="salesItems.quantity"
-                  type="number"
-                  label="Jumlah"
-                />
+                <FormValueState keys={["salesItems.stock"]}>
+                  {(key) => {
+                    return (
+                      <Input
+                        name="salesItems.quantity"
+                        type="number"
+                        label="Jumlah"
+                        max={key?.["salesItems.stock"]}
+                        min={1}
+                      />
+                    );
+                  }}
+                </FormValueState>
                 <Input
                   name="salesItems.price"
                   type="number"

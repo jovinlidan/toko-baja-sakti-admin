@@ -115,7 +115,7 @@ export default function SaleReturnForm(props: Props) {
     );
     return (
       data?.map(({ item, id }) => ({
-        label: `${item?.categoryItem.name} | ${item?.categoryItem.code} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
+        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
         value: id,
       })) || []
     );

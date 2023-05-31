@@ -6,8 +6,6 @@ import { Input, Form, Button } from "@/components/elements";
 import { toast } from "react-hot-toast";
 import { FullContainer, HalfContainer } from "@/components/elements/styles";
 import { formSetErrors, UpdateBatchHelper } from "@/common/helpers/form";
-import SupplierSelectOption from "@/components/elements/select-input-helper/supplier-select-input";
-import ItemSelectOption from "@/components/elements/select-input-helper/item-select-input";
 import { styled } from "@/config/stitches/theme.stitches";
 import PurchaseOrderItemTable, {
   PurchaseOrderItemTableDataType,
@@ -113,8 +111,8 @@ export default function PurchaseForm(props: Props) {
       (item) => !tableData.find((tableItem) => tableItem.id === item.id)
     );
     return (
-      data?.map(({ item, id }) => ({
-        label: `${item?.categoryItem.name} | ${item?.categoryItem.code} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
+      data?.map(({ item, id, amountNotReceived }) => ({
+        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Jumlah Belum Diterima: ${amountNotReceived})`,
         value: id,
       })) || []
     );
@@ -279,11 +277,19 @@ export default function PurchaseForm(props: Props) {
             />
             <Row>
               <HalfContainer>
-                <Input
-                  name="purchaseItems.quantity"
-                  type="number"
-                  label="Jumlah"
-                />
+                <FormValueState keys={["purchaseItems.amountNotReceived"]}>
+                  {(key) => {
+                    return (
+                      <Input
+                        name="purchaseItems.quantity"
+                        type="number"
+                        label="Jumlah"
+                        max={key?.["purchaseItems.amountNotReceived"]}
+                        min={1}
+                      />
+                    );
+                  }}
+                </FormValueState>
                 <Input
                   name="purchaseItems.unit"
                   type="text"

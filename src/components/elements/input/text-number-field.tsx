@@ -42,14 +42,23 @@ export default function TextNumberField(props: TextNumberFieldProps) {
     startEnhancer,
     endEnhancer,
     size = "small",
+    max,
+    min,
     ...restProps
   } = props;
 
   const _onChange = React.useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-      field.onChange(e.target.value || null);
+      if (e.target.value) {
+        let val = parseInt(e.target.value, 10);
+        if (typeof min === "number") val = Math.max(min, val);
+        if (typeof max === "number") val = Math.min(max, val);
+        field.onChange(val);
+      } else {
+        field.onChange(null);
+      }
     },
-    [field]
+    [field, max, min]
   );
 
   const _disabled = !context.editable || readOnly || props.disabled;

@@ -50,7 +50,7 @@ export default function PurchaseItemForm(props: Props) {
       price: data?.price,
       quantity: data?.quantity,
       unit: data?.unit,
-      purchaseItemId: `${data?.item?.categoryItem.name} | ${data?.item?.categoryItem.code} | ${data?.item?.size} | ${data?.item?.thick}mm | ${data?.item?.color} (${data?.item?.code}) (Stok: ${data?.item?.stock})`,
+      purchaseItemId: `${data?.item?.categoryItem.name} | ${data?.item?.categoryItem?.brand} | ${data?.item?.size} | ${data?.item?.thick}mm | ${data?.item?.color} (${data?.item?.code}) (Stok: ${data?.item?.stock})`,
     },
   });
 
