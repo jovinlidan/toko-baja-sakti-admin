@@ -230,7 +230,6 @@ export default function SaleForm(props: Props) {
             amountNotReceived: salesOrderItem?.amountNotReceived,
             unit: salesOrderItem?.unit,
             price: salesOrderItem?.priceUnit,
-            stock: salesOrderItem?.item?.stock,
           },
         },
         methods
@@ -299,14 +298,14 @@ export default function SaleForm(props: Props) {
             />
             <Row>
               <HalfContainer>
-                <FormValueState keys={["salesItems.stock"]}>
+                <FormValueState keys={["salesItems.amountNotReceived"]}>
                   {(key) => {
                     return (
                       <Input
                         name="salesItems.quantity"
                         type="number"
                         label="Jumlah"
-                        max={key?.["salesItems.stock"]}
+                        max={key?.["salesItems.amountNotReceived"]}
                         min={1}
                       />
                     );
