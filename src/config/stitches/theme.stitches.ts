@@ -19,10 +19,10 @@ export const stitches = createStitches({
         "0px 1px 6px 2px rgba(50, 71, 92, 0.06), 0px 2px 6px 1px rgba(50, 71, 92, 0.04), 0px 1px 4px 2px rgba(50, 71, 92, 0.02)",
     },
     zIndices: {
-      header: 10000,
+      header: 10001,
       toast: 10001,
       modal: 10002,
-      selectStartEnhancer: 100000,
+      selectStartEnhancer: 10000,
       selectMenu: 100001,
     },
   },
