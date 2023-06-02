@@ -33,7 +33,7 @@ export default function SaleList() {
       },
       {
         Header: "Metode Pembayaran",
-        accessor: "salesOrder.paymentMethod",
+        accessor: "salesOrder.paymentMethod.name",
       },
       {
         Header: "Total",

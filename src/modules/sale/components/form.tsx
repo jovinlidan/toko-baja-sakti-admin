@@ -80,7 +80,7 @@ export default function SaleForm(props: Props) {
       ...(data
         ? {
             code: data.code,
-            paymentMethod: data.salesOrder.paymentMethod,
+            paymentMethod: data.salesOrder.paymentMethod?.name,
             salesOrderId: data.salesOrder.id,
             transactionDate: data.transactionDate,
             transaction: data.salesOrder.transaction,

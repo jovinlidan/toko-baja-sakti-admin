@@ -27,6 +27,12 @@ export class TransactionLite {
   noReceipt?: string;
 }
 
+export class SalePaymentMethod {
+  id: string;
+  type: string;
+  name: string;
+  provider: string;
+}
 export class SalesOrderLite {
   id: string;
   code: string;
@@ -40,7 +46,8 @@ export class SalesOrderLite {
   user: CustomerLite;
 
   @Expose({ name: "payment_method" })
-  paymentMethod?: string;
+  @Type(() => SalePaymentMethod)
+  paymentMethod?: SalePaymentMethod;
 
   @Type(() => TransactionLite)
   transaction: TransactionLite;
