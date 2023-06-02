@@ -8,15 +8,12 @@ import routeConstant from "@/constants/route.constant";
 import useDialog from "@/hooks/use-dialog";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
-import { toast } from "react-hot-toast";
 import SaleReturnForm from "./components/form";
 import { useDeleteSaleReturn } from "@/api-hooks/sales-return/sales-return.mutation";
 import { useGetSaleReturn } from "@/api-hooks/sales-return/sales-return.query";
 
 export default function ViewSaleReturn() {
   const router = useRouter();
-  const dialog = useDialog();
-  const { mutateAsync } = useDeleteSaleReturn();
 
   const { data, isLoading, isFetching, error, refetch } = useGetSaleReturn(
     {
@@ -33,25 +30,6 @@ export default function ViewSaleReturn() {
     );
     window.open(reportView, "_blank");
   }, [router.query.id]);
-
-  const handleDelete = useCallback(() => {
-    dialog.showConfirmation({
-      title: "Hapus Retur Penjualan",
-      message: "Apakah anda yakin? Aksi tidak dapat dibatalkan",
-      onPositiveAction: async (close) => {
-        try {
-          const { message } = await mutateAsync({
-            id: router?.query?.id as string,
-          });
-          message && toast.success(message);
-          router.replace(routeConstant.SaleReturnList);
-          close();
-        } catch (e: any) {
-          e?.messsage && toast.error(e?.message);
-        }
-      },
-    });
-  }, [dialog, mutateAsync, router]);
 
   return (
     <Container>
@@ -86,10 +64,6 @@ export default function ViewSaleReturn() {
               <Separator mr={24} />
               <Button onClick={handlePrintReport} variant="info">
                 CETAK FAKTUR
-              </Button>
-              <Separator mr={24} />
-              <Button variant="error" onClick={handleDelete}>
-                HAPUS
               </Button>
             </Row>
           </>
