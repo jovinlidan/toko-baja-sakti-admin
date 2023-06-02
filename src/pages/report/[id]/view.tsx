@@ -16,9 +16,10 @@ export default function ViewReportPage() {
   useEffect(() => {
     async function exec() {
       if (!id) return;
+      const decodeId = decodeURIComponent(id as string);
       const params = qs.stringify(restQuery);
       try {
-        const json = await client.get("report/" + id, {
+        const json = await client.get(decodeId, {
           ...(params
             ? {
                 searchParams: params,

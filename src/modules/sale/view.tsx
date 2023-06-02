@@ -8,6 +8,7 @@ import routeConstant from "@/constants/route.constant";
 import { useRouter } from "next/router";
 import { useGetSale } from "@/api-hooks/sales/sales.query";
 import SaleForm from "./components/form";
+import { useCallback } from "react";
 
 export default function ViewSale() {
   const router = useRouter();
@@ -19,6 +20,14 @@ export default function ViewSale() {
     { enabled: !!router?.query?.id }
   );
 
+  const handlePrintReport = useCallback(async () => {
+    if (!router.query.id) return;
+    const reportView = routeConstant.ReportView.replace(
+      "[id]",
+      encodeURIComponent(`sales/${router.query.id}/print`)
+    );
+    window.open(reportView, "_blank");
+  }, [router.query.id]);
   return (
     <Container>
       <LinkText
@@ -48,6 +57,10 @@ export default function ViewSale() {
                 }}
               >
                 UBAH
+              </Button>
+              <Separator mr={24} />
+              <Button onClick={handlePrintReport} variant="info">
+                CETAK FAKTUR
               </Button>
             </Row>
           </>

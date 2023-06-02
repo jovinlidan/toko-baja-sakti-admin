@@ -29,7 +29,6 @@ interface Props {}
 export default function ReportForm(props: Props) {
   const YupSchema = React.useMemo(() => Yup.object().shape({}), []);
   const resolver = useYupValidationResolver(YupSchema);
-  const router = useRouter();
   const methods = useForm<any>({
     resolver,
     mode: "all",
@@ -43,8 +42,10 @@ export default function ReportForm(props: Props) {
       try {
         const params = qs.stringify(filterValue);
         const reportView =
-          routeConstant.ReportView.replace("[id]", values.reportType) +
-          (params ? `?${params}` : "");
+          routeConstant.ReportView.replace(
+            "[id]",
+            encodeURIComponent("report/" + values.reportType)
+          ) + (params ? `?${params}` : "");
         window.open(reportView, "_blank");
       } catch (e: any) {
         const err = await toApiError(e);

@@ -25,6 +25,15 @@ export default function ViewSaleReturn() {
     { enabled: !!router?.query?.id }
   );
 
+  const handlePrintReport = useCallback(async () => {
+    if (!router.query.id) return;
+    const reportView = routeConstant.ReportView.replace(
+      "[id]",
+      encodeURIComponent(`sales-returns/${router.query.id}/print`)
+    );
+    window.open(reportView, "_blank");
+  }, [router.query.id]);
+
   const handleDelete = useCallback(() => {
     dialog.showConfirmation({
       title: "Hapus Retur Penjualan",
@@ -73,6 +82,10 @@ export default function ViewSaleReturn() {
                 }}
               >
                 UBAH
+              </Button>
+              <Separator mr={24} />
+              <Button onClick={handlePrintReport} variant="info">
+                CETAK FAKTUR
               </Button>
               <Separator mr={24} />
               <Button variant="error" onClick={handleDelete}>

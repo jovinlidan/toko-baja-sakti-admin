@@ -44,6 +44,15 @@ export default function ViewPurchaseOrder() {
     });
   }, [dialog, mutateAsync, router]);
 
+  const handlePrintReport = useCallback(async () => {
+    if (!router.query.id) return;
+    const reportView = routeConstant.ReportView.replace(
+      "[id]",
+      encodeURIComponent(`purchase-orders/${router.query.id}/print`)
+    );
+    window.open(reportView, "_blank");
+  }, [router.query.id]);
+
   return (
     <Container>
       <LinkText
@@ -73,6 +82,10 @@ export default function ViewPurchaseOrder() {
                 }}
               >
                 UBAH
+              </Button>
+              <Separator mr={24} />
+              <Button variant="info" onClick={handlePrintReport}>
+                CETAK
               </Button>
               <Separator mr={24} />
               <Button variant="error" onClick={handleDelete}>
