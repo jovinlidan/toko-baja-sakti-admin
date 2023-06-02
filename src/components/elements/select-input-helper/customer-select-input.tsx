@@ -30,9 +30,9 @@ interface Props {
 
 export default function CustomerSelectOption(props: Props) {
   const { control } = useFormContext();
-
+  const { name, ...restProps } = props;
   const { field } = useController({
-    name: props.name,
+    name,
     control,
   });
 
@@ -78,6 +78,7 @@ export default function CustomerSelectOption(props: Props) {
       required={props.required}
       label={props.label}
       placeholder={props.placeholder}
+      {...restProps}
       {...selectProps}
       isSearchable
       options={selectProps.options as BaseOption[]}

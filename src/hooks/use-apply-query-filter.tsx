@@ -1,6 +1,7 @@
 import { Exact } from "@/common/repositories";
 import { Filter } from "@/common/repositories/common.model";
 import { useState } from "react";
+import qs from "qs";
 
 export function useApplyQueryFilter<
   QueryData,

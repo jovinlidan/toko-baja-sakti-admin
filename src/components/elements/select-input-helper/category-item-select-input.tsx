@@ -38,9 +38,10 @@ interface Props {
 export default function CategoryItemSelectOption(props: Props) {
   const { control } = useFormContext();
   const router = useRouter();
+  const { name, ...restProps } = props;
 
   const { field } = useController({
-    name: props.name,
+    name,
     control,
   });
 
@@ -89,6 +90,7 @@ export default function CategoryItemSelectOption(props: Props) {
       required={props.required}
       label={props.label}
       placeholder={props.placeholder}
+      {...restProps}
       {...selectProps}
       options={selectProps.options as BaseOption[]}
     />

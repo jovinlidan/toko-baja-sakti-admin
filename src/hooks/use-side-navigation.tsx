@@ -92,7 +92,7 @@ const navigations: NavigationInterface[] = [
     iconActive: imageConstant.dataLoggingActive,
   },
   {
-    href: "/laporan",
+    href: routeConstant.ReportList,
     label: "Laporan",
     key: "report",
     icon: imageConstant.report,

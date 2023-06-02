@@ -51,4 +51,7 @@ export default {
 
   AuditList: "/audit/list",
   AuditView: "/audit/[id]/view",
+
+  ReportList: "/report/list",
+  ReportView: "/report/[id]/view",
 };

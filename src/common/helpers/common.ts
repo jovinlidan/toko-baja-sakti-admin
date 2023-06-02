@@ -21,6 +21,19 @@ interface FetchMutationOptions<T> {
   asBody?: boolean;
 }
 
+export async function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+      resolve(reader.result as string);
+    };
+    reader.onerror = function () {
+      reject(reader.error);
+    };
+  });
+}
+
 export function MutationFetchFunction<T>({
   url,
   method,
@@ -40,12 +53,20 @@ export function MutationFetchFunction<T>({
     const data = asBody ? { body: newBody } : { json: newBody };
 
     try {
-      const json = (await client(url, {
+      let json = (await client(url, {
         method,
 
         ...(newBody ? data : {}),
         headers,
-      }).json()) as any;
+      })) as any;
+
+      const contentType = json.headers.get("Content-Type");
+
+      if (contentType === "application/pdf") {
+        json = await blobToBase64(await json.blob());
+      } else {
+        json = await json.json();
+      }
 
       const transformedJson = {
         ...json,
@@ -75,7 +96,6 @@ export function QueryFetchFunction({
   return new Promise(async (resolve, reject) => {
     let _params = "";
     _params = params ? qs.stringify(decamelizeKeys(params)) : "";
-
     try {
       const json: any = await client
         .get(url, {

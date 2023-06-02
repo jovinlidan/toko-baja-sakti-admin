@@ -10,7 +10,7 @@ import TextField, { TextFieldProps } from "./text-field";
 import TextNumberField, { TextNumberFieldProps } from "./text-number-field";
 import TextareaField, { TextareaFieldProps } from "./textarea-field";
 
-type InputType =
+export type InputType =
   | "text"
   | "password"
   | "textarea"
