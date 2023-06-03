@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { Oval } from "react-loader-spinner";
 import { client } from "@/hooks/use-ky";
 import qs from "qs";
+import toApiError from "@/common/repositories/to-api-error";
+import { toast } from "react-hot-toast";
 
 export default function ViewReportPage() {
   const router = useRouter();
@@ -28,7 +30,10 @@ export default function ViewReportPage() {
         });
         const pdf = await blobToBase64(await json.blob());
         setPdf(pdf);
-      } catch {}
+      } catch (e: any) {
+        const err = await toApiError(e);
+        if (err?.message) toast.error(err?.message);
+      }
     }
     exec();
     // eslint-disable-next-line react-hooks/exhaustive-deps

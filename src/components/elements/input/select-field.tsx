@@ -168,6 +168,7 @@ function SelectField<
         onChange={_onChange}
         styles={styles as any}
         noOptionsMessage={() => "Tidak ada Data"}
+        required={required}
         components={{
           ...(endEnhancer
             ? {
