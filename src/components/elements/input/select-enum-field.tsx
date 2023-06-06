@@ -18,7 +18,7 @@ export interface SelectEnumFieldProps
 
 function SelectEnumField(props: SelectEnumFieldProps, ref?: any) {
   const { type, enumClass, ...restProps } = props;
-  const { data, isLoading, error, refetch } = useGetEnums(
+  const { data, isLoading, isFetching, error, refetch } = useGetEnums(
     {
       class: enumClass,
     },
@@ -36,7 +36,7 @@ function SelectEnumField(props: SelectEnumFieldProps, ref?: any) {
       ref={ref}
       options={data || []}
       onMenuOpen={onMenuOpen}
-      isLoading={isLoading}
+      isLoading={isLoading || isFetching}
     />
   );
 }
