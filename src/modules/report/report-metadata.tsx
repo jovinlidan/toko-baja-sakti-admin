@@ -47,64 +47,64 @@ interface IReport {
 
 export const reportOptions: IReport[] = [
   {
-    label: "Laporan Kategory Barang",
-    value: ReportType.CategoryItem,
-  },
-  {
-    label: "Laporan Supplier",
-    value: ReportType.Supplier,
-  },
-  {
-    label: "Laporan Pelanggan",
+    label: "Daftar pelanggan",
     value: ReportType.Customer,
   },
   {
-    label: "Laporan Kategori Barang Tanpa Harga",
+    label: "Daftar supplier",
+    value: ReportType.Supplier,
+  },
+  {
+    label: "Daftar harga barang",
+    value: ReportType.CategoryItem,
+  },
+  {
+    label: "Daftar barang",
     value: ReportType.CategoryItemWithoutPrice,
   },
   {
-    label: "Laporan Supplier Barang",
+    label: "Informasi barang per supplier",
     value: ReportType.SupplierItem,
   },
   {
-    label: "Laporan Pesanan Penjualan",
+    label: "Laporan pesanan penjualan",
     value: ReportType.SalesOrder,
   },
   {
-    label: "Laporan Penjualan",
+    label: "Laporan penjualan",
     value: ReportType.Sales,
   },
   {
-    label: "Laporan Retur",
+    label: "Laporan retur penjualan",
     value: ReportType.Return,
   },
   {
-    label: "Laporan Pesanan Pembelian",
+    label: "Laporan pesanan pembelian",
     value: ReportType.PurchaseOrder,
   },
   {
-    label: "Laporan Pembelian",
+    label: "Laporan pembelian",
     value: ReportType.Purchase,
   },
   {
-    label: "Laporan Penyesuaian Barang",
+    label: "Laporan penyesuaian barang",
     value: ReportType.AdjustmentItem,
   },
   {
-    label: "Laporan Stok Barang",
+    label: "Laporan persediaan",
     value: ReportType.StockItem,
   },
   {
-    label: "Laporan Transaksi Stok Barang",
+    label: "Kartu persediaan",
     value: ReportType.StockItemTransaction,
   },
   {
-    label: "Laporan Grafik Penjualan",
-    value: ReportType.GraphSales,
+    label: "Notifikasi stok minimum",
+    value: ReportType.NotificationStockMinimum,
   },
   {
-    label: "Laporan Notifikasi Minimal Stok",
-    value: ReportType.NotificationStockMinimum,
+    label: "Grafik penjualan",
+    value: ReportType.GraphSales,
   },
 ];
 
