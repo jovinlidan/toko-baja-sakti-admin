@@ -1,7 +1,7 @@
 import Form from "@/components/elements/form";
 import useYupValidationResolver from "@/hooks/use-yup-validation-resolver";
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import * as Yup from "yup";
 import { Input } from "@/components/elements";
 import { toast } from "react-hot-toast";
@@ -35,6 +35,8 @@ export default function ReportForm(props: Props) {
     defaultValues: {},
   });
 
+  const values = useWatch({ control: methods.control });
+
   const onSubmit = React.useCallback(
     async (values: FormType) => {
       if (!values.reportType) return;
@@ -58,65 +60,86 @@ export default function ReportForm(props: Props) {
     [methods]
   );
 
-  const getFilterContent = React.useCallback((type: ReportType) => {
-    return getReportFilterMetadata(type).map((item) => {
-      if (item.type === "row") {
+  const getFilterContent = React.useCallback(
+    (type: ReportType) => {
+      return getReportFilterMetadata(type).map((item) => {
+        if (item.type === "row") {
+          return (
+            <Row key={item.type}>
+              {item.components.map((comp) =>
+                comp.type === "component" ? (
+                  <HalfContainer key={comp.type}>
+                    <comp.component
+                      key={comp.type}
+                      name={comp.name}
+                      placeholder={comp.placeholder}
+                      size="large"
+                      required={
+                        typeof comp.required === "function"
+                          ? comp.required(values)
+                          : comp.required
+                      }
+                      startEnhancer={
+                        <DocumentScannerSVG
+                          color={theme.colors.textPrimary.value}
+                        />
+                      }
+                    />
+                  </HalfContainer>
+                ) : (
+                  <HalfContainer key={comp.name}>
+                    <Input
+                      {...comp}
+                      type={comp.input}
+                      options={comp.options ? comp.options : []}
+                      size="large"
+                      required={
+                        typeof comp.required === "function"
+                          ? comp.required(values)
+                          : comp.required
+                      }
+                    />
+                  </HalfContainer>
+                )
+              )}
+            </Row>
+          );
+        } else if (item.type === "component") {
+          return (
+            <item.component
+              key={item.name}
+              name={item.name}
+              placeholder={item.placeholder}
+              size="large"
+              startEnhancer={
+                <DocumentScannerSVG color={theme.colors.textPrimary.value} />
+              }
+              required={
+                typeof item.required === "function"
+                  ? item.required(values)
+                  : item.required
+              }
+            />
+          );
+        }
         return (
-          <Row key={item.type}>
-            {item.components.map((comp) =>
-              comp.type === "component" ? (
-                <HalfContainer key={comp.type}>
-                  <comp.component
-                    key={comp.type}
-                    name={comp.name}
-                    placeholder={comp.placeholder}
-                    size="large"
-                    required={comp.required}
-                    startEnhancer={
-                      <DocumentScannerSVG
-                        color={theme.colors.textPrimary.value}
-                      />
-                    }
-                  />
-                </HalfContainer>
-              ) : (
-                <HalfContainer key={comp.name}>
-                  <Input
-                    {...comp}
-                    type={comp.input}
-                    options={comp.options ? comp.options : []}
-                    size="large"
-                  />
-                </HalfContainer>
-              )
-            )}
-          </Row>
-        );
-      } else if (item.type === "component") {
-        return (
-          <item.component
+          <Input
             key={item.name}
-            name={item.name}
-            placeholder={item.placeholder}
+            {...item}
+            type={item.input}
+            options={item.options ? item.options : []}
             size="large"
-            required={item.required}
-            startEnhancer={
-              <DocumentScannerSVG color={theme.colors.textPrimary.value} />
+            required={
+              typeof item.required === "function"
+                ? item.required(values)
+                : item.required
             }
           />
         );
-      }
-      return (
-        <Input
-          key={item.name}
-          {...item}
-          type={item.input}
-          options={item.options ? item.options : []}
-          size="large"
-        />
-      );
-    });
-  }, []);
+      });
+    },
+    [values]
+  );
 
   const onSelectReportType = React.useCallback(
     (e) => {

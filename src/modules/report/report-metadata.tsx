@@ -114,7 +114,7 @@ export type TFilterMetadataInput =
       input: "text" | "date" | "select";
       name: string;
       placeholder: string;
-      required?: boolean;
+      required?: boolean | ((values: any) => boolean);
       options?: any[];
       startEnhancer?: React.ReactNode;
     }
@@ -123,7 +123,7 @@ export type TFilterMetadataInput =
       component: any;
       name: string;
       placeholder: string;
-      required?: boolean;
+      required?: boolean | ((values: any) => boolean);
     };
 
 export type TFilterMetadata =
@@ -136,61 +136,7 @@ export type TFilterMetadata =
 export function getReportFilterMetadata(type: ReportType): TFilterMetadata[] {
   switch (type) {
     case ReportType.SalesOrder:
-      return [
-        {
-          type: "component",
-          component: CustomerSelectOption,
-          name: "filter.user_id",
-          placeholder: "Pilih Pelanggan",
-        },
-        {
-          type: "row",
-          components: [
-            {
-              type: "input",
-              input: "date",
-              name: "filter.start_at",
-              placeholder: "Tanggal Awal",
-              required: true,
-            },
-            {
-              type: "input",
-              input: "date",
-              name: "filter.end_at",
-              placeholder: "Tanggal Akhir",
-              required: true,
-            },
-          ],
-        },
-      ];
     case ReportType.Sales:
-      return [
-        {
-          type: "component",
-          component: CustomerSelectOption,
-          name: "filter.user_id",
-          placeholder: "Pilih Pelanggan",
-        },
-        {
-          type: "row",
-          components: [
-            {
-              type: "input",
-              input: "date",
-              name: "filter.start_at",
-              placeholder: "Tanggal Awal",
-              required: true,
-            },
-            {
-              type: "input",
-              input: "date",
-              name: "filter.end_at",
-              placeholder: "Tanggal Akhir",
-              required: true,
-            },
-          ],
-        },
-      ];
     case ReportType.Return:
       return [
         {
@@ -198,6 +144,11 @@ export function getReportFilterMetadata(type: ReportType): TFilterMetadata[] {
           component: CustomerSelectOption,
           name: "filter.user_id",
           placeholder: "Pilih Pelanggan",
+          required: (values) => {
+            if (!values?.filter?.start_at && !values?.filter?.end_at)
+              return true;
+            return false;
+          },
         },
         {
           type: "row",
@@ -207,46 +158,27 @@ export function getReportFilterMetadata(type: ReportType): TFilterMetadata[] {
               input: "date",
               name: "filter.start_at",
               placeholder: "Tanggal Awal",
-              required: true,
+              required: (values) => {
+                if (values?.filter?.end_at || !values?.filter?.user_id)
+                  return true;
+                return false;
+              },
             },
             {
               type: "input",
               input: "date",
               name: "filter.end_at",
               placeholder: "Tanggal Akhir",
-              required: true,
+              required: (values) => {
+                if (values?.filter?.start_at || !values?.filter?.user_id)
+                  return true;
+                return false;
+              },
             },
           ],
         },
       ];
     case ReportType.PurchaseOrder:
-      return [
-        {
-          type: "component",
-          component: SupplierSelectOption,
-          name: "filter.supplier_id",
-          placeholder: "Pilih Supplier",
-        },
-        {
-          type: "row",
-          components: [
-            {
-              type: "input",
-              input: "date",
-              name: "filter.start_at",
-              placeholder: "Tanggal Awal",
-              required: true,
-            },
-            {
-              type: "input",
-              input: "date",
-              name: "filter.end_at",
-              placeholder: "Tanggal Akhir",
-              required: true,
-            },
-          ],
-        },
-      ];
     case ReportType.Purchase:
       return [
         {
@@ -254,6 +186,11 @@ export function getReportFilterMetadata(type: ReportType): TFilterMetadata[] {
           component: SupplierSelectOption,
           name: "filter.supplier_id",
           placeholder: "Pilih Supplier",
+          required: (values) => {
+            if (!values?.filter?.start_at && !values?.filter?.end_at)
+              return true;
+            return false;
+          },
         },
         {
           type: "row",
@@ -263,14 +200,22 @@ export function getReportFilterMetadata(type: ReportType): TFilterMetadata[] {
               input: "date",
               name: "filter.start_at",
               placeholder: "Tanggal Awal",
-              required: true,
+              required: (values) => {
+                if (values?.filter?.end_at || !values?.filter?.supplier_id)
+                  return true;
+                return false;
+              },
             },
             {
               type: "input",
               input: "date",
               name: "filter.end_at",
               placeholder: "Tanggal Akhir",
-              required: true,
+              required: (values) => {
+                if (values?.filter?.start_at || !values?.filter?.supplier_id)
+                  return true;
+                return false;
+              },
             },
           ],
         },
@@ -304,6 +249,11 @@ export function getReportFilterMetadata(type: ReportType): TFilterMetadata[] {
           component: ItemSelectOption,
           name: "filter.item_id",
           placeholder: "Pilih Barang",
+          required: (values) => {
+            if (!values?.filter?.start_at && !values?.filter?.end_at)
+              return true;
+            return false;
+          },
         },
         {
           type: "row",
@@ -313,12 +263,22 @@ export function getReportFilterMetadata(type: ReportType): TFilterMetadata[] {
               input: "date",
               name: "filter.start_at",
               placeholder: "Tanggal Awal",
+              required: (values) => {
+                if (values?.filter?.end_at || !values?.filter?.item_id)
+                  return true;
+                return false;
+              },
             },
             {
               type: "input",
               input: "date",
               name: "filter.end_at",
               placeholder: "Tanggal Akhir",
+              required: (values) => {
+                if (values?.filter?.start_at || !values?.filter?.item_id)
+                  return true;
+                return false;
+              },
             },
           ],
         },
