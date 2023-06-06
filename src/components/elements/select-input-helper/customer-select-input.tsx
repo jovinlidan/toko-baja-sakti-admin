@@ -61,7 +61,9 @@ export default function CustomerSelectOption(props: Props) {
       []
     ),
     listTransformer(result) {
-      return result.data.map((v) => transformer(v));
+      return result.data
+        .filter((v) => v.status !== "Non Aktif")
+        .map((v) => transformer(v));
     },
     detailTransformer(result) {
       return transformer(result.data);
