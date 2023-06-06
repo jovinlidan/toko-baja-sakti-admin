@@ -213,7 +213,13 @@ export default function SaleOrderForm(props: Props) {
             label="Tanggal Pesanan Pembelian"
           />
           {data?.status && (
-            <Input name="status" type="text" label="Status Pesanan" disabled />
+            <Input
+              name="status"
+              type="enum"
+              enumClass="sales-order-status"
+              label="Status Pesanan"
+              disabled
+            />
           )}
         </HalfContainer>
       </FullContainer>
