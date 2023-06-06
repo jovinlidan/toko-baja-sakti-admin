@@ -3,6 +3,7 @@ import { getReportInput } from "@/api-hooks/report/report.model";
 import { CalendarSVG, DocumentScannerSVG } from "@/common/assets";
 import { InputType } from "@/components/elements/input";
 import CustomerSelectOption from "@/components/elements/select-input-helper/customer-select-input";
+import ItemSelectOption from "@/components/elements/select-input-helper/item-select-input";
 import SupplierSelectOption from "@/components/elements/select-input-helper/supplier-select-input";
 import { theme } from "@/config/stitches/theme.stitches";
 
@@ -292,6 +293,32 @@ export function getReportFilterMetadata(type: ReportType): TFilterMetadata[] {
               name: "filter.end_at",
               placeholder: "Tanggal Akhir",
               required: true,
+            },
+          ],
+        },
+      ];
+    case ReportType.StockItemTransaction:
+      return [
+        {
+          type: "component",
+          component: ItemSelectOption,
+          name: "filter.item_id",
+          placeholder: "Pilih Barang",
+        },
+        {
+          type: "row",
+          components: [
+            {
+              type: "input",
+              input: "date",
+              name: "filter.start_at",
+              placeholder: "Tanggal Awal",
+            },
+            {
+              type: "input",
+              input: "date",
+              name: "filter.end_at",
+              placeholder: "Tanggal Akhir",
             },
           ],
         },
