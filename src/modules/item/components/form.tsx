@@ -23,7 +23,7 @@ type FormType = {
   retailPrice: number;
   status: string;
   isAvailable: boolean;
-  weight : number;
+  weight: number;
 };
 
 interface Props {
@@ -47,7 +47,7 @@ export default function ItemForm(props: Props) {
         retailPrice: Yup.number().nullable(),
         status: Yup.string().required(),
         isAvailable: Yup.boolean().required(),
-        weight : Yup.number().required(),
+        weight: Yup.number().required(),
       }),
     []
   );
@@ -113,7 +113,11 @@ export default function ItemForm(props: Props) {
 
           <Input name="wholesalePrice" type="number" label="Harga Grosir" />
 
-          <Input name="weight" type="number" label="Berat per Satuan Kecil (gram)" />
+          <Input
+            name="weight"
+            type="number"
+            label="Berat per Satuan Kecil (gram)"
+          />
 
           <Input
             name="status"

@@ -37,6 +37,9 @@ export default function ListItem() {
       {
         Header: "Tebal",
         accessor: "thick",
+        Cell: ({ value }) => {
+          return <>{value} mm</>;
+        },
       },
       {
         Header: "Warna",
