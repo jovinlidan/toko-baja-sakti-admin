@@ -82,7 +82,13 @@ export default function PurchaseItemForm(props: Props) {
             <Row>
               <HalfContainer>
                 <Input name="quantity" type="number" label="Jumlah" />
-                <Input name="unit" type="text" label="Satuan" disabled />
+                <Input
+                  name="unit"
+                  type="text"
+                  label="Satuan"
+                  disabled
+                  style={{ textTransform: "capitalize" }}
+                />
               </HalfContainer>
               <HalfContainer>
                 <Input
