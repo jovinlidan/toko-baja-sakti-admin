@@ -47,63 +47,63 @@ interface IReport {
 
 export const reportOptions: IReport[] = [
   {
-    label: "Daftar pelanggan",
+    label: "Daftar Pelanggan",
     value: ReportType.Customer,
   },
   {
-    label: "Daftar supplier",
+    label: "Daftar Supplier",
     value: ReportType.Supplier,
   },
   {
-    label: "Daftar harga barang",
+    label: "Daftar Harga Barang",
     value: ReportType.CategoryItem,
   },
   {
-    label: "Daftar barang",
+    label: "Daftar Barang",
     value: ReportType.CategoryItemWithoutPrice,
   },
   {
-    label: "Informasi barang per supplier",
+    label: "Informasi Barang Per Supplier",
     value: ReportType.SupplierItem,
   },
   {
-    label: "Laporan pesanan penjualan",
+    label: "Laporan Pesanan Penjualan",
     value: ReportType.SalesOrder,
   },
   {
-    label: "Laporan penjualan",
+    label: "Laporan Penjualan",
     value: ReportType.Sales,
   },
   {
-    label: "Laporan retur penjualan",
+    label: "Laporan Retur Penjualan",
     value: ReportType.Return,
   },
   {
-    label: "Laporan pesanan pembelian",
+    label: "Laporan Pesanan Pembelian",
     value: ReportType.PurchaseOrder,
   },
   {
-    label: "Laporan pembelian",
+    label: "Laporan Pembelian",
     value: ReportType.Purchase,
   },
   {
-    label: "Laporan penyesuaian barang",
+    label: "Laporan Penyesuaian Barang",
     value: ReportType.AdjustmentItem,
   },
   {
-    label: "Laporan persediaan",
+    label: "Laporan Persediaan",
     value: ReportType.StockItem,
   },
   {
-    label: "Kartu persediaan",
+    label: "Kartu Persediaan",
     value: ReportType.StockItemTransaction,
   },
   {
-    label: "Notifikasi stok minimum",
+    label: "Notifikasi Stok Minimum",
     value: ReportType.NotificationStockMinimum,
   },
   {
-    label: "Grafik penjualan",
+    label: "Grafik Penjualan",
     value: ReportType.GraphSales,
   },
 ];
