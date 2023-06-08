@@ -38,7 +38,7 @@ export default function ViewSaleeOrder() {
           router.replace(routeConstant.SaleOrderList);
           close();
         } catch (e: any) {
-          e?.messsage && toast.error(e?.message);
+          e?.message && toast.error(e?.message);
         }
       },
     });

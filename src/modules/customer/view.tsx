@@ -37,7 +37,7 @@ export default function ViewCustomer() {
           router.replace(routeConstant.CustomerList);
           close();
         } catch (e: any) {
-          e?.messsage && toast.error(e?.message);
+          e?.message && toast.error(e?.message);
         }
       },
     });

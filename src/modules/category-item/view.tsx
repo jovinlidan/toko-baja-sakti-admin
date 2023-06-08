@@ -37,7 +37,7 @@ export default function ViewCategoryItem() {
           router.replace(routeConstant.CategoryItemCreate);
           close();
         } catch (e: any) {
-          e?.messsage && toast.error(e?.message);
+          e?.message && toast.error(e?.message);
         }
       },
     });

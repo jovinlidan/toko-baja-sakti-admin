@@ -38,7 +38,7 @@ export default function ViewPurchaseOrder() {
           router.replace(routeConstant.PurchaseOrderList);
           close();
         } catch (e: any) {
-          e?.messsage && toast.error(e?.message);
+          e?.message && toast.error(e?.message);
         }
       },
     });

@@ -37,7 +37,7 @@ export default function ViewSupplier() {
           router.replace(routeConstant.SupplierList);
           close();
         } catch (e: any) {
-          e?.messsage && toast.error(e?.message);
+          e?.message && toast.error(e?.message);
         }
       },
     });

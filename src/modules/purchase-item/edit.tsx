@@ -107,7 +107,7 @@ export default function EditPurchaseItem() {
             getPurchaseKey({ id: router?.query?.id as string })
           );
         } catch (e: any) {
-          e?.messsage && toast.error(e?.message);
+          e?.message && toast.error(e?.message);
         }
       },
     });
