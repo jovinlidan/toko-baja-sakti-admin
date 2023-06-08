@@ -1,20 +1,19 @@
-import { PlusSVG } from "@/common/assets";
 import TableComponent, { IColumn } from "@/components/common/table";
 import { Button } from "@/components/elements";
-import { styled, theme } from "@/config/stitches/theme.stitches";
+import { styled } from "@/config/stitches/theme.stitches";
 import * as React from "react";
 import routeConstant from "@/constants/route.constant";
 import useComposedQuery from "@/hooks/use-composed-query";
 import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import { useApplyQueryFilter } from "@/hooks/use-apply-query-filter";
-import { format } from "date-fns";
-import { useGetAdjustmentItems } from "@/api-hooks/adjustment-item/adjustment-item.query";
 import AuditListFilterForm from "./components/audit-list-filter-form";
 import { useGetAudits } from "@/api-hooks/audit/audit.query";
+import { useTimezone } from "@/hooks/use-timezone";
 
 export default function ListAdjusmentItem() {
   const [page, setPage] = React.useState<number>(1);
   const [limit, setLimit] = React.useState<number>();
+  const { format } = useTimezone();
 
   const {
     data,

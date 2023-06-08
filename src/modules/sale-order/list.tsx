@@ -7,13 +7,14 @@ import routeConstant from "@/constants/route.constant";
 import useComposedQuery from "@/hooks/use-composed-query";
 import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import { useApplyQueryFilter } from "@/hooks/use-apply-query-filter";
-import { format } from "date-fns";
 import { useGetSalesOrders } from "@/api-hooks/sales-order/sales-order.query";
 import SaleOrderListFilterForm from "@/modules/sale-order/components/sale-order-list-filter-form";
+import { useTimezone } from "@/hooks/use-timezone";
 
 export default function SaleOrderList() {
   const [page, setPage] = React.useState<number>(1);
   const [limit, setLimit] = React.useState<number>();
+  const { format } = useTimezone();
 
   const _columns = React.useMemo<IColumn[]>(
     () => [

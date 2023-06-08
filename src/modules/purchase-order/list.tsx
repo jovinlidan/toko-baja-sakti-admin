@@ -8,12 +8,13 @@ import useComposedQuery from "@/hooks/use-composed-query";
 import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import { useApplyQueryFilter } from "@/hooks/use-apply-query-filter";
 import { useGetPurchaseOrders } from "@/api-hooks/purchase-order/purchase-order.query";
-import { format } from "date-fns";
 import PurchaseListFilterForm from "./components/purchase-order-list-filter-form";
+import { useTimezone } from "@/hooks/use-timezone";
 
 export default function PurchaseOrderList() {
   const [page, setPage] = React.useState<number>(1);
   const [limit, setLimit] = React.useState<number>();
+  const { format } = useTimezone();
 
   const _columns = React.useMemo<IColumn[]>(
     () => [

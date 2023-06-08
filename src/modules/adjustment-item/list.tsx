@@ -7,13 +7,14 @@ import routeConstant from "@/constants/route.constant";
 import useComposedQuery from "@/hooks/use-composed-query";
 import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import { useApplyQueryFilter } from "@/hooks/use-apply-query-filter";
-import { format } from "date-fns";
 import { useGetAdjustmentItems } from "@/api-hooks/adjustment-item/adjustment-item.query";
 import AdjustmentItemListFilterForm from "./components/adjustment-item-list-filter-form";
+import { useTimezone } from "@/hooks/use-timezone";
 
 export default function ListAdjusmentItem() {
   const [page, setPage] = React.useState<number>(1);
   const [limit, setLimit] = React.useState<number>();
+  const { format } = useTimezone();
 
   const _columns = React.useMemo<IColumn[]>(
     () => [

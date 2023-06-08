@@ -7,14 +7,15 @@ import routeConstant from "@/constants/route.constant";
 import useComposedQuery from "@/hooks/use-composed-query";
 import useApplyQuerySort from "@/hooks/use-apply-query-sort";
 import { useApplyQueryFilter } from "@/hooks/use-apply-query-filter";
-import { format } from "date-fns";
 import PurchaseListFilterForm from "./components/purchase-list-filter-form";
 import { useGetPurchases } from "@/api-hooks/purchase/purchase.query";
 import { string2money } from "@/utils/string";
+import { useTimezone } from "@/hooks/use-timezone";
 
 export default function PurchaseList() {
   const [page, setPage] = React.useState<number>(1);
   const [limit, setLimit] = React.useState<number>();
+  const { format } = useTimezone();
 
   const _columns = React.useMemo<IColumn[]>(
     () => [
