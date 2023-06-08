@@ -41,6 +41,11 @@ export default function SaleList() {
         Cell: ({ value }) => <>Rp {string2money(value)}</>,
       },
       {
+        Header: "Status",
+        accessor: "salesOrder.transaction.status",
+        Cell: ({ value }) => <>{value || "-"}</>,
+      },
+      {
         Header: "",
         accessor: "detail",
         Cell: ({ row }) => {
