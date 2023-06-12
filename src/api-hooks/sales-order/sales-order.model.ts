@@ -2,6 +2,7 @@ import { Expose, Type } from "class-transformer";
 import { CustomerLite } from "@/api-hooks/customer/customer.model";
 import { SalesOrderItemLite } from "@/api-hooks/sales-order-item/sales-order-item.model";
 import { ItemUnitEnum } from "@/api-hooks/item/item.model";
+import { Address } from "../common/common.model";
 
 export class TransactionLite {
   id: string;
@@ -25,6 +26,9 @@ export class TransactionLite {
 
   @Expose({ name: "no_receipt" })
   noReceipt?: string;
+
+  @Type(() => Address)
+  address: Address;
 }
 
 export class SalePaymentMethod {

@@ -28,6 +28,7 @@ type FormType = {
     quantity?: number;
     unit?: string;
   };
+  address?: string;
 };
 
 interface Props {
@@ -93,6 +94,10 @@ export default function SaleForm(props: Props) {
                     ) as any)
                   : data?.salesOrder?.transaction?.shippingCost,
             },
+            address:
+              data?.salesOrder?.transaction?.address?.addressDetail +
+              ", " +
+              data?.salesOrder?.transaction?.address?.city?.name,
           }
         : {
             transactionDate: new Date(Date.now()),
@@ -271,6 +276,14 @@ export default function SaleForm(props: Props) {
               label="Ongkos Kirim"
               disabled
               startEnhancer="Rp"
+            />
+          )}
+          {!!methods.getValues().address && (
+            <Input
+              name="address"
+              type="textarea"
+              label="Alamat Kirim"
+              disabled
             />
           )}
         </HalfContainer>
