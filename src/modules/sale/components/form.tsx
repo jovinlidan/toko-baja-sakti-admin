@@ -14,6 +14,7 @@ import SalesOrderSelectOption from "@/components/elements/select-input-helper/sa
 import { useGetSalesOrderItems } from "@/api-hooks/sales-order-item/sales-order-item.query";
 import { Sale } from "@/api-hooks/sales/sales.model";
 import { TransactionLite } from "@/api-hooks/sales-order/sales-order.model";
+import { string2money } from "@/utils/string";
 
 type FormType = {
   code?: string;
@@ -83,7 +84,15 @@ export default function SaleForm(props: Props) {
             paymentMethod: data.salesOrder.paymentMethod?.name,
             salesOrderId: data.salesOrder.id,
             transactionDate: data.transactionDate,
-            transaction: data.salesOrder.transaction,
+            transaction: {
+              ...data.salesOrder.transaction,
+              shippingCost:
+                typeof data?.salesOrder?.transaction?.shippingCost === "number"
+                  ? (string2money(
+                      data?.salesOrder?.transaction?.shippingCost.toString()
+                    ) as any)
+                  : data?.salesOrder?.transaction?.shippingCost,
+            },
           }
         : {
             transactionDate: new Date(Date.now()),
@@ -255,6 +264,15 @@ export default function SaleForm(props: Props) {
             label="Pesanan Penjualan"
             placeholder="Pilih Pesanan Penjualan"
           />
+          {typeof data?.salesOrder?.transaction?.shippingCost === "number" && (
+            <Input
+              name="transaction.shippingCost"
+              type="text"
+              label="Ongkos Kirim"
+              disabled
+              startEnhancer="Rp"
+            />
+          )}
         </HalfContainer>
         <HalfContainer>
           <Input name="transactionDate" type="date" label="Tanggal Penjualan" />
