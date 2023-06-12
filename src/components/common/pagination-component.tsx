@@ -26,8 +26,9 @@ export default function PaginationComponent(props: Props) {
   const onChangeLimit = React.useCallback(
     (e) => {
       onLimitChange(e?.nativeEvent?.target?.value);
+      onPageChange(1);
     },
-    [onLimitChange]
+    [onLimitChange, onPageChange]
   );
 
   if (!meta) {
