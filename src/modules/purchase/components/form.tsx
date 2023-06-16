@@ -253,6 +253,7 @@ export default function PurchaseForm(props: Props) {
             name="purchaseOrderId"
             label="Pesanan Pembelian"
             placeholder="Pilih Pesanan Pembelian"
+            disabled={!!data?.code}
           />
         </HalfContainer>
         <HalfContainer>

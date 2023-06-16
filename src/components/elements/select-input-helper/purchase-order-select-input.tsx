@@ -31,6 +31,7 @@ interface Props {
   label?: string;
   placeholder?: string;
   onChange?: (value?: any) => void;
+  disabled?: boolean;
 }
 
 export default function PurchaseOrderSelectOption(props: Props) {

@@ -63,10 +63,11 @@ function SelectField<
       }
       onAfterChange?.(selected || null);
     },
-    [onSelect, field]
+    [onSelect, onAfterChange, field]
   );
 
-  const _disabled = !context.editable || readOnly || props.isDisabled;
+  const _disabled =
+    !context.editable || readOnly || props.isDisabled || props.disabled;
 
   const _error = fieldState?.error?.message;
 
