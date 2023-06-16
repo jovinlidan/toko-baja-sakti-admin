@@ -37,7 +37,12 @@ export default function FormSupplier(props: Props) {
         name: Yup.string().required(),
         email: Yup.string().email().nullable(),
         contactPerson: Yup.string().nullable(),
-        phone: Yup.string().nullable(),
+        phone: Yup.string()
+          .matches(
+            new RegExp(/^(?:\+62|0)[2-9]\d{7,11}$/),
+            "Nomor telepon tidak valid"
+          )
+          .nullable(),
         status: Yup.string().nullable(),
         address: Yup.object().shape({
           id: Yup.string().nullable(),

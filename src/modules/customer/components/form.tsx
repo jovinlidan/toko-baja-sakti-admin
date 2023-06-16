@@ -35,7 +35,12 @@ export default function FormCustomer(props: Props) {
         code: Yup.string().nullable().strip(true),
         name: Yup.string().required(),
         email: Yup.string().email().nullable(),
-        phone: Yup.string().nullable(),
+        phone: Yup.string()
+          .nullable()
+          .matches(
+            new RegExp(/^(?:\+62|0)[2-9]\d{7,11}$/),
+            "Nomor telepon tidak valid"
+          ),
         status: Yup.string().nullable().required(),
         address: Yup.object().shape({
           id: Yup.string().nullable(),
