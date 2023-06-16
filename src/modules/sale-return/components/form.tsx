@@ -280,11 +280,19 @@ export default function SaleReturnForm(props: Props) {
                   label="Jumlah Jual"
                   disabled
                 />
-                <Input
-                  name="salesReturnItems.quantity"
-                  type="number"
-                  label="Jumlah Retur"
-                />
+                <FormValueState keys={["salesReturnItems.saleQuantity"]}>
+                  {(key) => {
+                    return (
+                      <Input
+                        name="salesReturnItems.quantity"
+                        type="number"
+                        label="Jumlah Retur"
+                        max={key?.["salesReturnItems.saleQuantity"]}
+                        min={1}
+                      />
+                    );
+                  }}
+                </FormValueState>
               </HalfContainer>
               <HalfContainer>
                 <Input
