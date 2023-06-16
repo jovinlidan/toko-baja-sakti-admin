@@ -125,17 +125,24 @@ export default function SaleForm(props: Props) {
   );
 
   const salesOrderItemOptions = React.useMemo(() => {
-    let data = [...(salesOrderItemQuery?.data?.data || [])];
-    data = data.filter(
+    let _data = [
+      ...(salesOrderItemQuery?.data?.data || []),
+      ...(data?.salesItems?.map((val) => ({
+        ...val.salesOrderItem,
+        item: val.salesOrderItem.item,
+      })) || []),
+    ];
+    _data = _data.filter(
       (item) => !tableData.find((tableItem) => tableItem.id === item.id)
     );
+
     return (
-      data?.map(({ item, id }) => ({
+      _data?.map(({ item, id }) => ({
         label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
         value: id,
       })) || []
     );
-  }, [salesOrderItemQuery?.data?.data, tableData]);
+  }, [data?.salesItems, salesOrderItemQuery?.data?.data, tableData]);
 
   const onSubmit = React.useCallback(
     async (values) => {

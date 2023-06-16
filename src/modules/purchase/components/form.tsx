@@ -108,17 +108,23 @@ export default function PurchaseForm(props: Props) {
   );
 
   const purchaseOrderItemOptions = React.useMemo(() => {
-    let data = [...(purchaseOrderItemQuery?.data?.data || [])];
-    data = data.filter(
+    let _data = [
+      ...(purchaseOrderItemQuery?.data?.data || []),
+      ...(data?.purchaseItems?.map((val) => ({
+        ...val,
+        ...val.purchaseOrderItem,
+      })) || []),
+    ];
+    _data = _data.filter(
       (item) => !tableData.find((tableItem) => tableItem.id === item.id)
     );
     return (
-      data?.map(({ item, id, amountNotReceived }) => ({
+      _data?.map(({ item, id, amountNotReceived }) => ({
         label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Jumlah Belum Diterima: ${amountNotReceived})`,
         value: id,
       })) || []
     );
-  }, [purchaseOrderItemQuery?.data?.data, tableData]);
+  }, [data?.purchaseItems, purchaseOrderItemQuery?.data?.data, tableData]);
 
   const onSubmit = React.useCallback(
     async (values) => {
