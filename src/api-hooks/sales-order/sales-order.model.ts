@@ -77,6 +77,10 @@ export class SalesOrder {
   @Type(() => Date)
   transactionDate: Date;
 
+  @Expose({ name: "payment_method" })
+  @Type(() => SalePaymentMethod)
+  paymentMethod: SalePaymentMethod;
+
   status: string;
 
   @Type(() => CustomerLite)

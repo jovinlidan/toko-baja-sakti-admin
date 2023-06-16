@@ -65,20 +65,22 @@ export default function ViewSaleeOrder() {
                 defaultEditable={false}
               />
             )}
-            <Row>
-              <Button
-                href={{
-                  pathname: routeConstant.SaleOrderEdit,
-                  query: { id: router?.query?.id },
-                }}
-              >
-                UBAH
-              </Button>
-              <Separator mr={24} />
-              <Button variant="error" onClick={handleDelete}>
-                HAPUS
-              </Button>
-            </Row>
+            {data?.data?.paymentMethod?.provider === "Offline" && (
+              <Row>
+                <Button
+                  href={{
+                    pathname: routeConstant.SaleOrderEdit,
+                    query: { id: router?.query?.id },
+                  }}
+                >
+                  UBAH
+                </Button>
+                <Separator mr={24} />
+                <Button variant="error" onClick={handleDelete}>
+                  HAPUS
+                </Button>
+              </Row>
+            )}
           </>
         }
       />
