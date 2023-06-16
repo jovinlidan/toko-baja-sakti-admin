@@ -61,7 +61,9 @@ export default function SaleForm(props: Props) {
         code: Yup.string().nullable().strip(true),
         paymentMethod: Yup.string().nullable().strip(true),
         salesOrderId: Yup.string().required(),
-        transactionDate: Yup.date().required(),
+        transactionDate: Yup.date()
+          .transform((_, val) => (val ? new Date(val) : null))
+          .required(),
         salesItems: Yup.object()
           .shape({
             id: Yup.string().nullable(),

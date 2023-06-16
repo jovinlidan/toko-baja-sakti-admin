@@ -7,7 +7,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import type { ReactElement, ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
-import { setLocale } from "yup";
+import * as Yup from "yup";
 import validationID from "@/locales/validation.id";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "@/common/repositories/query-client";
@@ -24,7 +24,7 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-setLocale(validationID);
+Yup.setLocale(validationID);
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout =

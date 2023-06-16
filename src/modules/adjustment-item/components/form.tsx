@@ -35,7 +35,9 @@ export default function AdjustmentItemForm(props: Props) {
       Yup.object().shape({
         code: Yup.string().strip(true),
         itemId: Yup.string().required(),
-        transactionDate: Yup.date().required(),
+        transactionDate: Yup.date()
+          .transform((_, val) => (val ? new Date(val) : null))
+          .required(),
         newStock: Yup.string().nullable().required(),
         description: Yup.string().required(),
       }),

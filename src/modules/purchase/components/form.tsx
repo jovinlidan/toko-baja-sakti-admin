@@ -57,7 +57,9 @@ export default function PurchaseForm(props: Props) {
       Yup.object().shape({
         code: Yup.string().nullable().strip(true),
         purchaseOrderId: Yup.string().required(),
-        receivedDate: Yup.date().required(),
+        receivedDate: Yup.date()
+          .transform((_, val) => (val ? new Date(val) : null))
+          .required(),
         purchaseItems: Yup.object()
           .shape({
             id: Yup.string().nullable(),

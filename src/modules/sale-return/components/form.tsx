@@ -60,7 +60,9 @@ export default function SaleReturnForm(props: Props) {
       Yup.object().shape({
         code: Yup.string().nullable().strip(true),
         salesId: Yup.string().required(),
-        transactionDate: Yup.date().required(),
+        transactionDate: Yup.date()
+          .transform((_, val) => (val ? new Date(val) : null))
+          .required(),
         salesReturnItems: Yup.object()
           .shape({
             id: Yup.string().nullable(),

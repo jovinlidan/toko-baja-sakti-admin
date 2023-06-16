@@ -55,7 +55,9 @@ export default function SaleOrderForm(props: Props) {
     () =>
       Yup.object().shape({
         code: Yup.string().nullable().strip(true),
-        transactionDate: Yup.date().required(),
+        transactionDate: Yup.date()
+          .transform((_, val) => (val ? new Date(val) : null))
+          .required(),
         userId: Yup.string().required(),
         salesOrderItems: Yup.object()
           .shape({
