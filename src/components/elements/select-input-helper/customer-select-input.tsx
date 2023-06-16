@@ -16,7 +16,7 @@ function transformer(item: CustomerLite | Customer): BaseOptionPaginate {
   return {
     id: item.id,
     value: item.id,
-    label: item.name,
+    label: `${item.name} (${item.code})`,
   };
 }
 
