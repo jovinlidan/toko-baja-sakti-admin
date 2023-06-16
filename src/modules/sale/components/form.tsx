@@ -280,7 +280,8 @@ export default function SaleForm(props: Props) {
               startEnhancer="Rp"
             />
           )}
-          {!!methods.getValues().address && (
+          {console.log(data?.salesOrder)}
+          {!!data?.salesOrder?.transaction?.address?.id && (
             <Input
               name="address"
               type="textarea"
