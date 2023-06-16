@@ -23,6 +23,7 @@ interface Props {
   label?: string;
   placeholder?: string;
   onChange?: (value?: any) => void;
+  onAfterChange?: () => void;
 }
 
 export default function ItemSelectOption(props: Props) {

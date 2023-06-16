@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { Input, Form, Button } from "@/components/elements";
 import { toast } from "react-hot-toast";
 import { FullContainer, HalfContainer } from "@/components/elements/styles";
-import { formSetErrors } from "@/common/helpers/form";
+import { formSetErrors, UpdateBatchHelper } from "@/common/helpers/form";
 import ItemSelectOption from "@/components/elements/select-input-helper/item-select-input";
 import { styled } from "@/config/stitches/theme.stitches";
 import TableItem, {
@@ -190,6 +190,11 @@ export default function SaleOrderForm(props: Props) {
     ];
   }, [tempData]);
 
+  const onAfterChangeItem = React.useCallback(() => {
+    methods.setValue("salesOrderItems.unit", undefined);
+    methods.setValue("salesOrderItems.quantity", "");
+  }, [methods]);
+
   return (
     <Form
       methods={methods}
@@ -232,6 +237,7 @@ export default function SaleOrderForm(props: Props) {
               name="salesOrderItems.itemId"
               label="Tambah Barang"
               placeholder="Pilih Barang"
+              onAfterChange={onAfterChangeItem}
             />
             <Row>
               <HalfContainer>

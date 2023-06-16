@@ -192,6 +192,11 @@ export default function PurchaseOrderForm(props: Props) {
     ];
   }, [tempData]);
 
+  const onAfterChangeItem = React.useCallback(() => {
+    methods.setValue("purchaseOrderItems.unit", undefined);
+    methods.setValue("purchaseOrderItems.quantity", "");
+  }, [methods]);
+
   return (
     <Form
       methods={methods}
@@ -234,6 +239,7 @@ export default function PurchaseOrderForm(props: Props) {
               name="purchaseOrderItems.itemId"
               label="Tambah Barang"
               placeholder="Pilih Barang"
+              onAfterChange={onAfterChangeItem}
             />
             <Row>
               <HalfContainer>
