@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { FullContainer, HalfContainer } from "@/components/elements/styles";
 import { CategoryItem } from "@/api-hooks/category-item/category-item.model";
 import { formSetErrors } from "@/common/helpers/form";
+import { FormValueState } from "@/components/elements/input";
 
 type FormType = {
   code?: string;
@@ -33,7 +34,14 @@ export default function FormCategoryItem(props: Props) {
         code: Yup.string().nullable().strip(true),
         name: Yup.string().required(),
         brand: Yup.string().nullable(),
-        conversionUnit: Yup.string().nullable().required(),
+        conversionUnit: Yup.string()
+          .nullable()
+          .required()
+          .when(["bigUnit", "smallUnit"], {
+            is: (bigUnit, smallUnit) => bigUnit === smallUnit,
+            then: (schema) => schema.oneOf(["1"], "Konversi Satuan wajib 1"),
+            otherwise: (schema) => schema,
+          }),
         bigUnit: Yup.string().required(),
         smallUnit: Yup.string().required(),
         image: Yup.string().required(),
@@ -67,7 +75,20 @@ export default function FormCategoryItem(props: Props) {
     },
     [YupSchema, methods, props]
   );
-  console.log(methods.getValues());
+
+  const onAfterChangeSmallUnit = React.useCallback(
+    (smallUnit, bigUnit) => {
+      if (smallUnit?.value === bigUnit) methods.setValue("conversionUnit", "1");
+    },
+    [methods]
+  );
+
+  const onAfterChangeBigUnit = React.useCallback(
+    (bigUnit, smallUnit) => {
+      if (bigUnit?.value === smallUnit) methods.setValue("conversionUnit", "1");
+    },
+    [methods]
+  );
 
   return (
     <Form
@@ -107,18 +128,32 @@ export default function FormCategoryItem(props: Props) {
               label="Konversi Satuan"
             />
           )}
-          <Input
-            name="smallUnit"
-            type="enum"
-            label="Satuan Kecil (Ecer)"
-            enumClass="small-unit-type"
-          />
-          <Input
-            name="bigUnit"
-            type="enum"
-            label="Satuan Besar (Grosir)"
-            enumClass="big-unit-type"
-          />
+          <FormValueState keys={["bigUnit"]}>
+            {({ bigUnit }) => (
+              <Input
+                name="smallUnit"
+                type="enum"
+                label="Satuan Kecil (Ecer)"
+                enumClass="small-unit-type"
+                onAfterChange={(value) =>
+                  onAfterChangeSmallUnit(value, bigUnit)
+                }
+              />
+            )}
+          </FormValueState>
+          <FormValueState keys={["smallUnit"]}>
+            {({ smallUnit }) => (
+              <Input
+                name="bigUnit"
+                type="enum"
+                label="Satuan Besar (Grosir)"
+                enumClass="big-unit-type"
+                onAfterChange={(value) =>
+                  onAfterChangeBigUnit(value, smallUnit)
+                }
+              />
+            )}
+          </FormValueState>
         </HalfContainer>
       </FullContainer>
       <Input type="submit" text="SIMPAN" size="large" />

@@ -25,6 +25,7 @@ export type SelectFieldProps<
     options: BaseOption[];
     size?: "large" | "small";
     disabled?: boolean;
+    onAfterChange?: (data: any | null) => void;
   };
 
 function SelectField<
@@ -48,6 +49,7 @@ function SelectField<
     size = "small",
     startEnhancer,
     endEnhancer,
+    onAfterChange,
     ...restProps
   } = props;
   const context = React.useContext(FormContext);
@@ -59,6 +61,7 @@ function SelectField<
       } else {
         field.onChange(selected?.value || null);
       }
+      onAfterChange?.(selected || null);
     },
     [onSelect, field]
   );
