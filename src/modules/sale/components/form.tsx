@@ -270,6 +270,7 @@ export default function SaleForm(props: Props) {
             name="salesOrderId"
             label="Pesanan Penjualan"
             placeholder="Pilih Pesanan Penjualan"
+            disabled={!!data?.id}
           />
           {typeof data?.salesOrder?.transaction?.shippingCost === "number" && (
             <Input
@@ -280,7 +281,6 @@ export default function SaleForm(props: Props) {
               startEnhancer="Rp"
             />
           )}
-          {console.log(data?.salesOrder)}
           {!!data?.salesOrder?.transaction?.address?.id && (
             <Input
               name="address"
