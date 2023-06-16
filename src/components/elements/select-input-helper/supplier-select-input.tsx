@@ -16,7 +16,7 @@ function transformer(item: SupplierLite | Supplier): BaseOptionPaginate {
   return {
     id: item.id,
     value: item.id,
-    label: item.name,
+    label: `${item.name} (${item.code})`,
   };
 }
 
