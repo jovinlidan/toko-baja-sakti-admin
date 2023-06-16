@@ -220,7 +220,7 @@ export default function PurchaseOrderForm(props: Props) {
               type="enum"
               enumClass="purchase-order-status"
               label="Status Pesanan"
-              disabled
+              isDisabled
             />
           )}
         </HalfContainer>
