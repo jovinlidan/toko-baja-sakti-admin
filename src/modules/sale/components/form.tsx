@@ -54,7 +54,9 @@ export default function SaleForm(props: Props) {
     })) || []
   );
   const [tempData, setTempData] = React.useState<SalesOrderItemLite>();
-
+  const isOnline =
+    !!data?.salesOrder?.id &&
+    data?.salesOrder?.paymentMethod?.provider !== "Offline";
   const YupSchema = React.useMemo(
     () =>
       Yup.object().shape({
@@ -298,7 +300,12 @@ export default function SaleForm(props: Props) {
           )}
         </HalfContainer>
         <HalfContainer>
-          <Input name="transactionDate" type="date" label="Tanggal Penjualan" />
+          <Input
+            name="transactionDate"
+            type="date"
+            label="Tanggal Penjualan"
+            disabled={isOnline}
+          />
 
           {data?.salesOrder?.transaction?.status && (
             <Input name="transaction.noReceipt" type="text" label="No Resi" />
@@ -323,7 +330,7 @@ export default function SaleForm(props: Props) {
         </HalfContainer>
       </FullContainer>
       <FullContainer direction="column">
-        {defaultEditable && (
+        {defaultEditable && !isOnline && (
           <>
             <Input
               name="salesItems.salesOrderItemId"
@@ -379,8 +386,9 @@ export default function SaleForm(props: Props) {
               return prev + current.quantity * current.price;
             }, 0)
           }
+          isOnline={isOnline}
         />
-        {defaultEditable && (
+        {defaultEditable && !isOnline && (
           <AddButtonContainer>
             <FormValueState keys={["salesItems"]}>
               {({ salesItems }) => (

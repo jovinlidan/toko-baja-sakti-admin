@@ -16,11 +16,12 @@ interface Props {
   data: SaleItemTableDataType[];
   onDelete: (index: number) => void;
   grandTotal: number;
+  isOnline: boolean;
 }
 
 export default function SaleItemTable(props: Props) {
   const { editable } = useFormState();
-  const { data, onDelete, grandTotal = 0 } = props;
+  const { data, onDelete, grandTotal = 0, isOnline } = props;
 
   const columns = React.useMemo<IColumn[]>(
     () => [
@@ -73,25 +74,29 @@ export default function SaleItemTable(props: Props) {
           return <>Rp 0</>;
         },
       },
-      {
-        Header: "",
-        accessor: "detail",
-        Cell: ({ row }) => {
-          if (!editable) return null;
-          return (
-            <Button
-              size="small"
-              variant="error"
-              onClick={() => onDelete(row.index)}
-            >
-              HAPUS
-            </Button>
-          );
-        },
-        stickyRight: editable,
-      },
+      ...(!isOnline
+        ? [
+            {
+              Header: "",
+              accessor: "detail",
+              Cell: ({ row }) => {
+                if (!editable) return null;
+                return (
+                  <Button
+                    size="small"
+                    variant="error"
+                    onClick={() => onDelete(row.index)}
+                  >
+                    HAPUS
+                  </Button>
+                );
+              },
+              stickyRight: editable,
+            },
+          ]
+        : []),
     ],
-    [editable, onDelete]
+    [editable, isOnline, onDelete]
   );
   return (
     <>
