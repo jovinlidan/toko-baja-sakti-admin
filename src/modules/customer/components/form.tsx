@@ -36,7 +36,7 @@ export default function FormCustomer(props: Props) {
         name: Yup.string().required(),
         email: Yup.string().email().nullable(),
         phone: Yup.string().nullable(),
-        status: Yup.string().nullable(),
+        status: Yup.string().nullable().required(),
         address: Yup.object().shape({
           id: Yup.string().nullable(),
           cityId: Yup.string(),
