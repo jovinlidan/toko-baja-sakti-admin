@@ -1,5 +1,4 @@
 import Form from "@/components/elements/form";
-import { styled } from "@/config/stitches/theme.stitches";
 import useYupValidationResolver from "@/hooks/use-yup-validation-resolver";
 import * as React from "react";
 import { useForm } from "react-hook-form";
@@ -15,15 +14,15 @@ type FormType = {
   code?: string;
   categoryItemId: string;
   size: string;
-  thick: number;
+  thick: number | string;
   color: string;
-  minimumStock: number;
-  stock: number;
-  wholesalePrice: number;
-  retailPrice: number;
+  minimumStock: number | string;
+  stock: number | string;
+  wholesalePrice: number | string;
+  retailPrice: number | string;
   status: string;
   isAvailable: boolean;
-  weight: number;
+  weight: number | string;
 };
 
 interface Props {
@@ -39,15 +38,15 @@ export default function ItemForm(props: Props) {
         code: Yup.string().strip(true),
         categoryItemId: Yup.string().required(),
         size: Yup.string().nullable(),
-        thick: Yup.number().nullable(),
+        thick: Yup.string().nullable(),
         color: Yup.string().nullable(),
-        minimumStock: Yup.number().nullable(),
-        stock: Yup.number().required(),
-        wholesalePrice: Yup.number().nullable(),
-        retailPrice: Yup.number().nullable(),
+        minimumStock: Yup.string().nullable().required(),
+        stock: Yup.string().required(),
+        wholesalePrice: Yup.string().nullable().required(),
+        retailPrice: Yup.string().nullable().required(),
         status: Yup.string().required(),
         isAvailable: Yup.boolean().required(),
-        weight: Yup.number().required(),
+        weight: Yup.string().required(),
       }),
     []
   );

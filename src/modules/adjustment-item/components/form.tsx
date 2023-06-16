@@ -19,7 +19,7 @@ type FormType = {
   code?: string;
   itemId?: string;
   transactionDate?: Date;
-  newStock?: number;
+  newStock?: number | string;
   description?: string;
 };
 
@@ -36,7 +36,7 @@ export default function AdjustmentItemForm(props: Props) {
         code: Yup.string().strip(true),
         itemId: Yup.string().required(),
         transactionDate: Yup.date().required(),
-        newStock: Yup.number().nullable().required(),
+        newStock: Yup.string().nullable().required(),
         description: Yup.string().required(),
       }),
     []

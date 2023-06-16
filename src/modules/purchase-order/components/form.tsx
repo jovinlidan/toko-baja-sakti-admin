@@ -24,7 +24,7 @@ type FormType = {
   purchaseOrderItems?: {
     id?: string;
     itemId?: string;
-    quantity?: number;
+    quantity?: number | string;
     unit?: string;
   };
   supplierId?: string;
@@ -63,7 +63,7 @@ export default function PurchaseOrderForm(props: Props) {
           .shape({
             id: Yup.string().nullable(),
             itemId: Yup.string().required(),
-            quantity: Yup.number().required(),
+            quantity: Yup.string().required(),
             unit: Yup.string().required(),
           })
           .strip(true),

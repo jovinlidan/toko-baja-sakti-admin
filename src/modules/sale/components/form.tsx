@@ -25,7 +25,7 @@ type FormType = {
   salesItems?: {
     id?: string;
     salesOrderItemId?: string;
-    quantity?: number;
+    quantity?: number | string;
     unit?: string;
   };
   address?: string;
@@ -66,7 +66,7 @@ export default function SaleForm(props: Props) {
           .shape({
             id: Yup.string().nullable(),
             salesOrderItemId: Yup.string().required(),
-            quantity: Yup.number().required(),
+            quantity: Yup.string().required(),
             unit: Yup.string().nullable(),
           })
           .strip(true),

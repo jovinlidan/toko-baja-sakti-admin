@@ -23,7 +23,7 @@ type FormType = {
   salesReturnItems?: {
     id?: string;
     salesItemId?: string;
-    quantity?: number;
+    quantity?: number | string;
     reason?: string;
     saleQuantity?: string;
   };
@@ -65,7 +65,7 @@ export default function SaleReturnForm(props: Props) {
           .shape({
             id: Yup.string().nullable(),
             salesItemId: Yup.string().required(),
-            quantity: Yup.number().required(),
+            quantity: Yup.string().required(),
             reason: Yup.string().required(),
             saleQuantity: Yup.string().nullable(),
           })

@@ -12,8 +12,8 @@ import Separator from "@/components/common/separator";
 
 type FormType = {
   purchaseItemId?: string;
-  quantity?: number;
-  price?: number;
+  quantity?: number | string;
+  price?: number | string;
   id?: string;
   unit?: string;
 };
@@ -34,8 +34,8 @@ export default function PurchaseItemForm(props: Props) {
     () =>
       Yup.object().shape({
         id: Yup.string().nullable(),
-        quantity: Yup.number().required(),
-        price: Yup.number().required(),
+        quantity: Yup.string().required(),
+        price: Yup.string().required(),
         unit: Yup.string().nullable().strip(true),
       }),
     []
