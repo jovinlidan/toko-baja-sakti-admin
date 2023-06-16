@@ -12,7 +12,7 @@ type FormType = {
   code?: string;
   name: string;
   brand: string;
-  conversionUnit: number;
+  conversionUnit: string | number;
   bigUnit: string;
   smallUnit: string;
   image: string;
@@ -33,7 +33,7 @@ export default function FormCategoryItem(props: Props) {
         code: Yup.string().nullable().strip(true),
         name: Yup.string().required(),
         brand: Yup.string().nullable(),
-        conversionUnit: Yup.number().nullable(),
+        conversionUnit: Yup.string().nullable().required(),
         bigUnit: Yup.string().required(),
         smallUnit: Yup.string().required(),
         image: Yup.string().required(),
@@ -67,6 +67,7 @@ export default function FormCategoryItem(props: Props) {
     },
     [YupSchema, methods, props]
   );
+  console.log(methods.getValues());
 
   return (
     <Form
