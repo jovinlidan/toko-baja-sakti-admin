@@ -57,7 +57,7 @@ export default function EditPurchaseItem() {
       });
       res.message && toast.success(res.message);
       await router.replace({
-        pathname: routeConstant.PurchaseEdit,
+        pathname: routeConstant.PurchaseView,
         query: { id: router?.query?.id },
       });
       await queryClient.invalidateQueries(getPurchasesKey());
