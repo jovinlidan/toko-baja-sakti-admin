@@ -71,10 +71,13 @@ export default function SaleReturnItemTable(props: Props) {
         Header: "Total Harga",
         accessor: "grandTotal",
         Cell({ row }) {
-          if (row?.original?.quantity && row?.original?.price)
+          if (row?.original?.quantity && row?.original?.priceUnit)
             return (
               <>
-                Rp {string2money(row.original?.quantity * row?.original?.price)}
+                Rp{" "}
+                {string2money(
+                  row.original?.quantity * row?.original?.priceUnit
+                )}
               </>
             );
           return <>Rp 0</>;
