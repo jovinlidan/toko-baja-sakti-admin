@@ -111,17 +111,23 @@ export default function SaleReturnForm(props: Props) {
   );
 
   const salesItemOptions = React.useMemo(() => {
-    let data = [...(salesItemQuery?.data?.data || [])];
-    data = data.filter(
+    let _data = [
+      ...(salesItemQuery?.data?.data || []),
+      ...(data?.salesReturnItems?.map((val) => ({
+        ...val.salesItems,
+        item: val.salesItems.salesOrderItem.item,
+      })) || []),
+    ];
+    _data = _data.filter(
       (item) => !tableData.find((tableItem) => tableItem.id === item.id)
     );
     return (
-      data?.map(({ item, id }) => ({
+      _data?.map(({ item, id }) => ({
         label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
         value: id,
       })) || []
     );
-  }, [salesItemQuery?.data?.data, tableData]);
+  }, [data?.salesReturnItems, salesItemQuery?.data?.data, tableData]);
 
   const onSubmit = React.useCallback(
     async (values) => {
