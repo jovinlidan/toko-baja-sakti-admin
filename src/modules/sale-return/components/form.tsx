@@ -172,6 +172,7 @@ export default function SaleReturnForm(props: Props) {
               reason: "",
               saleQuantity: "",
               quantity: "",
+              salesItemId: "",
             },
           },
           methods
