@@ -56,7 +56,7 @@ export default function EditSaleReturn() {
       <LinkText
         label="Kembali"
         href={{
-          pathname: routeConstant.SaleView,
+          pathname: routeConstant.SaleReturnView,
           query: { id: router?.query?.id as string },
         }}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
