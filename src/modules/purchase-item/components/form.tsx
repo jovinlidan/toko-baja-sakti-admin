@@ -9,12 +9,14 @@ import { formSetErrors } from "@/common/helpers/form";
 import { styled } from "@/config/stitches/theme.stitches";
 import { PurchaseItem } from "@/api-hooks/purchase/purchase.model";
 import Separator from "@/components/common/separator";
+import { FormValueState } from "@/components/elements/input";
 
 type FormType = {
   purchaseItemId?: string;
   quantity?: number | string;
   price?: number | string;
   id?: string;
+  amountNotReceived?: number | string;
   unit?: string;
 };
 
@@ -37,6 +39,7 @@ export default function PurchaseItemForm(props: Props) {
         quantity: Yup.string().required(),
         price: Yup.string().required(),
         unit: Yup.string().nullable().strip(true),
+        amountNotReceived: Yup.number().nullable().strip(true),
       }),
     []
   );
@@ -48,9 +51,11 @@ export default function PurchaseItemForm(props: Props) {
     defaultValues: {
       id: data?.id,
       price: data?.price,
-      quantity: data?.quantity,
+      quantity: Math.max(data?.quantity || 0, 1),
       unit: data?.unit,
-      purchaseItemId: `${data?.item?.categoryItem.name} | ${data?.item?.categoryItem?.brand} | ${data?.item?.size} | ${data?.item?.thick}mm | ${data?.item?.color} (${data?.item?.code}) (Stok: ${data?.item?.stock})`,
+      amountNotReceived: (data?.amountNotReceived || 0) + (data?.quantity || 0),
+
+      purchaseItemId: `${data?.item?.categoryItem.name} | ${data?.item?.categoryItem?.brand} | ${data?.item?.size} | ${data?.item?.thick}mm | ${data?.item?.color} (${data?.item?.code}) (Jumlah belum diterima: ${data?.amountNotReceived})`,
     },
   });
 
@@ -81,7 +86,19 @@ export default function PurchaseItemForm(props: Props) {
             <Input name="purchaseItemId" type="text" label="Barang" disabled />
             <Row>
               <HalfContainer>
-                <Input name="quantity" type="number" label="Jumlah" />
+                <FormValueState keys={["amountNotReceived"]}>
+                  {(key) => {
+                    return (
+                      <Input
+                        name="quantity"
+                        type="number"
+                        label="Jumlah"
+                        max={key?.["amountNotReceived"]}
+                        min={Math.min(1, key?.["amountNotReceived"])}
+                      />
+                    );
+                  }}
+                </FormValueState>
                 <Input
                   name="unit"
                   type="text"
