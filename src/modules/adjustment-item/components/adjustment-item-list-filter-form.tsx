@@ -71,7 +71,7 @@ export default function AdjustmentItemListFilterForm(props: Props) {
           name={FILTER_SEARCH}
           type="text"
           size="large"
-          placeholder="Pilih Kode Penyesuaian Barang"
+          placeholder="Cari Kode Penyesuaian Barang"
           disabled={loading}
           startEnhancer={<BxSearchSVG color={theme.colors.textPrimary.value} />}
           endEnhancer={loading && <ClipLoader size={24} />}
