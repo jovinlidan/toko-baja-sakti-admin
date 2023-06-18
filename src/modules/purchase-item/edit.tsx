@@ -87,7 +87,10 @@ export default function EditPurchaseItem() {
               purchaseOrderId: data?.data?.purchaseOrder?.id!,
               purchaseItems:
                 data?.data?.purchaseItems
-                  .filter((item) => router?.query?.itemId !== item.id)
+                  .filter(
+                    (item) =>
+                      router?.query?.itemId !== item.purchaseOrderItem?.id
+                  )
                   .map((item) => ({
                     id: item.id,
                     price: item.price,
@@ -99,7 +102,7 @@ export default function EditPurchaseItem() {
           res.message && toast.success(res.message);
           close();
           await router.replace({
-            pathname: routeConstant.PurchaseEdit,
+            pathname: routeConstant.PurchaseView,
             query: { id: router?.query?.id },
           });
           await queryClient.invalidateQueries(getPurchasesKey());
