@@ -126,25 +126,56 @@ export default function SaleForm(props: Props) {
     }
   );
 
-  const salesOrderItemOptions = React.useMemo(() => {
-    let _data = [
-      ...(salesOrderItemQuery?.data?.data || []),
-      ...(data?.salesItems?.map((val) => ({
-        ...val.salesOrderItem,
-        item: val.salesOrderItem.item,
-      })) || []),
+  const salesOrderItemData = React.useMemo(() => {
+    let _data = [...(salesOrderItemQuery?.data?.data || [])];
+
+    _data = _data?.reduce((prev, next) => {
+      const found = data?.salesItems?.find(
+        (item) => item.salesOrderItem.id === next.id
+      );
+      if (found) {
+        return [
+          ...prev,
+          { ...next, saleQuantity: next.amountNotReceived + found.quantity },
+        ];
+      }
+      return [...prev, next];
+    }, [] as any);
+
+    const restData =
+      data?.salesItems?.filter((item) => {
+        const hasDuplicate = _data?.find(
+          (hasDupItem) => hasDupItem.id === item.salesOrderItem.id
+        );
+        return !hasDuplicate;
+      }) || [];
+
+    _data = [
+      ..._data,
+      ...((restData?.map(({ salesOrderItem, price }) => ({
+        id: salesOrderItem.id,
+        amountNotReceived: salesOrderItem.quantity,
+        item: salesOrderItem.item,
+        priceUnit: price,
+        quantity: salesOrderItem.quantity,
+        unit: salesOrderItem.unit,
+      })) as SalesOrderItemLite[]) || []),
     ];
+
     _data = _data.filter(
       (item) => !tableData.find((tableItem) => tableItem.id === item.id)
     );
+    return _data;
+  }, [data?.salesItems, salesOrderItemQuery?.data?.data, tableData]);
 
+  const salesOrderItemOptions = React.useMemo(() => {
     return (
-      _data?.map(({ item, id }) => ({
-        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
+      salesOrderItemData?.map(({ item, id, unit, amountNotReceived }) => ({
+        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color}  | ${unit} | (${item?.code}) (Stok: ${amountNotReceived})`,
         value: id,
       })) || []
     );
-  }, [data?.salesItems, salesOrderItemQuery?.data?.data, tableData]);
+  }, [salesOrderItemData]);
 
   const onSubmit = React.useCallback(
     async (values) => {
@@ -243,9 +274,7 @@ export default function SaleForm(props: Props) {
         },
         methods
       );
-      const salesOrderItem = salesOrderItemQuery.data?.data?.find(
-        (item) => item.id === id
-      );
+      const salesOrderItem = salesOrderItemData.find((item) => item.id === id);
 
       setTempData(salesOrderItem);
       UpdateBatchHelper(
@@ -260,7 +289,7 @@ export default function SaleForm(props: Props) {
         methods
       );
     },
-    [methods, salesOrderItemQuery.data?.data]
+    [methods, salesOrderItemData]
   );
 
   return (
