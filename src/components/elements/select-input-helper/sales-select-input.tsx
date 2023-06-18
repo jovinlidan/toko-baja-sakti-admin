@@ -23,11 +23,14 @@ interface Props {
   label?: string;
   placeholder?: string;
   onChange?: (value?: any) => void;
+  params: {
+    [key in string]: string;
+  };
 }
 
 export default function SalesSelectOption(props: Props) {
   const { control } = useFormContext();
-  const { name, ...restProps } = props;
+  const { name, params, ...restProps } = props;
   const { field } = useController({
     name,
     control,
@@ -46,9 +49,10 @@ export default function SalesSelectOption(props: Props) {
           q,
           page,
           limit: -1,
+          ...params,
         },
       }),
-      []
+      [params]
     ),
     renderCreate: false,
     getMemoizedDetailVariables: React.useCallback(
