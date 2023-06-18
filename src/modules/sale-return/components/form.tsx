@@ -110,24 +110,56 @@ export default function SaleReturnForm(props: Props) {
     }
   );
 
-  const salesItemOptions = React.useMemo(() => {
-    let _data = [
-      ...(salesItemQuery?.data?.data || []),
-      ...(data?.salesReturnItems?.map((val) => ({
-        ...val.salesItems,
-        item: val.salesItems.salesOrderItem.item,
-      })) || []),
+  const salesItemsData = React.useMemo(() => {
+    let _data = [...(salesItemQuery?.data?.data || [])];
+
+    _data = _data?.reduce((prev, next) => {
+      const found = data?.salesReturnItems?.find(
+        (item) => item.salesItems.id === next.id
+      );
+      if (found) {
+        return [
+          ...prev,
+          { ...next, saleQuantity: next.saleQuantity + found.quantity },
+        ];
+      }
+      return [...prev, next];
+    }, [] as any);
+
+    const restData =
+      data?.salesReturnItems?.filter((item) => {
+        const hasDuplicate = _data?.find(
+          (hasDupItem) => hasDupItem.id === item.salesItems.id
+        );
+        return !hasDuplicate;
+      }) || [];
+
+    _data = [
+      ..._data,
+      ...((restData?.map(({ salesItems }) => ({
+        id: salesItems.id,
+        item: salesItems.salesOrderItem.item,
+        priceUnit: salesItems.price,
+        quantity: salesItems.quantity,
+        saleQuantity: salesItems.quantity,
+        unit: salesItems.salesOrderItem.unit,
+      })) as SalesItemLite[]) || []),
     ];
+
     _data = _data.filter(
       (item) => !tableData.find((tableItem) => tableItem.id === item.id)
     );
+    return _data;
+  }, [data?.salesReturnItems, salesItemQuery?.data?.data, tableData]);
+
+  const salesItemOptions = React.useMemo(() => {
     return (
-      _data?.map(({ item, id }) => ({
-        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${item.stock})`,
+      salesItemsData?.map(({ item, id, saleQuantity }) => ({
+        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Stok: ${saleQuantity})`,
         value: id,
       })) || []
     );
-  }, [data?.salesReturnItems, salesItemQuery?.data?.data, tableData]);
+  }, [salesItemsData]);
 
   const onSubmit = React.useCallback(
     async (values) => {
@@ -222,9 +254,7 @@ export default function SaleReturnForm(props: Props) {
         },
         methods
       );
-      const salesItem = salesItemQuery.data?.data?.find(
-        (item) => item.id === id
-      );
+      const salesItem = salesItemsData.find((item) => item.id === id);
 
       setTempData(salesItem);
       UpdateBatchHelper(
@@ -237,7 +267,7 @@ export default function SaleReturnForm(props: Props) {
         methods
       );
     },
-    [methods, salesItemQuery.data?.data]
+    [methods, salesItemsData]
   );
 
   return (
@@ -314,12 +344,9 @@ export default function SaleReturnForm(props: Props) {
         <SaleItemTable
           data={tableData}
           onDelete={onDeleteItem}
-          grandTotal={
-            data?.grandTotal ||
-            tableData?.reduce((prev, current) => {
-              return prev + current.quantity * current.priceUnit;
-            }, 0)
-          }
+          grandTotal={tableData?.reduce((prev, current) => {
+            return prev + current.quantity * current.priceUnit;
+          }, 0)}
         />
         {defaultEditable && (
           <AddButtonContainer>
