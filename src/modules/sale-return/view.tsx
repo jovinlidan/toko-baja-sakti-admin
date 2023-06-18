@@ -63,7 +63,7 @@ export default function ViewSaleReturn() {
               </Button>
               <Separator mr={24} />
               <Button onClick={handlePrintReport} variant="info">
-                CETAK FAKTUR
+                CETAK NOTA
               </Button>
             </Row>
           </>
