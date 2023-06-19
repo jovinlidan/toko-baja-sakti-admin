@@ -140,7 +140,7 @@ export default function EditPurchaseItem() {
       <LinkText
         label="Kembali"
         href={{
-          pathname: routeConstant.PurchaseEdit,
+          pathname: routeConstant.PurchaseView,
           query: { id: router?.query?.id as string },
         }}
         startEnhancer={(color) => <BxChevronLeftSVG color={color} />}
