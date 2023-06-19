@@ -79,6 +79,7 @@ export default function FormCategoryItem(props: Props) {
   const onAfterChangeSmallUnit = React.useCallback(
     (smallUnit, bigUnit) => {
       if (smallUnit?.value === bigUnit) methods.setValue("conversionUnit", "1");
+      methods.trigger("conversionUnit");
     },
     [methods]
   );
@@ -86,6 +87,7 @@ export default function FormCategoryItem(props: Props) {
   const onAfterChangeBigUnit = React.useCallback(
     (bigUnit, smallUnit) => {
       if (bigUnit?.value === smallUnit) methods.setValue("conversionUnit", "1");
+      methods.trigger("conversionUnit");
     },
     [methods]
   );
