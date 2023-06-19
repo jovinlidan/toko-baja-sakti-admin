@@ -107,7 +107,7 @@ export default function Header() {
       },
       {
         href: routeConstant.PurchaseEditOrderItemEdit,
-        label: "Ubah Barang Pembelian",
+        label: "Detail Barang Pembelian",
       },
       {
         href: routeConstant.PurchaseView,
