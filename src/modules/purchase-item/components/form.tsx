@@ -55,7 +55,13 @@ export default function PurchaseItemForm(props: Props) {
       unit: data?.unit,
       amountNotReceived: (data?.amountNotReceived || 0) + (data?.quantity || 0),
 
-      purchaseItemId: `${data?.item?.categoryItem.name} | ${data?.item?.categoryItem?.brand} | ${data?.item?.size} | ${data?.item?.thick}mm | ${data?.item?.color} (${data?.item?.code}) (Jumlah belum diterima: ${data?.amountNotReceived})`,
+      purchaseItemId: `${data?.item?.categoryItem.name} | ${
+        data?.item?.categoryItem?.brand
+      } | ${data?.item?.size} | ${data?.item?.thick}mm | ${
+        data?.item?.color
+      } (${data?.item?.code}) (Jumlah belum diterima: ${
+        (data?.amountNotReceived || 0) + (data?.quantity || 0)
+      })`,
     },
   });
 
