@@ -155,7 +155,7 @@ export default function SaleReturnForm(props: Props) {
   const salesItemOptions = React.useMemo(() => {
     return (
       salesItemsData?.map(({ item, id, saleQuantity, unit }) => ({
-        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} | ${unit} (${item?.code}) (Stok: ${saleQuantity})`,
+        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} | ${unit} (${item?.code}) (Stok: ${item.stock})`,
         value: id,
       })) || []
     );
