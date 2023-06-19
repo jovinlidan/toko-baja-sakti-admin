@@ -309,6 +309,7 @@ export default function SaleForm(props: Props) {
             label="Pesanan Penjualan"
             placeholder="Pilih Pesanan Penjualan"
             disabled={!!data?.id}
+            params={{ for: "sales" }}
           />
           {typeof data?.salesOrder?.transaction?.shippingCost === "number" && (
             <Input
