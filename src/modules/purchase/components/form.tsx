@@ -107,24 +107,57 @@ export default function PurchaseForm(props: Props) {
     }
   );
 
-  const purchaseOrderItemOptions = React.useMemo(() => {
-    let _data = [
-      ...(purchaseOrderItemQuery?.data?.data || []),
-      ...(data?.purchaseItems?.map((val) => ({
-        ...val,
-        ...val.purchaseOrderItem,
-      })) || []),
+  const purchaseOrderItemData = React.useMemo(() => {
+    let _data = [...(purchaseOrderItemQuery?.data?.data || [])];
+
+    _data = _data?.reduce((prev, next) => {
+      const found = data?.purchaseItems?.find(
+        (item) => item.purchaseOrderItem.id === next.id
+      );
+      if (found) {
+        return [
+          ...prev,
+          { ...next, quantity: next.amountNotReceived + found.quantity },
+        ];
+      }
+      return [...prev, next];
+    }, [] as any);
+
+    const restData =
+      data?.purchaseItems?.filter((item) => {
+        const hasDuplicate = _data?.find(
+          (hasDupItem) => hasDupItem.id === item.purchaseOrderItem.id
+        );
+        return !hasDuplicate;
+      }) || [];
+
+    _data = [
+      ..._data,
+      ...((restData?.map(
+        ({ purchaseOrderItem, amountNotReceived, item, unit }) => ({
+          id: purchaseOrderItem.id,
+          quantity: purchaseOrderItem.quantity,
+          unit,
+          item,
+          amountNotReceived,
+        })
+      ) as PurchaseOrderItemLite[]) || []),
     ];
+
     _data = _data.filter(
       (item) => !tableData.find((tableItem) => tableItem.id === item.id)
     );
+    return _data;
+  }, [data?.purchaseItems, purchaseOrderItemQuery?.data?.data, tableData]);
+
+  const purchaseOrderItemOptions = React.useMemo(() => {
     return (
-      _data?.map(({ item, id, amountNotReceived }) => ({
+      purchaseOrderItemData?.map(({ item, id, amountNotReceived }) => ({
         label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} (${item?.code}) (Jumlah Belum Diterima: ${amountNotReceived})`,
         value: id,
       })) || []
     );
-  }, [data?.purchaseItems, purchaseOrderItemQuery?.data?.data, tableData]);
+  }, [purchaseOrderItemData]);
 
   const onSubmit = React.useCallback(
     async (values) => {

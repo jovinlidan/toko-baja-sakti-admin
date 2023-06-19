@@ -126,9 +126,33 @@ export default function PurchaseOrderItemTable(props: Props) {
               stickyRight: editable,
             },
           ]
-        : []),
+        : [
+            {
+              Header: "",
+              accessor: "delete",
+              Cell: ({ row }) => {
+                if (!editable) return null;
+                return (
+                  <Button
+                    size="small"
+                    variant="error"
+                    onClick={() => onDelete(row.index)}
+                  >
+                    HAPUS
+                  </Button>
+                );
+              },
+              stickyRight: editable,
+            },
+          ]),
     ],
-    [editable, id, onNavigateEditPurchaseOrderItem, showAmountNotReceived]
+    [
+      editable,
+      id,
+      onDelete,
+      onNavigateEditPurchaseOrderItem,
+      showAmountNotReceived,
+    ]
   );
   return (
     <>
