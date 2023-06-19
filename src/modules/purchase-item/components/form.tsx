@@ -126,10 +126,10 @@ export default function PurchaseItemForm(props: Props) {
           size="large"
           disabled={Object.keys(methods.formState.errors).length > 0}
         />
-        <Separator mr={20} />
-        <Button variant="error" size="large" onClick={onDelete}>
+        {/* <Separator mr={20} /> */}
+        {/* <Button variant="error" size="large" onClick={onDelete}>
           HAPUS
-        </Button>
+        </Button> */}
       </Row>
     </Form>
   );
