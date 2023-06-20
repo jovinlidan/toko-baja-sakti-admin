@@ -43,8 +43,14 @@ export default function SaleList() {
       },
       {
         Header: "Status",
-        accessor: "salesOrder.transaction.status",
-        Cell: ({ value }) => <>{value || "-"}</>,
+        accessor: "salesOrder.status" || "salesOrder.transaction.status",
+        Cell: ({ row }) => {
+          if (row?.original?.salesOrder?.transaction) {
+            return <>{row?.original?.salesOrder?.transaction?.status || "-"}</>;
+          } else {
+            return <>{row?.original?.salesOrder?.status || "-"}</>;
+          }
+        },
       },
       {
         Header: "",

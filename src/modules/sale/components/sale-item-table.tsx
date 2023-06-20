@@ -60,6 +60,12 @@ export default function SaleItemTable(props: Props) {
       {
         Header: "Harga Satuan",
         accessor: "price",
+        Cell({ row }) {
+          if (row?.original?.price) {
+            return <>Rp {string2money(row?.original?.price)}</>;
+          }
+          return <>Rp 0</>;
+        },
       },
       {
         Header: "Total",
@@ -68,7 +74,7 @@ export default function SaleItemTable(props: Props) {
           if (row?.original?.quantity && row?.original?.price)
             return (
               <>
-                Rp{string2money(row.original?.quantity * row?.original?.price)}
+                Rp {string2money(row.original?.quantity * row?.original?.price)}
               </>
             );
           return <>Rp 0</>;
