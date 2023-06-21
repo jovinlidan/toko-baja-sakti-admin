@@ -19,7 +19,7 @@ export default function Header() {
       ...navigations,
       {
         href: "/",
-        label: "Beranda",
+        label: "Dashboard",
       },
       {
         href: routeConstant.CategoryItemCreate,

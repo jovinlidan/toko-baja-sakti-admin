@@ -38,7 +38,7 @@ export async function middleware(req: NextRequest) {
 
   if (!isAuthed && CURRENT_PATH !== "login") {
     return NextResponse.redirect(loginUrl);
-  } else if ((isAuthed && CURRENT_PATH === "login") || pathname === "/") {
+  } else if (isAuthed && CURRENT_PATH === "login") {
     return NextResponse.redirect(baseUrl);
   }
 
