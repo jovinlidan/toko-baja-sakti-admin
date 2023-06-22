@@ -10,6 +10,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { Filter } from "@/common/repositories/common.model";
 import { produce } from "immer";
 import { HalfContainer } from "@/components/elements/styles";
+import { useRouter } from "next/router";
 
 interface Props {
   loading: boolean;
@@ -26,7 +27,7 @@ export default function PurchaseOrderListFilterForm(props: Props) {
   const { loading, filters, setFilters } = props;
   const YupSchema = React.useMemo(() => Yup.object().shape({}), []);
   const resolver = useYupValidationResolver(YupSchema);
-
+  const { query } = useRouter();
   const methods = useForm<any>({
     resolver,
     mode: "all",
@@ -45,6 +46,13 @@ export default function PurchaseOrderListFilterForm(props: Props) {
         undefined,
     },
   });
+
+  React.useEffect(() => {
+    if (query?.[FILTER_STATUS]) {
+      methods.setValue(FILTER_STATUS, query?.[FILTER_STATUS]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = React.useCallback(
     async (values) => {

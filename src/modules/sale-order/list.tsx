@@ -60,7 +60,7 @@ export default function SaleOrderList() {
         stickyRight: true,
       },
     ],
-    []
+    [format]
   );
 
   const {
