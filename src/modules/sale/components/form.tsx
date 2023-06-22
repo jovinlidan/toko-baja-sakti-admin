@@ -15,6 +15,10 @@ import { useGetSalesOrderItems } from "@/api-hooks/sales-order-item/sales-order-
 import { Sale } from "@/api-hooks/sales/sales.model";
 import { TransactionLite } from "@/api-hooks/sales-order/sales-order.model";
 import { string2money } from "@/utils/string";
+import CustomerSelectOption from "@/components/elements/select-input-helper/customer-select-input";
+import ItemSelectOption from "@/components/elements/select-input-helper/item-select-input";
+import { useGetItems } from "@/api-hooks/item/item.query";
+import { ItemUnitEnum } from "@/api-hooks/item/item.model";
 
 type FormType = {
   code?: string;
@@ -22,11 +26,15 @@ type FormType = {
   salesOrderId?: string;
   transactionDate?: Date;
   transaction?: TransactionLite;
+  bypass?: boolean;
   salesItems?: {
     id?: string;
+    itemId?: string;
     salesOrderItemId?: string;
     quantity?: number | string;
     unit?: string;
+    price?: number | string;
+    unitEnum?: string;
   };
   address?: string;
 };
@@ -59,26 +67,50 @@ export default function SaleForm(props: Props) {
     data?.salesOrder?.paymentMethod?.provider !== "Offline";
   const YupSchema = React.useMemo(
     () =>
-      Yup.object().shape({
+      Yup.object({
         code: Yup.string().nullable().strip(true),
         paymentMethod: Yup.string().nullable().strip(true),
-        salesOrderId: Yup.string().required(),
+
+        salesOrderId: Yup.string().when("bypass", {
+          is: (val) => !!val,
+          then: (schema) => schema.nullable().strip(true),
+          otherwise: (schema) => schema.required(),
+        }),
+        userId: Yup.string().when("bypass", {
+          is: (val) => !val,
+          then: (schema) => schema.nullable().strip(true),
+          otherwise: (schema) => schema.required(),
+        }),
+        bypass: Yup.boolean(),
         transactionDate: Yup.date()
           .transform((_, val) => (val ? new Date(val) : null))
           .required(),
-        salesItems: Yup.object()
-          .shape({
-            id: Yup.string().nullable(),
-            salesOrderItemId: Yup.string().required(),
-            quantity: Yup.string().required(),
-            unit: Yup.string().nullable(),
-          })
-          .strip(true),
+        salesItems: Yup.object({
+          id: Yup.string().nullable(),
+          salesOrderItemId: Yup.string().when("bypass", {
+            is: (val) => {
+              return !!val;
+            },
+            then: (schema) => schema.nullable().strip(true),
+            otherwise: (schema) => schema.required(),
+          }),
+          itemId: Yup.string().when("bypass", {
+            is: (val) => !val,
+            then: (schema) => schema.nullable().strip(true),
+            otherwise: (schema) => schema.required(),
+          }),
+          quantity: Yup.string().required(),
+          unit: Yup.string().when("bypass", {
+            is: (val) => !val,
+            then: (schema) => schema.nullable().strip(true),
+            otherwise: (schema) => schema.required(),
+          }),
+          unitEnum: Yup.string().nullable(),
+        }).strip(true),
       }),
     []
   );
   const resolver = useYupValidationResolver(YupSchema);
-
   const methods = useForm<FormType>({
     resolver,
     mode: "all",
@@ -105,12 +137,17 @@ export default function SaleForm(props: Props) {
           }
         : {
             transactionDate: new Date(Date.now()),
+            bypass: true,
           }),
     },
   });
-
   const salesOrderId = useWatch({
     name: "salesOrderId",
+    control: methods.control,
+  });
+
+  const itemId = useWatch({
+    name: "salesItems.itemId",
     control: methods.control,
   });
 
@@ -125,6 +162,8 @@ export default function SaleForm(props: Props) {
       },
     }
   );
+
+  const itemQuery = useGetItems({ params: { for: "active" } });
 
   const salesOrderItemData = React.useMemo(() => {
     let _data = [...(salesOrderItemQuery?.data?.data || [])];
@@ -168,6 +207,15 @@ export default function SaleForm(props: Props) {
     return _data;
   }, [data?.salesItems, salesOrderItemQuery?.data?.data, tableData]);
 
+  const itemOptions = React.useMemo(() => {
+    return (
+      itemQuery?.data?.data?.map((item) => ({
+        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color} | (${item?.code}) (Stok: ${item.stock})`,
+        value: item.id,
+      })) || []
+    );
+  }, [itemQuery?.data?.data]);
+
   const salesOrderItemOptions = React.useMemo(() => {
     return (
       salesOrderItemData?.map(({ item, id, unit }) => ({
@@ -198,13 +246,14 @@ export default function SaleForm(props: Props) {
     },
     [YupSchema, methods, props, tableData]
   );
-
   const onAddItem = React.useCallback(
     async (values) => {
       try {
         await YupSchema.validateAt(
           "salesItems",
-          { salesItems: { ...values } },
+          {
+            salesItems: { ...values, bypass: methods.getValues().bypass },
+          },
           {
             abortEarly: false,
           }
@@ -216,15 +265,19 @@ export default function SaleForm(props: Props) {
               ...tempData,
               quantity: values.quantity,
               siId: undefined,
-              price: tempData.priceUnit,
+              price: values.price,
+              unit: values.unit,
+              unitEnum: values.unitEnum,
               amountNotReceived: 0,
             },
           ])
         );
+
         UpdateBatchHelper(
           {
             salesItems: {
               salesOrderItemId: "",
+              itemId: "",
               amountNotReceived: "",
               price: "",
               unit: "",
@@ -259,6 +312,20 @@ export default function SaleForm(props: Props) {
     },
     [methods]
   );
+  const satuanOptions = React.useMemo(() => {
+    if (!itemId) return;
+    const item = itemQuery?.data?.data?.find((it) => it.id === itemId);
+    return [
+      {
+        label: item?.categoryItem.bigUnit,
+        value: item?.categoryItem.bigUnit,
+      },
+      {
+        label: item?.categoryItem.smallUnit,
+        value: item?.categoryItem.smallUnit,
+      },
+    ];
+  }, [itemId, itemQuery?.data?.data]);
   const onSalesOrderItemSelect = React.useCallback(
     (values) => {
       const id = values?.value;
@@ -292,6 +359,73 @@ export default function SaleForm(props: Props) {
     },
     [methods, salesOrderItemData]
   );
+  const onItemSelect = React.useCallback(
+    (values) => {
+      const id = values?.value;
+      UpdateBatchHelper(
+        {
+          salesItems: {
+            itemId: "",
+            amountNotReceived: "",
+            price: "",
+            unit: "",
+            quantity: "",
+          },
+        },
+        methods
+      );
+      if (!id) return;
+      const item = itemQuery?.data?.data?.find((item) => item.id === id);
+
+      setTempData({
+        amountNotReceived: 0,
+        id: item?.id!,
+        item: item as any,
+        priceUnit: 0,
+        quantity: 0,
+        unit: "",
+      });
+      UpdateBatchHelper(
+        {
+          salesItems: {
+            itemId: id,
+            // amountNotReceived: 0,
+            quantity: item?.stock,
+          },
+        },
+        methods
+      );
+    },
+    [itemQuery?.data?.data, methods]
+  );
+
+  const onUnitAfterChange = React.useCallback(
+    (values: any) => {
+      if (!itemId) return;
+      const item = itemQuery?.data?.data?.find((it) => it.id === itemId);
+      if (values?.value === item?.categoryItem.bigUnit) {
+        methods.setValue("salesItems.price", item?.wholesalePrice);
+        methods.setValue("salesItems.unitEnum", ItemUnitEnum.Wholesale);
+        return;
+      } else if (values.value === item?.categoryItem?.smallUnit) {
+        methods.setValue("salesItems.price", item?.retailPrice);
+        methods.setValue("salesItems.unitEnum", ItemUnitEnum.Retail);
+        return;
+      }
+      methods.setValue("salesItems.price", "");
+    },
+    [itemId, itemQuery?.data?.data, methods]
+  );
+
+  const onAfterChangeCheckbox = React.useCallback(
+    (e) => {
+      methods.reset(
+        { bypass: e?.target?.checked },
+        { keepDefaultValues: true }
+      );
+    },
+    [methods]
+  );
 
   return (
     <Form
@@ -299,82 +433,129 @@ export default function SaleForm(props: Props) {
       onSubmit={onSubmit}
       defaultEditable={defaultEditable}
     >
-      <FullContainer>
-        <HalfContainer>
-          {data?.code && (
-            <Input name="code" type="text" label="Kode" disabled />
-          )}
+      <FullContainer direction="column">
+        {!data?.id && (
+          <Row>
+            <HalfContainer>
+              <Input
+                type="checkbox"
+                name="bypass"
+                label="Tanpa Pesanan Penjualan"
+                onAfterChange={onAfterChangeCheckbox}
+              />
+            </HalfContainer>
+          </Row>
+        )}
+        <Row>
+          <HalfContainer>
+            {data?.code && (
+              <Input name="code" type="text" label="Kode" disabled />
+            )}
 
-          <SalesOrderSelectOption
-            name="salesOrderId"
-            label="Pesanan Penjualan"
-            placeholder="Pilih Pesanan Penjualan"
-            disabled={!!data?.id}
-            params={{ for: "sales" }}
-          />
-          {typeof data?.salesOrder?.transaction?.shippingCost === "number" && (
-            <Input
-              name="transaction.shippingCost"
-              type="text"
-              label="Ongkos Kirim"
-              disabled
-              startEnhancer="Rp"
-            />
-          )}
-          {!!data?.salesOrder?.transaction?.address?.id && (
-            <Input
-              name="address"
-              type="textarea"
-              label="Alamat Kirim"
-              disabled
-            />
-          )}
-        </HalfContainer>
-        <HalfContainer>
-          <Input
-            name="transactionDate"
-            type="date"
-            label="Tanggal Penjualan"
-            disabled={isOnline}
-          />
+            <FormValueState keys={["bypass"]}>
+              {({ bypass }) =>
+                !bypass ? (
+                  <SalesOrderSelectOption
+                    name="salesOrderId"
+                    label="Pesanan Penjualan"
+                    placeholder="Pilih Pesanan Penjualan"
+                    disabled={!!data?.id}
+                    params={{ for: "sales" }}
+                  />
+                ) : (
+                  <CustomerSelectOption
+                    name="userId"
+                    label="Pelanggan"
+                    placeholder="Pilih Pelanggan"
+                  />
+                )
+              }
+            </FormValueState>
 
-          {data?.salesOrder?.transaction?.status && (
-            <Input name="transaction.noReceipt" type="text" label="No Resi" />
-          )}
-          {data?.salesOrder?.transaction?.status && (
+            {typeof data?.salesOrder?.transaction?.shippingCost ===
+              "number" && (
+              <Input
+                name="transaction.shippingCost"
+                type="text"
+                label="Ongkos Kirim"
+                disabled
+                startEnhancer="Rp"
+              />
+            )}
+            {!!data?.salesOrder?.transaction?.address?.id && (
+              <Input
+                name="address"
+                type="textarea"
+                label="Alamat Kirim"
+                disabled
+              />
+            )}
+          </HalfContainer>
+          <HalfContainer>
             <Input
-              name="transaction.status"
-              type="enum"
-              enumClass="transaction-status"
-              label="Status"
+              name="transactionDate"
+              type="date"
+              label="Tanggal Penjualan"
+              disabled={isOnline}
             />
-          )}
 
-          {data?.salesOrder.paymentMethod && (
-            <Input
-              name="paymentMethod"
-              type="text"
-              label="Metode Pembayaran"
-              disabled
-            />
-          )}
-        </HalfContainer>
+            {data?.salesOrder?.transaction?.status && (
+              <Input name="transaction.noReceipt" type="text" label="No Resi" />
+            )}
+            {data?.salesOrder?.transaction?.status && (
+              <Input
+                name="transaction.status"
+                type="enum"
+                enumClass="transaction-status"
+                label="Status"
+              />
+            )}
+
+            {data?.salesOrder.paymentMethod && (
+              <Input
+                name="paymentMethod"
+                type="text"
+                label="Metode Pembayaran"
+                disabled
+              />
+            )}
+          </HalfContainer>
+        </Row>
       </FullContainer>
       <FullContainer direction="column">
         {defaultEditable && !isOnline && (
           <>
-            <Input
-              name="salesItems.salesOrderItemId"
-              type="select"
-              label="Tambah Barang"
-              placeholder="Pilih Barang"
-              options={salesOrderItemOptions}
-              isClearable
-              isLoading={
-                salesOrderItemQuery.isLoading || salesOrderItemQuery.isFetching
+            <FormValueState keys={["bypass"]}>
+              {({ bypass }) =>
+                !bypass ? (
+                  <Input
+                    name="salesItems.salesOrderItemId"
+                    type="select"
+                    label="Tambah Barang"
+                    placeholder="Pilih Barang"
+                    options={salesOrderItemOptions}
+                    isClearable
+                    isLoading={
+                      salesOrderItemQuery.isLoading ||
+                      salesOrderItemQuery.isFetching
+                    }
+                    onSelect={onSalesOrderItemSelect}
+                  />
+                ) : (
+                  <Input
+                    name="salesItems.itemId"
+                    type="select"
+                    label="Tambah Barang"
+                    placeholder="Pilih Barang"
+                    options={itemOptions}
+                    isClearable
+                    isLoading={itemQuery.isLoading || itemQuery.isFetching}
+                    onSelect={onItemSelect}
+                  />
+                )
               }
-              onSelect={onSalesOrderItemSelect}
-            />
+            </FormValueState>
+
             <Row>
               <HalfContainer>
                 <FormValueState keys={["salesItems.amountNotReceived"]}>
@@ -398,12 +579,28 @@ export default function SaleForm(props: Props) {
                 />
               </HalfContainer>
               <HalfContainer>
-                <Input
-                  name="salesItems.unit"
-                  type="text"
-                  label="Satuan"
-                  disabled
-                />
+                <FormValueState keys={["bypass"]}>
+                  {({ bypass }) => {
+                    return bypass ? (
+                      <Input
+                        name="salesItems.unit"
+                        type="select"
+                        label="Satuan"
+                        isLoading={itemQuery.isLoading || itemQuery.isFetching}
+                        placeholder="Pilih Satuan"
+                        options={satuanOptions as any}
+                        onAfterChange={onUnitAfterChange}
+                      />
+                    ) : (
+                      <Input
+                        name="salesItems.unit"
+                        type="text"
+                        label="Satuan"
+                        disabled
+                      />
+                    );
+                  }}
+                </FormValueState>
               </HalfContainer>
             </Row>
           </>

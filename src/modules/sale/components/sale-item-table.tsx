@@ -10,6 +10,7 @@ export type SaleItemTableDataType = {
   quantity: number;
   price: number;
   siId?: string;
+  unitEnum?: string;
 } & SalesOrderItemLite;
 
 interface Props {

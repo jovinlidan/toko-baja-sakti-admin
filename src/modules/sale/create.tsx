@@ -22,8 +22,10 @@ export default function CreateSale() {
         body: {
           ...values,
           salesItems: salesItems.map((item) => ({
-            salesOrderItemId: item.id,
+            salesOrderItemId: values?.bypass ? undefined : item.id,
+            itemId: values?.bypass ? item.id : undefined,
             quantity: item.quantity,
+            unit: values?.bypass ? item?.unitEnum : undefined,
           })),
         },
       });

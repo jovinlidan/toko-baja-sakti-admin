@@ -264,11 +264,13 @@ export default function PurchaseOrderForm(props: Props) {
               </HalfContainer>
             </Row>
             <Row>
-              <Input
-                name="purchaseOrderItems.negotiationPrice"
-                type="number"
-                label="Harga Nego"
-              />
+              <HalfContainer>
+                <Input
+                  name="purchaseOrderItems.negotiationPrice"
+                  type="number"
+                  label="Harga Nego"
+                />
+              </HalfContainer>
             </Row>
           </>
         )}

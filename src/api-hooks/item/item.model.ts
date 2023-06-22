@@ -77,7 +77,7 @@ export class Item {
   @Type(() => CategoryItem)
   categoryItem: CategoryItem;
 
-  weight : number;
+  weight: number;
 }
 
 export class getItemsInput {
@@ -85,6 +85,7 @@ export class getItemsInput {
     page?: number;
     limit?: number;
     filter?: string;
+    for?: string;
   };
 }
 

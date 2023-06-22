@@ -1,6 +1,7 @@
 import invariant from "invariant";
 import * as React from "react";
 import { useFormContext, useWatch } from "react-hook-form";
+import CheckboxField, { CheckboxFieldProps } from "./checkbox-field";
 import DatePickerField, { DatePickerFieldProps } from "./date-picker-field";
 import { SingleFilePicker, SingleFilePickerProps } from "./file-picker";
 import SelectEnumField, { SelectEnumFieldProps } from "./select-enum-field";
@@ -19,6 +20,7 @@ export type InputType =
   | "date"
   | "submit"
   | "file"
+  | "checkbox"
   | "enum";
 
 export interface BaseElementInputProps {
@@ -33,6 +35,7 @@ function RawInput(
     | TextareaFieldProps
     | TextNumberFieldProps
     | DatePickerFieldProps
+    | CheckboxFieldProps
     | SelectFieldProps
     | SelectEnumFieldProps
     | SingleFilePickerProps
@@ -51,6 +54,8 @@ function RawInput(
       return <TextNumberField {...props} />;
     case "date":
       return <DatePickerField {...props} ref={ref} />;
+    case "checkbox":
+      return <CheckboxField {...props} ref={ref} />;
     case "select":
       return <SelectField {...props} ref={ref} />;
     case "enum":
