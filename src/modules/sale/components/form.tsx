@@ -170,8 +170,8 @@ export default function SaleForm(props: Props) {
 
   const salesOrderItemOptions = React.useMemo(() => {
     return (
-      salesOrderItemData?.map(({ item, id, unit, amountNotReceived }) => ({
-        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color}  | ${unit} | (${item?.code}) (Stok: ${amountNotReceived})`,
+      salesOrderItemData?.map(({ item, id, unit }) => ({
+        label: `${item?.categoryItem.name} | ${item.categoryItem?.brand} | ${item?.size} | ${item?.thick}mm | ${item?.color}  | ${unit} | (${item?.code}) (Stok: ${item.stock})`,
         value: id,
       })) || []
     );
@@ -284,7 +284,7 @@ export default function SaleForm(props: Props) {
             amountNotReceived: salesOrderItem?.amountNotReceived,
             unit: salesOrderItem?.unit,
             price: salesOrderItem?.priceUnit,
-            quantity: salesOrderItem?.amountNotReceived,
+            quantity: salesOrderItem?.item?.stock,
           },
         },
         methods
