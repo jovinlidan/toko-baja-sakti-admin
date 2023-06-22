@@ -295,6 +295,9 @@ export default function PurchaseForm(props: Props) {
             label="Pesanan Pembelian"
             placeholder="Pilih Pesanan Pembelian"
             disabled={!!data?.code}
+            params={{
+              for: "purchase",
+            }}
           />
         </HalfContainer>
         <HalfContainer>
