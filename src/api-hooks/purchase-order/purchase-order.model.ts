@@ -10,6 +10,10 @@ export class PurchaseOrderPOI {
   unit: string;
   @Type(() => Item)
   item: Item;
+
+  @Expose({ name: "negotiation_price" })
+  @Type(() => Number)
+  negotiationPrice: number;
 }
 
 export class PurchaseOrderLite {

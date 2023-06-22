@@ -48,6 +48,7 @@ export default function PurchaseOrderForm(props: Props) {
       poiId: item.id,
       unit: item.unit,
       quantity: item.quantity,
+      negotiationPrice: item.negotiationPrice,
     })) || []
   );
   const [tempData, setTempData] = React.useState<Item>();
@@ -67,6 +68,7 @@ export default function PurchaseOrderForm(props: Props) {
             itemId: Yup.string().required(),
             quantity: Yup.string().required(),
             unit: Yup.string().required(),
+            negotiationPrice: Yup.string().nullable(),
           })
           .strip(true),
       }),
@@ -152,6 +154,7 @@ export default function PurchaseOrderForm(props: Props) {
               quantity: values.quantity,
               unit: values.unit,
               poiId: undefined,
+              negotiationPrice: values.negotiationPrice,
             },
           ])
         );
@@ -259,6 +262,13 @@ export default function PurchaseOrderForm(props: Props) {
                   options={satuanOptions}
                 />
               </HalfContainer>
+            </Row>
+            <Row>
+              <Input
+                name="purchaseOrderItems.negotiationPrice"
+                type="number"
+                label="Harga Nego"
+              />
             </Row>
           </>
         )}

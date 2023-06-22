@@ -2,12 +2,14 @@ import { Item } from "@/api-hooks/item/item.model";
 import TableComponent, { IColumn } from "@/components/common/table";
 import { Button } from "@/components/elements";
 import { useFormState } from "@/components/elements/form";
+import { string2money } from "@/utils/string";
 import * as React from "react";
 
 export type ItemTableDataType = {
   quantity: number;
   unit: string;
   poiId?: string;
+  negotiationPrice?: number;
 } & Item;
 
 interface Props {
@@ -52,6 +54,11 @@ export default function TableItem(props: Props) {
       {
         Header: "Satuan",
         accessor: "unit",
+      },
+      {
+        Header: "Harga Nego",
+        accessor: "negotiationPrice",
+        Cell: ({ value }) => <>Rp {string2money(value)}</>,
       },
       {
         Header: "",

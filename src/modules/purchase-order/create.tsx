@@ -25,6 +25,7 @@ export default function CreatePurchaseOrder() {
             itemId: item.id,
             quantity: item.quantity,
             unit: item.unit,
+            negotiationPrice: item.negotiationPrice,
           })),
         },
       });

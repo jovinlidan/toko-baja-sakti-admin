@@ -36,6 +36,7 @@ export default function EditPurchaseOrder() {
             itemId: item.id,
             quantity: item.quantity,
             unit: item.unit,
+            negotiationPrice: item.negotiationPrice,
           })),
         },
       });
