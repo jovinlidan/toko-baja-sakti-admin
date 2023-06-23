@@ -270,6 +270,7 @@ export default function PurchaseForm(props: Props) {
             purchaseOrderItemId: id,
             amountNotReceived: purchaseOrderItem?.amountNotReceived,
             unit: purchaseOrderItem?.unit,
+            quantity: purchaseOrderItem?.amountNotReceived,
           },
         },
         methods
