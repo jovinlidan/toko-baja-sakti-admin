@@ -25,7 +25,7 @@ export default function Dashboard() {
               data={data?.notificationStockMinimum || []}
             />
             <Separator mb={24} />
-            <DailyTotalSale />
+            <DailyTotalSale total={data?.grandTotalSales} />
           </>
         }
       />
