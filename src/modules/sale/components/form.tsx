@@ -389,8 +389,8 @@ export default function SaleForm(props: Props) {
         {
           salesItems: {
             itemId: id,
-            // amountNotReceived: 0,
-            quantity: item?.stock,
+            amountNotReceived: item?.stock,
+            // quantity: item?.stock,
           },
         },
         methods
