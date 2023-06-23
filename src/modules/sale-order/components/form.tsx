@@ -238,6 +238,7 @@ export default function SaleOrderForm(props: Props) {
               label="Tambah Barang"
               placeholder="Pilih Barang"
               onAfterChange={onAfterChangeItem}
+              params={{ for: "active" }}
             />
             <Row>
               <HalfContainer>
