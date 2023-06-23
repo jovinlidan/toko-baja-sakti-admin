@@ -351,7 +351,7 @@ export default function SaleForm(props: Props) {
             amountNotReceived: salesOrderItem?.amountNotReceived,
             unit: salesOrderItem?.unit,
             price: salesOrderItem?.priceUnit,
-            quantity: salesOrderItem?.item?.stock,
+            quantity: salesOrderItem?.amountNotReceived,
           },
         },
         methods
