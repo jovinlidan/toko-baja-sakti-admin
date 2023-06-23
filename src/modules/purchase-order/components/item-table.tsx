@@ -58,7 +58,10 @@ export default function TableItem(props: Props) {
       {
         Header: "Harga Nego",
         accessor: "negotiationPrice",
-        Cell: ({ value }) => <>Rp {string2money(value)}</>,
+        Cell: ({ value }) => {
+          if (typeof value === "number") return <>Rp {string2money(value)}</>;
+          return <>-</>;
+        },
       },
       {
         Header: "",
