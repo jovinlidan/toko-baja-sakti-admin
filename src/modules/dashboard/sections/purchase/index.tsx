@@ -41,7 +41,7 @@ export default function DashboardPurchase(props: Props) {
             variant="body1"
             href={{
               pathname: routeConstant.PurchaseOrderList,
-              query: { status: "sudah_diproses" },
+              query: { status: "sedang_diproses" },
             }}
             label="Detail"
           />

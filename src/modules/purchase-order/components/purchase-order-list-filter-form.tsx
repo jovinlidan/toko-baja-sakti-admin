@@ -48,11 +48,18 @@ export default function PurchaseOrderListFilterForm(props: Props) {
   });
 
   React.useEffect(() => {
-    if (query?.[FILTER_STATUS]) {
+    if (typeof query?.[FILTER_STATUS] === "string") {
       methods.setValue(FILTER_STATUS, query?.[FILTER_STATUS]);
+      setFilters((prevFilters) =>
+        produce(prevFilters, (draft) => {
+          const matchedStatus = draft?.find((f) => f.name === FILTER_STATUS);
+
+          if (matchedStatus)
+            matchedStatus.value = query?.[FILTER_STATUS] as string;
+        })
+      );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setFilters, query, methods, filters]);
 
   const onSubmit = React.useCallback(
     async (values) => {

@@ -40,7 +40,7 @@ export default function DashboardSale(props: Props) {
             variant="body1"
             href={{
               pathname: routeConstant.SaleOrderList,
-              query: { status: "sudah_diproses" },
+              query: { status: "sedang_diproses" },
             }}
             label="Detail"
           />

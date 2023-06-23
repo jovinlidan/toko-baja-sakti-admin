@@ -49,13 +49,6 @@ export default function SaleOrderListFilterForm(props: Props) {
     },
   });
 
-  React.useEffect(() => {
-    if (query?.[FILTER_STATUS]) {
-      methods.setValue(FILTER_STATUS, query?.[FILTER_STATUS]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const onSubmit = React.useCallback(
     async (values) => {
       setFilters((prevFilters) =>
@@ -79,6 +72,20 @@ export default function SaleOrderListFilterForm(props: Props) {
     },
     [setFilters]
   );
+
+  React.useEffect(() => {
+    if (typeof query?.[FILTER_STATUS] === "string") {
+      methods.setValue(FILTER_STATUS, query?.[FILTER_STATUS]);
+      setFilters((prevFilters) =>
+        produce(prevFilters, (draft) => {
+          const matchedStatus = draft?.find((f) => f.name === FILTER_STATUS);
+
+          if (matchedStatus)
+            matchedStatus.value = query?.[FILTER_STATUS] as string;
+        })
+      );
+    }
+  }, [setFilters, query, methods, filters]);
 
   return (
     <Form methods={methods} onSubmit={onSubmit}>
