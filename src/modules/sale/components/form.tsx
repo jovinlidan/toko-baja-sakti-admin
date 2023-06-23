@@ -419,10 +419,20 @@ export default function SaleForm(props: Props) {
 
   const onAfterChangeCheckbox = React.useCallback(
     (e) => {
-      methods.reset(
-        { bypass: e?.target?.checked },
-        { keepDefaultValues: true }
-      );
+      methods.reset({
+        bypass: e?.target?.checked,
+        salesItems: {
+          itemId: "",
+          price: "",
+          quantity: "",
+          unit: "",
+          salesOrderItemId: "",
+          id: "",
+          unitEnum: "",
+        },
+        salesOrderId: "",
+      });
+      setTableData([]);
     },
     [methods]
   );
