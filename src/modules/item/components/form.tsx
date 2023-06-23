@@ -108,9 +108,9 @@ export default function ItemForm(props: Props) {
           <Input name="stock" type="number" label="Stok" />
           <Input name="minimumStock" type="number" label="Stok Minimum" />
 
-          <Input name="retailPrice" type="number" label="Harga Ecer" />
+          <Input name="retailPrice" type="number" label="Harga Ecer (Satuan Kecil)" />
 
-          <Input name="wholesalePrice" type="number" label="Harga Grosir" />
+          <Input name="wholesalePrice" type="number" label="Harga Grosir (Satuan Besar)" />
 
           <Input
             name="weight"

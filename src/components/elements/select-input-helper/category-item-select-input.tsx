@@ -23,7 +23,7 @@ function transformer(
   return {
     id: item.id,
     value: item.id,
-    label: `${item.name}-${item.brand} (${item.code})`,
+    label: `${item.name} - ${item.brand} (${item.code})`,
   };
 }
 
