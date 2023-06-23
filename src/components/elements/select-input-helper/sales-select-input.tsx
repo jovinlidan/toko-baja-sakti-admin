@@ -26,6 +26,7 @@ interface Props {
   params: {
     [key in string]: string;
   };
+  disabled?: boolean;
 }
 
 export default function SalesSelectOption(props: Props) {

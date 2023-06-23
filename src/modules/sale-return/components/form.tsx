@@ -287,6 +287,7 @@ export default function SaleReturnForm(props: Props) {
             label="Penjualan"
             placeholder="Pilih Penjualan"
             params={{ for: "retur" }}
+            disabled={!!data?.code}
           />
         </HalfContainer>
         <HalfContainer>
