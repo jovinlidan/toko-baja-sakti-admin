@@ -33,7 +33,7 @@ export default function EditPurchase() {
           ...values,
           purchaseItems: purchaseItems.map((item) => ({
             id: item.piId,
-            purchaseOrderItemId: item.id,
+            purchaseOrderItemId: item.id || item?.purchaseOrderItem?.id,
             quantity: item.quantity,
             price: item.price,
           })),

@@ -50,6 +50,7 @@ export default function PurchaseForm(props: Props) {
       piId: item.id,
     })) || []
   );
+
   const [tempData, setTempData] = React.useState<PurchaseOrderItemLite>();
 
   const YupSchema = React.useMemo(
@@ -139,7 +140,7 @@ export default function PurchaseForm(props: Props) {
           quantity: purchaseOrderItem.quantity,
           unit,
           item,
-          amountNotReceived,
+          amountNotReceived: amountNotReceived + purchaseOrderItem.quantity,
         })
       ) as PurchaseOrderItemLite[]) || []),
     ];
@@ -167,7 +168,7 @@ export default function PurchaseForm(props: Props) {
           input,
           tableData.map((data, idx) => ({
             ...data,
-            id: purchaseOrderItemQuery?.data?.data?.[idx]?.id!,
+            // id: purchaseOrderItemQuery?.data?.data?.[idx]?.id!,
           }))
         );
         methods.reset();
@@ -179,7 +180,7 @@ export default function PurchaseForm(props: Props) {
         e?.message && toast.error(e?.message);
       }
     },
-    [YupSchema, methods, props, purchaseOrderItemQuery?.data?.data, tableData]
+    [YupSchema, methods, props, tableData]
   );
 
   const onAddItem = React.useCallback(
@@ -260,7 +261,7 @@ export default function PurchaseForm(props: Props) {
         );
         return;
       }
-      const purchaseOrderItem = purchaseOrderItemQuery.data?.data?.find(
+      const purchaseOrderItem = purchaseOrderItemData.find(
         (item) => item.id === id
       );
       setTempData(purchaseOrderItem);
@@ -271,12 +272,13 @@ export default function PurchaseForm(props: Props) {
             amountNotReceived: purchaseOrderItem?.amountNotReceived,
             unit: purchaseOrderItem?.unit,
             quantity: purchaseOrderItem?.amountNotReceived,
+            price: purchaseOrderItem?.negotiationPrice,
           },
         },
         methods
       );
     },
-    [methods, purchaseOrderItemQuery.data?.data]
+    [methods, purchaseOrderItemData]
   );
 
   return (
