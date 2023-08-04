@@ -45,6 +45,7 @@
     "ts-deepmerge": "^6.0.2",
     "tsparticles": "^2.9.3",
     "use-debounce": "^9.0.3",
+    "use-sound": "^4.0.1",
     "yup": "1.1.0"
   },
   "devDependencies": {
