@@ -83,7 +83,7 @@ export default function useSelectInputHelper<
 ): Props {
   const {
     renderCreate = false,
-    createText = "Buat Baru",
+    createText = "Buat Baru +",
     onClickCreate = () => {},
     onSelectItem,
     useListQueryHook,

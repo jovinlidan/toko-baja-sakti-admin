@@ -8,6 +8,9 @@ import { FullContainer, HalfContainer } from "@/components/elements/styles";
 import { CategoryItem } from "@/api-hooks/category-item/category-item.model";
 import { formSetErrors } from "@/common/helpers/form";
 import { FormValueState } from "@/components/elements/input";
+import { Brand } from "@/api-hooks/brand/brand.model";
+import { useGetBrands } from "@/api-hooks/brand/brand.query";
+import BrandSelectOption from "@/components/elements/select-input-helper/brand-select-input";
 
 type FormType = {
   code?: string;
@@ -24,10 +27,17 @@ interface Props {
   data?: CategoryItem;
   onSubmit: (values: FormType) => Promise<void> | void;
   defaultEditable?: boolean;
+  onSelectedBrand?: (brand?: Partial<Brand>) => void;
+  selectedBrand?: Partial<Brand>;
 }
 
 export default function FormCategoryItem(props: Props) {
-  const { data, defaultEditable = true } = props;
+  const {
+    data,
+    defaultEditable = true,
+    onSelectedBrand,
+    selectedBrand,
+  } = props;
   const YupSchema = React.useMemo(
     () =>
       Yup.object().shape({
@@ -104,7 +114,14 @@ export default function FormCategoryItem(props: Props) {
             <Input name="code" type="text" label="Kode" disabled />
           )}
           <Input name="name" type="text" label="Nama" />
-          <Input name="brand" type="text" label="Merk" />
+          <BrandSelectOption
+            name="brand"
+            label="Merk"
+            onChange={(e) =>
+              onSelectedBrand?.(e ? { id: e.id, name: e.label } : undefined)
+            }
+            key={`${selectedBrand?.name} ${selectedBrand?.id} `}
+          />
           {!data?.code && (
             <Input
               name="conversionUnit"
