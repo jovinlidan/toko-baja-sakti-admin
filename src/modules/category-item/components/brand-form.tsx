@@ -2,7 +2,7 @@ import useYupValidationResolver from "@/hooks/use-yup-validation-resolver";
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import { Input, Form, Button } from "@/components/elements";
+import { Input, Form, Button, Text } from "@/components/elements";
 import { toast } from "react-hot-toast";
 import { FullContainer, HalfContainer } from "@/components/elements/styles";
 import { formSetErrors } from "@/common/helpers/form";
@@ -12,6 +12,7 @@ import Separator from "@/components/common/separator";
 import { useDeleteBrand } from "@/api-hooks/brand/brand.mutation";
 import { queryClient } from "@/common/repositories/query-client";
 import { getBrandsKey } from "@/api-hooks/brand/brand.query";
+import ColorConstant from "@/config/stitches/color.stitches";
 
 type FormType = {
   name?: string;
@@ -86,7 +87,13 @@ export default function FormBrand(props: Props) {
     >
       <FullContainer>
         <HalfContainer>
-          <Input name="name" type="text" label="Merk" />
+          <Input name="name" type="text" label="Nama Merk" noMargin />
+          <Separator mb={12} />
+          <Text variant="body2" color={ColorConstant.errorMain}>
+            * Pilih opsi <b>Buat Baru +</b> untuk tambah merk atau pilih salah
+            satu merk untuk ubah/hapus merk
+          </Text>
+          <Separator mb={12} />
           <div style={{ display: "flex" }}>
             <Input
               type="submit"
@@ -94,11 +101,12 @@ export default function FormBrand(props: Props) {
               size="medium"
               loading={isLoading}
             />
+
             <Separator mr={20} />
             <Button
               type="button"
               size="medium"
-              variant="secondary"
+              variant="error"
               disabled={!data?.id}
               loading={deleteBrandLoading}
               onClick={handleDeleteBrand}
